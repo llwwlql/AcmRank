@@ -10,11 +10,17 @@
             <column name="ID" />
             <generator class="native" />
         </id>
-        <many-to-one name="user" class="com.llwwlql.bean.User" unique="true">
+        <many-to-one name="user" class="com.llwwlql.bean.User" lazy="false" fetch="join">
             <column name="userID" not-null="true" />
         </many-to-one>
         <property name="vjudgeUserName" type="string">
             <column name="vjudgeUserName" length="30" not-null="true" />
+        </property>
+        <property name="vjudgeSolved" type="integer">
+            <column name="vjudgeSolved" />
+        </property>
+        <property name="vjudgeSubmission" type="integer">
+            <column name="vjudgeSubmission" />
         </property>
     </class>
 </hibernate-mapping>

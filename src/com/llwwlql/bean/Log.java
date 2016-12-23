@@ -11,7 +11,7 @@ public class Log implements java.io.Serializable {
 	private Integer id;
 	private User user;
 	private Integer score;
-	private String origin;
+	private short origin;
 	private String time;
 
 	// Constructors
@@ -21,7 +21,7 @@ public class Log implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Log(User user, Integer score, String origin, String time) {
+	public Log(User user, Integer score, short origin, String time) {
 		this.user = user;
 		this.score = score;
 		this.origin = origin;
@@ -54,11 +54,11 @@ public class Log implements java.io.Serializable {
 		this.score = score;
 	}
 
-	public String getOrigin() {
+	public short getOrigin() {
 		return this.origin;
 	}
 
-	public void setOrigin(String origin) {
+	public void setOrigin(short origin) {
 		this.origin = origin;
 	}
 

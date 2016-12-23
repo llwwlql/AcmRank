@@ -10,7 +10,7 @@
             <column name="ID" />
             <generator class="native" />
         </id>
-        <many-to-one name="contestuser" class="com.llwwlql.bean.Contestuser" fetch="select">
+        <many-to-one name="contestuser" class="com.llwwlql.bean.Contestuser" lazy="false" fetch="join">
             <column name="cuid" not-null="true" />
         </many-to-one>
         <property name="proNumber" type="string">

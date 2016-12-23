@@ -21,7 +21,7 @@ public class Contestproblem implements java.io.Serializable {
 	/** default constructor */
 	public Contestproblem() {
 	}
-
+	
 	/** full constructor */
 	public Contestproblem(Contestuser contestuser, String proNumber,
 			String penalty, Integer submissions, short acOr, short firstAc) {

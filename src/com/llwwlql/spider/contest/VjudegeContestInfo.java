@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.http.HttpEntity;
@@ -20,18 +23,23 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
+import com.llwwlql.analysis.VjudgeContestAnalysis;
+import com.llwwlql.bean.Contest;
+import com.llwwlql.service.BaseService;
+import com.llwwlql.tool.Property;
 import com.llwwlql.tool.SSLSkip;
 
-public class VjudegeContestInfo implements ContestSpider {
+public class VjudegeContestInfo implements Runnable,ContestSpider {
 
 	private HttpResponse response;
 	private HttpEntity entity;
-	private String search = "http://acm.hdu.edu.cn/diy/contest_search.php?action=go&content=LDU&types=1&page=1";
+	//private String search = "http://acm.hdu.edu.cn/diy/contest_search.php?action=go&content=LDU&types=1&page=1";
 	private String loginUrl = "https://vjudge.net/contest/data";
 	private String password = "lduacm";
 	private HttpHost host = new HttpHost("vjudge.net");
@@ -48,13 +56,14 @@ public class VjudegeContestInfo implements ContestSpider {
 		// TODO Auto-generated method stub
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6*1000);
 		StringBuffer strResult = new StringBuffer();
-		SSLSkip ssl = new SSLSkip();
-		ssl.enableSSL(httpClient);
-		HttpPost post = new HttpPost(loginUrl);
-		List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		this.getKeyValue(nvp);
-		nvp.add(new BasicNameValuePair("title", "LDU"));
+		SSLSkip.enableSSL(httpClient);
 		try {
+			HttpPost post = new HttpPost(loginUrl);
+			post.getParams().setParameter("http.socket.timeout", 5000);
+			List<NameValuePair> nvp = new ArrayList<NameValuePair>();
+			this.getKeyValue(nvp);
+			//传入的参数是从VjudgeContest中读取的，若想更改读取参数，到该配置文件中更改
+			nvp.add(new BasicNameValuePair("title", "LDU"));
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nvp,
 					"utf-8");
 			post.setEntity(entity);
@@ -63,7 +72,9 @@ public class VjudegeContestInfo implements ContestSpider {
 				if (httpResponse.getStatusLine().getStatusCode() == 200) {
 					HttpEntity entity2 = httpResponse.getEntity();
 					strResult.append(EntityUtils.toString(entity2));
-					System.out.println(strResult);
+					VjudgeContestAnalysis pageAnalysis = new VjudgeContestAnalysis();
+					pageAnalysis.Get_Info(strResult);
+					this.saveContest(pageAnalysis.getContest());
 				}
 				else
 				{
@@ -71,6 +82,12 @@ public class VjudegeContestInfo implements ContestSpider {
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
+			} catch (ConnectTimeoutException e) {
+				// TODO: handle exception
+				System.out.println("请求VjudgeContest超时！");
+			} catch (SocketTimeoutException e) {
+				// TODO: handle exception
+				System.out.println("VjudgeContest响应超时！");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -98,9 +115,36 @@ public class VjudegeContestInfo implements ContestSpider {
 		}
 		in.close();
 	}
-
+	
+	public void saveContest(List<Contest> Contest){
+		// 判断该元素是否存在，不存在的话保存
+		BaseService<Contest> contestService = new BaseService<Contest>();
+		for (Contest con : Contest) {
+			Map <String,Object> propertyVlaue = new HashMap<String, Object>();
+			propertyVlaue.put("orginId", con.getOrginId());
+			propertyVlaue.put("origin", (short)2);
+			String[] key = Property.getProperty(propertyVlaue);
+			Object[] value = Property.getValue(propertyVlaue);
+			List<Contest> contest2 = contestService.getByParameters("Contest", key, value, true);
+			if(contest2.size()==0)
+			{
+				contestService.save(con);
+			}
+		}
+	}
+	
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			this.doPost();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) throws IOException {
 		VjudegeContestInfo vj = new VjudegeContestInfo();
-		vj.doPost();	
+		vj.doPost();
 	}
 }

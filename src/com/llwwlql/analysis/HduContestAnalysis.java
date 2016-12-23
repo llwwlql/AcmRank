@@ -16,7 +16,7 @@ import com.llwwlql.bean.Contest;
 public class HduContestAnalysis implements BaseAnalysis {
 
 	private List<Contest> contest = new ArrayList<Contest>();
-
+	private ArrayList<String> linkList = new ArrayList<String>();
 	/**
 	 * @return the contest
 	 */
@@ -36,6 +36,8 @@ public class HduContestAnalysis implements BaseAnalysis {
 	public void Get_Info(StringBuffer pageContents) {
 		// TODO Auto-generated method stub
 		// 正则表达式校验
+		//清空记录
+		this.contest.clear();
 		Integer Contest_ID;
 		String Contest_Name;
 		String Start_Time = null;
@@ -47,7 +49,6 @@ public class HduContestAnalysis implements BaseAnalysis {
 				Pattern.CASE_INSENSITIVE);
 
 		Matcher m = p.matcher(pageContents.toString());
-		ArrayList<String> linkList = new ArrayList<String>();
 		while (m.find()) {
 			String link = m.group();
 			linkList.add(link);
@@ -55,7 +56,6 @@ public class HduContestAnalysis implements BaseAnalysis {
 		int len = linkList.size();
 		for (int i = 0; i < len; i++) {
 			p = Pattern.compile("<td(.*?)</td>", Pattern.CASE_INSENSITIVE);
-
 			m = p.matcher(linkList.get(i));
 			ArrayList<String> link = new ArrayList<String>();
 			while (m.find()) {
@@ -69,8 +69,7 @@ public class HduContestAnalysis implements BaseAnalysis {
 			Start_Time = link.get(2).replaceAll("<\\s*.*?>", "");
 			End_Time = link.get(3).replaceAll("<\\s*.*?>", "");
 			
-			Contest con = new Contest(Contest_Name, Contest_ID, Start_Time,
-					End_Time,"http://acm.hdu.edu.cn/");
+			Contest con = new Contest(Contest_Name, Contest_ID, Start_Time, End_Time, (short)1, (short)1);
 			contest.add(con);
 		}
 	}

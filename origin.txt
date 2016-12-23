@@ -1,0 +1,8 @@
+origin:
+0: null
+1: http://acm.hdu.edu.cn/
+2: https://vjudge.net/
+3: HDU Solved Problem
+4: POJ Solved Problem
+5: HDU Contest Rank
+6: VJudge Contest Rank

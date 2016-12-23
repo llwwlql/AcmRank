@@ -21,7 +21,7 @@
 		<property name="myeclipse.connection.profile">
 			text_mysql_server
 		</property>
-		<property name="show_sql">true</property>
+		<!-- <property name="show_sql">true</property> -->
 		<mapping resource="com/llwwlql/bean/User.hbm.xml" />
 		<mapping resource="com/llwwlql/bean/Log.hbm.xml" />
 		<mapping resource="com/llwwlql/bean/Vjudgeuser.hbm.xml" />

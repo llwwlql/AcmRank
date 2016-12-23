@@ -10,7 +10,7 @@
             <column name="ID" />
             <generator class="native" />
         </id>
-        <many-to-one name="user" class="com.llwwlql.bean.User" unique="true">
+        <many-to-one name="user" class="com.llwwlql.bean.User" unique="true" lazy="false" fetch="join">
             <column name="userID" not-null="true" />
         </many-to-one>
         <property name="pojUserName" type="string">

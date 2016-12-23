@@ -16,8 +16,8 @@ public class Contest implements java.io.Serializable {
 	private Integer orginId;
 	private String startTime;
 	private String endTime;
-	private String originHost;
-	private String contestType;
+	private short origin;
+	private short contestType;
 	private Set contestusers = new HashSet(0);
 
 	// Constructors
@@ -28,23 +28,23 @@ public class Contest implements java.io.Serializable {
 
 	/** minimal constructor */
 	public Contest(String contestName, Integer orginId, String startTime,
-			String endTime, String originHost) {
+			String endTime, short origin, short contestType) {
 		this.contestName = contestName;
 		this.orginId = orginId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.originHost = originHost;
+		this.origin = origin;
+		this.contestType = contestType;
 	}
 
 	/** full constructor */
 	public Contest(String contestName, Integer orginId, String startTime,
-			String endTime, String originHost, String contestType,
-			Set contestusers) {
+			String endTime, short origin, short contestType, Set contestusers) {
 		this.contestName = contestName;
 		this.orginId = orginId;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.originHost = originHost;
+		this.origin = origin;
 		this.contestType = contestType;
 		this.contestusers = contestusers;
 	}
@@ -91,19 +91,19 @@ public class Contest implements java.io.Serializable {
 		this.endTime = endTime;
 	}
 
-	public String getOriginHost() {
-		return this.originHost;
+	public short getOrigin() {
+		return this.origin;
 	}
 
-	public void setOriginHost(String originHost) {
-		this.originHost = originHost;
+	public void setOrigin(short origin) {
+		this.origin = origin;
 	}
 
-	public String getContestType() {
+	public short getContestType() {
 		return this.contestType;
 	}
 
-	public void setContestType(String contestType) {
+	public void setContestType(short contestType) {
 		this.contestType = contestType;
 	}
 

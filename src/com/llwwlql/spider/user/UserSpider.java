@@ -3,6 +3,8 @@ package com.llwwlql.spider.user;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.llwwlql.bean.User;
+
 public interface UserSpider {
 	public HttpClient httpClient = new DefaultHttpClient();
 	
@@ -11,4 +13,7 @@ public interface UserSpider {
 	 * 根据用户名获取相应的用户信息
 	 */
 	public void doGet();
+	
+	
+	public void savaUserInfo();
 }

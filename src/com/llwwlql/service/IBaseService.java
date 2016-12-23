@@ -18,7 +18,7 @@ public interface IBaseService<T> {
 	 * 删除指定对象
 	 * @param user
 	 */	
-	public void delete(Class userClass,int id);
+	public void delete(T user);
 
 	/**
 	 * 更改数据操作
@@ -42,16 +42,34 @@ public interface IBaseService<T> {
 	 * @param value
 	 * @return
 	 */
-	public List<T> getByParameter(String tableName,String Parameter,String value,String type);
+	public List<T> getByParameter(String tableName,String Parameter,Object value);
 	
 	/**
-	 * 模糊查询,只用于Contest
+	 * 多个参数查询
+	 * @param tableName
+	 * @param Parameter
+	 * @param value
+	 * @param rigor
+	 * @return
+	 */
+	public List<T> getByParameters(String tableName,String[] Parameters,Object[] value,boolean rigor);
+	
+	/**
+	 * 模糊查询
 	 * @param tableName
 	 * @param Parameter
 	 * @param value
 	 * @return
 	 */
-	public List<T> getByVague(String tableName,String Parameter,String value);
+	public List<T> getByVague(String tableName,String Parameter,Object value);
+	
+	/**
+	 * 根据HQL语句查询，尽量少用
+	 * @param HQL
+	 * @return
+	 */
+	public List<T> getByHQL(String HQL);
+		
 	
 	/**
 	 * 查询所有

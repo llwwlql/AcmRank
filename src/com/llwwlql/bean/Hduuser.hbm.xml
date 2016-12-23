@@ -10,7 +10,7 @@
             <column name="ID" />
             <generator class="native" />
         </id>
-        <many-to-one name="user" class="com.llwwlql.bean.User">
+        <many-to-one name="user" class="com.llwwlql.bean.User" lazy="false" fetch="join">
             <column name="userID" not-null="true" />
         </many-to-one>
         <property name="hduUserName" type="string">
@@ -21,6 +21,9 @@
         </property>
         <property name="hduSubmission" type="integer">
             <column name="hduSubmission" />
+        </property>
+        <property name="hduNickName" type="string">
+            <column name="hduNickName" length="30" />
         </property>
     </class>
 </hibernate-mapping>

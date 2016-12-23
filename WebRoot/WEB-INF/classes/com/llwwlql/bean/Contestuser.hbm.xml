@@ -10,10 +10,10 @@
             <column name="ID" />
             <generator class="native" />
         </id>
-        <many-to-one name="contest" class="com.llwwlql.bean.Contest" fetch="select">
+        <many-to-one name="contest" class="com.llwwlql.bean.Contest" lazy="false" fetch="join">
             <column name="cid" not-null="true" />
         </many-to-one>
-        <many-to-one name="user" class="com.llwwlql.bean.User" fetch="select">
+        <many-to-one name="user" class="com.llwwlql.bean.User" lazy="false" fetch="join">
             <column name="uid" not-null="true" />
         </many-to-one>
         <property name="userName" type="string">
@@ -28,7 +28,7 @@
         <property name="penalty" type="string">
             <column name="penalty" length="20" not-null="true" />
         </property>
-        <set name="contestproblems" inverse="true">
+        <set name="contestproblems" inverse="true" lazy="false">
             <key>
                 <column name="cuid" not-null="true" />
             </key>

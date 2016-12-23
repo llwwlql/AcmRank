@@ -36,7 +36,7 @@ public class Contestuser implements java.io.Serializable {
 		this.solved = solved;
 		this.penalty = penalty;
 	}
-
+	
 	/** full constructor */
 	public Contestuser(Contest contest, User user, String userName,
 			Integer rank, Integer solved, String penalty, Set contestproblems) {

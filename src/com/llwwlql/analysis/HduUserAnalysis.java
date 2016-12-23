@@ -1,18 +1,39 @@
 package com.llwwlql.analysis;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.Entity;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 @Entity
 public class HduUserAnalysis implements BaseAnalysis {
 
+	private String nickName;
 	private Integer ProblemsSubmitted;
 	private Integer ProblemsSolved;
 	private Integer Submissions;
 	private Integer Accepted;
+	private String url = null;
 	
+	/**
+	 * @return the nickName
+	 */
+	public String getNickName() {
+		return nickName;
+	}
+
+	/**
+	 * @param nickName the nickName to set
+	 */
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	/**
 	 * @return the problemsSubmitted
 	 */
@@ -62,6 +83,9 @@ public class HduUserAnalysis implements BaseAnalysis {
 		return Accepted;
 	}
 
+	public HduUserAnalysis(String url) {
+		this.url = url;	
+	}
 	/**
 	 * @param accepted the accepted to set
 	 */
@@ -89,7 +113,15 @@ public class HduUserAnalysis implements BaseAnalysis {
 		Submissions = Integer.parseInt(linkList.get(len - 2)
 				.replaceAll("[\\s*a-zA-Z<>=\\/]", ""));
 		Accepted = Integer.parseInt(linkList.get(len - 1).replaceAll("[\\s*a-zA-Z<>=\\/]", ""));
-		
+		Document doc;
+		try {
+			doc = Jsoup.connect(url).get();
+			Element elements = doc.getElementsByTag("h1").first();
+			this.nickName = elements.text();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//================================
 		System.out.println("Solved:" + ProblemsSolved +"\tSubmissions:"+ProblemsSubmitted);
 		//================================

@@ -1,5 +1,6 @@
 package com.llwwlql.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,9 +12,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.llwwlql.bean.User;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 @Entity
 public class BaseService<T> implements IBaseService<T> {
@@ -23,6 +26,7 @@ public class BaseService<T> implements IBaseService<T> {
 
 	/**
 	 * 保存数据操作
+	 * 
 	 * @param user
 	 */
 	public void save(T user) {
@@ -41,18 +45,19 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
+
 	/**
 	 * 删除指定对象
+	 * 
 	 * @param user
-	 */	
-	public void delete(Class userClass, int id) {
+	 */
+	public void delete(T user) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			// -------------------------------------
-			Object user = session.get(userClass, id); // 先从数据库获取对象
 			session.delete(user); // 删除的是实体对象
 			// -------------------------------------
 			tx.commit();
@@ -63,8 +68,10 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
+
 	/**
 	 * 更改数据操作
+	 * 
 	 * @param user
 	 */
 	public void update(T user) {
@@ -85,6 +92,7 @@ public class BaseService<T> implements IBaseService<T> {
 
 	/**
 	 * 通过id获取对象
+	 * 
 	 * @param userClass
 	 * @param id
 	 * @return
@@ -105,28 +113,25 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
-	
+
 	/**
-	 * 通过指定属性获取对象
+	 * 通过指定属性获取对象 传入String类型value
+	 * 
 	 * @param userClass
 	 * @param userName
 	 * @return
 	 */
-	public List<T> getByParameter(String tableName,String Parameter,String value,String type) {
+	public List<T> getByParameter(String tableName, String Parameter,
+			Object value) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			String hql = "from "+tableName+" where "+Parameter+"=?";
+			String hql = "from " + tableName + " where " + Parameter + " =:value";
 			Query query = session.createQuery(hql);
-			//判断参数属性
-			if(type.equals("int") || type.equals("Integer"))
-				query.setInteger(0, Integer.parseInt(value));
-			else if(type.equals("short") || type.equals("Short"))
-				query.setShort(0, Short.parseShort(value));
-			else
-				query.setString(0, value);
+			query.setParameter("value", value);
+			// 判断参数属性
 			List<T> user = query.list(); // 获取
 			tx.commit();
 			return user;
@@ -137,24 +142,24 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
-	
+
 	/**
-	 * 模糊查询,只用于Contest
+	 * 模糊查询
+	 * 
 	 * @param tableName
 	 * @param Parameter
 	 * @param value
 	 * @return
 	 */
-	public List<T> getByVague(String tableName, String Parameter, String value) {
+	public List<T> getByVague(String tableName, String Parameter, Object value) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			String hql = "from "+tableName+" where "+Parameter+" like ? and ContestType = ?";
+			String hql = "from " + tableName + " where " + Parameter
+					+ " like ?";
 			Query query = session.createQuery(hql);
-			//判断参数属性
-			query.setString(0, "%"+value+"%");
-			query.setInteger(1, 1);
+			query.setString(0, "%" + value + "%");
 			List<T> user = query.list(); // 获取
 			tx.commit();
 			return user;
@@ -165,9 +170,90 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
-	
+
+	/**
+	 * 多个参数查询
+	 * @param tableName 表名
+	 * @param Parameter 传参数名的数组
+	 * @param value 传值的数组
+	 * @param rigor 判断精确查还是模糊查true代表精确查
+	 * @return
+	 */
+	public List<T> getByParameters(String tableName, String[] Parameters,
+			Object[] value, boolean rigor) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			StringBuffer hql = new StringBuffer();
+			//判断模糊查还是精确查
+			String relation = "like";
+			if (rigor)
+				relation = "=";
+			boolean first = true;
+			int len = Parameters.length;
+			hql.append("from " + tableName);
+			for (int i = 0; i < len; i++) {
+				if (value[i] != null) {
+					if (first) {
+						hql.append(" where " + Parameters[i] +" "
+								+ relation + " ? ");
+
+						first = false;
+					} else {
+						hql.append(" and " + Parameters[i] + " "
+								+ relation + " ? ");
+					}
+				}
+				System.out.println("Key:" + Parameters[i] + " value:" + value[i]);
+			}
+
+			Query query = session.createQuery(hql.toString());
+			for(int i=0;i<len;i++){
+	             if(rigor){
+	              query.setParameter(i, value[i]);
+	             }else{
+	              query.setParameter(i, "%"+value[i]+"%");
+	             }
+			}
+			List<T> user = query.list(); // 获取
+			tx.commit();
+			return user;
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
+	/**
+	 * 根据HQL语句查询，尽量少用
+	 * 
+	 * @param HQL
+	 * @return
+	 */
+	public List<T> getByHQL(String HQL) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Query query = session.createQuery(HQL);
+			// 判断参数属性
+			List<T> user = query.list(); // 获取
+			tx.commit();
+			return user;
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+
 	/**
 	 * 查询所有
+	 * 
 	 * @return
 	 */
 	public List<T> findAll(String tableName) {
@@ -176,7 +262,7 @@ public class BaseService<T> implements IBaseService<T> {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			List<T> list = session.createQuery("FROM "+tableName).list(); // 使用HQL查询
+			List<T> list = session.createQuery("FROM " + tableName).list(); // 使用HQL查询
 			tx.commit();
 			return list;
 		} catch (RuntimeException e) {
@@ -189,14 +275,15 @@ public class BaseService<T> implements IBaseService<T> {
 
 	/**
 	 * 分页查询
+	 * 
 	 * @param firstResult
-	 * 			开始获取的记录索引
+	 *            开始获取的记录索引
 	 * @param maxResults
-	 * 			最多获取多少条数据
-	 * @return
-	 * 			总记录数 +　一段数据
+	 *            最多获取多少条数据
+	 * @return 总记录数 +　一段数据
 	 */
-	public QueryResult<T> findAll(String tableName,int firstResult, int maxResults) {
+	public QueryResult<T> findAll(String tableName, int firstResult,
+			int maxResults) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
@@ -204,11 +291,11 @@ public class BaseService<T> implements IBaseService<T> {
 			tx = session.beginTransaction();
 			// -------------------------------------
 			// 1，查询总记录数
-			Long count = (Long) session
-					.createQuery("SELECT COUNT(*) FROM "+tableName).uniqueResult(); // 执行查询
+			Long count = (Long) session.createQuery(
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
 
 			// 2，查询一段数据
-			Query query = session.createQuery("FROM User");
+			Query query = session.createQuery("FROM " + tableName + " order by id desc");
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResults);
 			List<T> list = query.list(); // 执行查询

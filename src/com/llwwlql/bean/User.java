@@ -24,7 +24,10 @@ public class User implements java.io.Serializable {
 	private Integer solved;
 	private Integer submissions;
 	private Integer rating;
-	private String userType;
+	private short userType;
+	private Integer problemRating;
+	private Integer contestRating;
+	private String email;
 	private Set contestusers = new HashSet(0);
 	private Set logs = new HashSet(0);
 
@@ -35,7 +38,7 @@ public class User implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public User(String userName, String nickName, String password,
+	public User(String userName, String nickName, String password, String email,
 			Integer solved, Integer rating) {
 		this.userName = userName;
 		this.nickName = nickName;
@@ -48,7 +51,8 @@ public class User implements java.io.Serializable {
 	public User(Vjudgeuser vjudgeuser, Pojuser pojuser, Hduuser hduuser,
 			Integer rank, String userName, String nickName, String password,
 			String userBlog, String motto, Integer solved, Integer rating,
-			String userType, Set contestusers, Set logs) {
+			Integer problemRating, Integer contestRating, short userType,
+			Set contestusers, Set logs) {
 		this.vjudgeuser = vjudgeuser;
 		this.pojuser = pojuser;
 		this.hduuser = hduuser;
@@ -63,6 +67,8 @@ public class User implements java.io.Serializable {
 		this.userType = userType;
 		this.contestusers = contestusers;
 		this.logs = logs;
+		this.problemRating = problemRating;
+		this.contestRating = contestRating;
 	}
 
 	// Property accessors
@@ -163,11 +169,32 @@ public class User implements java.io.Serializable {
 		this.rating = rating;
 	}
 
-	public String getUserType() {
-		return this.userType;
+	/**
+	 * @return the userType
+	 */
+	public short getUserType() {
+		return userType;
+	}
+	
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserType(String userType) {
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @param userType
+	 *            the userType to set
+	 */
+	public void setUserType(short userType) {
 		this.userType = userType;
 	}
 
@@ -186,8 +213,8 @@ public class User implements java.io.Serializable {
 	public void setLogs(Set logs) {
 		this.logs = logs;
 	}
-	
-    /**
+
+	/**
 	 * @return the submissions
 	 */
 	public Integer getSubmissions() {
@@ -195,10 +222,40 @@ public class User implements java.io.Serializable {
 	}
 
 	/**
-	 * @param submissions the submissions to set
+	 * @param submissions
+	 *            the submissions to set
 	 */
 	public void setSubmissions(Integer submissions) {
 		this.submissions = submissions;
+	}
+	
+
+	/**
+	 * @return the problemRating
+	 */
+	public Integer getProblemRating() {
+		return problemRating;
+	}
+
+	/**
+	 * @param problemRating the problemRating to set
+	 */
+	public void setProblemRating(Integer problemRating) {
+		this.problemRating = problemRating;
+	}
+
+	/**
+	 * @return the contestRating
+	 */
+	public Integer getContestRating() {
+		return contestRating;
+	}
+
+	/**
+	 * @param contestRating the contestRating to set
+	 */
+	public void setContestRating(Integer contestRating) {
+		this.contestRating = contestRating;
 	}
 
 	@Override

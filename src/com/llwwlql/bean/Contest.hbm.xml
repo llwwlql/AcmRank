@@ -22,13 +22,13 @@
         <property name="endTime" type="string">
             <column name="EndTime" length="40" not-null="true" />
         </property>
-        <property name="originHost" type="string">
-            <column name="originHost" length="50" not-null="true" />
+        <property name="origin" type="short">
+            <column name="origin" not-null="true" />
         </property>
-        <property name="contestType" type="string">
-            <column name="contestType" length="2" />
+        <property name="contestType" type="short">
+            <column name="contestType" not-null="true" />
         </property>
-        <set name="contestusers" inverse="true">
+        <set name="contestusers" inverse="true" lazy="false">
             <key>
                 <column name="cid" not-null="true" />
             </key>

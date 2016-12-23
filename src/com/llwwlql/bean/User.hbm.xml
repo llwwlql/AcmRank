@@ -41,16 +41,25 @@
 		<property name="rating" type="integer">
 			<column name="Rating" not-null="true" />
 		</property>
-		<property name="userType" type="string">
-			<column name="userType" length="2" />
+		<property name="problemRating" type="integer">
+			<column name="problemRating" />
 		</property>
-		<set name="contestusers" inverse="true">
+		<property name="contestRating" type="integer">
+			<column name="contestRating" />
+		</property>
+		<property name="userType" type="short">
+			<column name="userType" />
+		</property>
+		<property name="email" type="string">
+			<column name="email" />
+		</property>
+		<set name="contestusers" inverse="true" lazy="false">
 			<key>
 				<column name="uid" not-null="true" />
 			</key>
 			<one-to-many class="com.llwwlql.bean.Contestuser" />
 		</set>
-		<set name="logs" inverse="true">
+		<set name="logs" inverse="true" lazy="false">
 			<key>
 				<column name="uid" not-null="true" />
 			</key>
