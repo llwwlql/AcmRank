@@ -30,20 +30,20 @@ public class AllUserInfo implements Runnable{
 		users = userService.findAll("User");
 	}
 
-	public static void updateUserInfo() {
-//		updateContestInfo();
-//		updateCUInfo();
+	public void updateUserInfo() {
 		ContestRating contestRating =null;
 		ProblemRating problemRating = null;
 		for (User user : users) {
-//			contestRating = new ContestRating(user);
-//			contestRating.run();
+			contestRating = new ContestRating(user);
+			contestRating.run();
 			problemRating = new ProblemRating(user);
 			problemRating.run();
 		}
+		UserRank userRank = new UserRank();
+		userRank.Compute();
 	}
 	
-	public static void updateContestInfo() {
+	public void updateContestInfo() {
 		//HduContestInfo hduContestInfo = new HduContestInfo();
 		//hduContestInfo.run();
 
@@ -51,7 +51,7 @@ public class AllUserInfo implements Runnable{
 		vjudgeContestInfo.run();
 	}
 
-	public static void updateCUInfo() {
+	public void updateCUInfo() {
 		List<Contest> contests = contestService.findAll("Contest");
 		HduContestLogin hduContestLogin = null;
 		for (Contest contest : contests) {
@@ -66,6 +66,8 @@ public class AllUserInfo implements Runnable{
 
 	public void run() {
 		// TODO Auto-generated method stub
+		this.updateContestInfo();
+		this.updateCUInfo();
 		this.updateUserInfo();
 	}
 

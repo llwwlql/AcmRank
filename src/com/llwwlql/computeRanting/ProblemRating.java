@@ -143,6 +143,7 @@ public class ProblemRating implements Runnable,BaseCompute {
 		submissions = submissions + user.getVjudgeuser().getVjudgeSubmission();
 	}
 	
+	
 	public void run() {
 		// TODO Auto-generated method stub
 		this.ComputeAmount();

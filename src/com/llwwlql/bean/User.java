@@ -39,12 +39,13 @@ public class User implements java.io.Serializable {
 
 	/** minimal constructor */
 	public User(String userName, String nickName, String password, String email,
-			Integer solved, Integer rating) {
+			Integer solved, Integer rating ,short userType) {
 		this.userName = userName;
 		this.nickName = nickName;
 		this.password = password;
 		this.solved = solved;
 		this.rating = rating;
+		this.userType = userType;
 	}
 
 	/** full constructor */
@@ -260,7 +261,6 @@ public class User implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "userName:" + userName + "\tPassword:" + password + "    "
-				+ this.pojuser;
+		return "userName:" + userName + "\tPassword:" + password;
 	}
 }

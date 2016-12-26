@@ -1,5 +1,5 @@
 html,body,button,input,select,textarea {
-	font-family: "寰蒋闆呴粦","Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family: "微软雅黑","Helvetica Neue",Helvetica,Arial,sans-serif;
 	height: 100%;
 }
 .everything{
@@ -213,4 +213,8 @@ h3.problem-header {
 }
 .clue{
 	height:10px;
+}
+
+#show-login{
+	display:none;
 }

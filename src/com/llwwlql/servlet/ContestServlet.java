@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.llwwlql.bean.Contest;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.service.QueryResult;
-import com.llwwlql.test.ContestGson;
+import com.llwwlql.tool.BaseGson;
 
 public class ContestServlet extends HttpServlet {
 
@@ -41,12 +41,13 @@ public class ContestServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
-		
 		PrintWriter out = response.getWriter();
+		int page = Integer.parseInt(request.getParameter("page"));
 		BaseService<Contest> contestService =new BaseService<Contest>();
-		QueryResult<Contest> qResult = contestService.findAll("Contest", 0, 100);
+		QueryResult<Contest> qResult = contestService.contestfindAll("Contest", 100*(page-1), 100);
 		List<Contest> contests = qResult.getList();
-		ContestGson conGson = new ContestGson();
+		BaseGson conGson = new BaseGson();
+		conGson.contestGson();
 		Gson gson = conGson.getGson();
 		String str = gson.toJson(contests);
 		out.write(str.toString());

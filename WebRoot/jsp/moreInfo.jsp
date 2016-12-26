@@ -14,57 +14,55 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
 <meta http-equiv="X-UA-Compatible" content="IE=9">
 
-<title>register</title>
+<title>moreInfo</title>
 <jsp:include page="Header.jsp"></jsp:include>
 <script language="javascript" type="text/javascript" src="../js/register.js"></script>
 </head>
 <body>
 <div class="everything">
 		<div class="main">
-
 			<div style="padding-top: 10px;"></div>
-			<h1 class="text-center" style="padding-bottom: 30px;">OnlineJudge
-				Register</h1>
+			<h1 class="text-center" style="padding-bottom: 30px;">Detailed Information</h1>
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3">
 
 						<form class="form-horizontal">
 							<div class="form-group">
-								<label class="col-md-2 control-label">Username:</label>
+								<label class="col-md-2 control-label">Hdu UserName:</label>
 								<div class="col-md-10">
-									<input type="text" name="user_name" placeholder="字母数字组合6-16个字符" class="form-control" data-toggle="tooltip" data-placement="bottom" title="用户名格式不正确,字母数字组合 6-16个字符,或用户名已存在">
+									<input type="text" name="hduUsername" placeholder="请输入Hdu Online Judge的用户名" class="form-control" data-toggle="tooltip" data-placement="bottom" title="用户名格式不正确,字母数字组合 6-16个字符">
                                 </div>
                             </div>
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label">Nickname:</label>
+                                            <label class="col-md-2 control-label">Poj UserName:</label>
                                             <div class="col-md-10">
-                                            <input type="text" name="nick_name" placeholder="字母数字汉字组合2-18个字符" class="form-control" data-toggle="tooltip" data-placement="bottom" title="昵称格式不正确,字母数字汉字组合2-18个字符">
+                                            <input type="text" name="pojUsername" placeholder="请输入Peking Online Judge的用户名" class="form-control">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label">Email:</label>
+                                            <label class="col-md-2 control-label">Vjudge UserName:</label>
                                             <div class="col-md-10">
-                                            <input type="text" name="email" placeholder="请输入合法邮箱" class="form-control" data-toggle="tooltip" data-placement="bottom" title="邮箱格式不正确">
+                                            <input type="text" name="VjudgeUsername" placeholder="请输入Virtual Judge的用户名" class="form-control" data-toggle="tooltip" data-placement="bottom" title="用户名格式不正确,字母数字组合 2-16个字符">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label">Password:</label>
+                                            <label class="col-md-2 control-label">Blog:</label>
                                             <div class="col-md-10">
-                                            <input type="password" name="password" class="form-control" placeholder="任意6-16个字符" data-toggle="tooltip" data-placement="bottom" title="密码长度不满足">
+                                            <input type="text" name="blog" class="form-control" placeholder="请输入博客地址（不需要加'http://'）">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Repeat Password:</label>
+                                        <div class="form-group" style="margin-top: 27px;">
+                                            <label class="col-md-2 control-label">Motto:</label>
                                             <div class="col-md-10">
-                                            <input type="password" name="repassword" class="form-control" data-toggle="tooltip" data-placement="bottom" title="输入密码不一致">
+                                            <textarea class="form-control" name="motto" placeholder="请输入座右铭" style="height: 100px;" data-toggle="tooltip" data-placement="bottom" title="座右铭太长,小于255个英文或汉字"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-md-10 col-md-offset-2">    
-                                            <button type="button" id="btn-register" class="btn btn-primary btn-bg" id="btn-register">Register</button>
+                                            <button type="button" id="btn-submit" class="btn btn-primary btn-bg" id="btn-register">Submit</button>
                                             </div>
-                                        </div>                                        
+                                        </div>                                       
                             </form>
                    </div>
         	</div>

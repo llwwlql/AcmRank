@@ -1,57 +1,19 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <!-- saved from url=(0070)http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
 <meta http-equiv="X-UA-Compatible" content="IE=9">
-
-	<title>Contests</title>
-
-<link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">
-<script language="javascript" type="text/javascript" src="../js/jquery-3.0.0.min.js"></script>
-<script language="javascript" type="text/javascript" src="../js/bootstrap.min.js"></script>
-<!--IE -->
-<script language="javascript" type="text/javascript" src="../js/html5shiv.min.js"></script>
-<script language="javascript" type="text/javascript" src="../js/respond.min.js"></script>
-<script language="javascript" type="text/javascript" src="../js/show_contest.js"></script>
-<!--IE-->
-<link type="text/css" rel="stylesheet" href="../css/home.css">
-<link type="text/css" rel="stylesheet" href="../css/base.css">
-</style>
+	<title>Ranklist</title>
+<jsp:include page="Header.jsp"></jsp:include>
+<script language="javascript" type="text/javascript" src="../js/show_ranklist.js"></script>
 </head>
 <body>
-
 <div class="everything">
-	<div class="banner">
-	    <div class="container"></div>
-	</div>
-
-	<nav class="navbar navbar-default" role="navigation">
-		<div class="container">
-		        <div class="navbar-header">
-		        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-		        	<span class="sr-only">Toggle navigation</span>
-		        	<span class="icon-bar"></span>
-		        	<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-      			</button>
-		        	<a class="navbar-brand" href="#">Home</a>
-		        </div>
-
-		        <div class="collapse navbar-collapse" id="navbar-collapse">
-				<ul class="nav navbar-nav">
-				    <li><a href="../jsp/Contests.html">Contests</a></li>
-				    <li><a href="../jsp/Ranklist.html">Ranklist</a></li>
-				    <li><a href="../jsp/Discuss">Discuss</a></li>
-				    <li><a href="../jsp/News">News</a></li>
-				</ul>
-					<ul class="nav navbar-nav navbar-right">
-					    <li><a href="../jsp/login">Login</a></li>
-					    <li><a href="../jsp/register">Register</a></li>
-					</ul>		        </div> <!-- /.navbar-collapse -->
-		</div><!-- /.container-fluid -->
-	</nav>
-
 	<div class="main">
 	
 	<div class="container">
@@ -85,12 +47,12 @@
 				<table class="table table-bordered table-hover">
 				    <thead>
 				        <tr>
-				            <th style="width:3%">ID</th>
-				            <th style="width:43%">Contest name</th>
-				            <th style="width:12%">Start Time</th>
-				            <th style="width:12%">End Time</th>
-				            <th style="width:12%">Origin</th>
-				            <th style="width:6%">Rank</th>
+				            <th style="width:3%">Rank</th>
+				            <th style="width:12%">Nickname</th>
+				            <th style="width:43%">Motto</th>
+				            <th style="width:12%">Solved</th>
+				            <th style="width:12%">Submitted</th>
+				            <th style="width:6%">Rating</th>
 				        </tr>
 				    </thead>
 				    <tbody id="tbody">
@@ -112,7 +74,7 @@
 								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=9">9</a>
 								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=10">10</a>
 								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=11">11</a>
-								<a class="next btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=2">下一页</a>
+								<a class="next btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=2">ä¸ä¸é¡µ</a>
 								<a class="end btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=14">14</a>
 							-->
 							</div>							
@@ -135,12 +97,12 @@
 		<div class="container">
 		        <div class="row">
 		            <div class="col-sm-11 text-center">
-		                <a href="http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist#">SDUTACM运维技术中心</a>
+		                <a href="http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist#">SDUTACMè¿ç»´ææ¯ä¸­å¿</a>
 		            </div>
 		        </div>
 		        <div class="row">
 		            <div class="col-sm-11 text-center">
-		                <span>Copyright © 2013-2014 SDUTACM Team. All Rights Reserved.</span>
+		                <span>Copyright Â© 2013-2014 SDUTACM Team. All Rights Reserved.</span>
 		            </div>
 		        </div>
 		</div>

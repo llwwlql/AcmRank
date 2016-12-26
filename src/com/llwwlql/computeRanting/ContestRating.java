@@ -139,7 +139,7 @@ public class ContestRating implements BaseCompute, Runnable {
 	{
 		BaseService<Contestuser> CUService = new BaseService<Contestuser>();
 		BaseService<Log> logService = new BaseService<Log>();
-		List<Contestuser> contestUser = CUService.getByParameter("contestUser", "userName", vjudgeUser.getVjudgeUserName());
+		List<Contestuser> contestUser = CUService.getByParameter("Contestuser", "userName", vjudgeUser.getVjudgeUserName());
 		for (Contestuser contestuser2 : contestUser) {
 			if(contestuser2.getContest().getOrigin()==2);
 			{

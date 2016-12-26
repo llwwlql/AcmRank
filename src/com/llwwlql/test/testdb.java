@@ -25,31 +25,13 @@ public class testdb {
 
 	public static void main(String[] args) {
 		//不定属性查询
-		/*
-		BaseService<Contest> logService = new BaseService<Contest>();
-		Map <String,Object> propertyVlaue = new HashMap<String, Object>();
-		propertyVlaue.put("startTime", "2016");
-		String[] key = Property.getProperty(propertyVlaue);
-		Object[] value = Property.getValue(propertyVlaue);
 		
-		List<Contest> contest = logService.getByParameters("Contest", key, value, false);
-		for (Contest contest2 : contest) {
-			System.out.println(contest2.getContestName());
-			System.out.println(contest2.getOrginId());
-			System.out.println(contest2.getStartTime());
-			System.out.println(contest2.getEndTime());
-		}*/
-//		BaseService<User> userService = new BaseService<User>();
-//		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
-//		User user = userService.getById(User.class, 5);
-//		Vjudgeuser vjudgeUser = new Vjudgeuser(user, "llwwlql");
-//		
-//		user.setVjudgeuser(vjudgeUser);
-//		
-//		vjudgeService.save(vjudgeUser);
-//		userService.update(user);
+		BaseService<User> userSerivce= new BaseService<User>();
 		
-		AllUserInfo allUserInfo = new AllUserInfo();
-		new Thread(allUserInfo).start();
+		User user = userSerivce.getById(User.class, 5);
+		System.out.println(user);
+		
+		/*AllUserInfo allUserInfo = new AllUserInfo();
+		new Thread(allUserInfo).start();*/
 	}
 }

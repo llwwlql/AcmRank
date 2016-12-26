@@ -18,22 +18,20 @@ import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.service.QueryResult;
 import com.llwwlql.spider.user.HduUserInfo;
+import com.llwwlql.tool.BaseGson;
 
 
 public class testTool {
 	
 	public static void main(String[] args) throws Exception {
-		BaseService<Contest> contestService = new BaseService<Contest>();
-		BaseService<Hduuser> hduService = new BaseService<Hduuser>();
-		Hduuser hduuser = hduService.getById(Hduuser.class, 1);
-		QueryResult<Contest> qResult = contestService.findAll("Contest", 0, 5);
-		List<Contest> contests = qResult.getList();
-//		JsonObject jsonObject = new JsonObject();
-		ContestGson conGson = new ContestGson();
-		Gson gson = conGson.getGson();
+		BaseService<Contest> userService = new BaseService<Contest>();
 		
-		String json = gson.toJson(contests);
-		System.out.println(json);
-		
+		List<Contest> contests = userService.findAllSort("Contest", "startTime", "asc");
+		for(int i=0;i<contests.size();i++)
+		{
+			Contest contest = contests.get(i);
+			contest.setId(i+1);
+			userService.update(contest);
+		}
 	}
 }

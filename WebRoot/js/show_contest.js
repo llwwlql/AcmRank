@@ -20,15 +20,14 @@ function load() {
                 var contestRank = "#";
                 if(origin ==1)
                 {
-                	strOrigin = "HDU Contest";
-                	originUrl = "http://acm.hdu.edu.cn/diy/contest_login.php?action=login&cid=" + json[index].orginId;
+                    strOrigin = "HDU Contest";
+                    originUrl = "http://acm.hdu.edu.cn/diy/contest_login.php?action=login&cid=" + json[index].orginId;
                 }
                 else if(origin ==2)
                 {
                 	strOrigin = "Vjudge Contest";
-                	originUrl = "https://vjudge.net/contest/" + json[index].orginId;
+                    originUrl = "https://vjudge.net/contest/" + json[index].orginId;
                 }
-                
                 $("#tbody").html($("#tbody").html() + "<tr><td>" + id +"</td><td><a href="+originUrl + " target=_blank>"+contestName + "</a></td><td>" + startTime+"</td><td>" + endTime +"</td><td>" + strOrigin +"</td>" + "<td><a href="+contestRank+">show</a></td></tr>");
             });
     	},

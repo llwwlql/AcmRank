@@ -24,15 +24,10 @@ function checkUsername()
         	success: function(data) {
         		console.log(data);
         		var json = $.parseJSON(data);
-        		console.log(json.isExist);
         		if(json.isExist=="false")
-        		{
         			flag=1;
-        		}
         		else
-        		{
         			flag=0;
-        		}
         		console.log("ajax success");
         	},
         	error: function(err) {
@@ -95,7 +90,46 @@ function checkEmail()
 	return true;
 }
 
-function check(){	
+function checkHduname()
+{
+	var username=$("input[name=hduUsername]").val();
+    var patrn = /^[a-zA-Z0-9_]{5,15}$/;
+    if(username.length==0)
+    {
+    	return true;
+    }
+    else if(!patrn.test(username))//
+    {
+      	return false;
+    }
+    return true;
+}
+
+function checkVJname()
+{
+	var username=$("input[name=VjudgeUsername]").val();
+    var patrn = /^[a-zA-Z0-9_]{1,15}$/;
+    if(username.length==0)
+    {
+    	return true;
+    }
+    else if(!patrn.test(username))//
+    {
+      	return false;
+    }
+    return true;
+}
+
+function checkMotto()
+{
+	var motto = $("textarea[name=motto]").val();
+	if(motto.length>255)
+		return false;
+	return true;
+}
+
+function check(){
+	$('#btn-register').attr({"disabled":"disabled"});
 	if(checkUsername()==1 && checkPassword()==1 && checkPassword2()==1 && checkNickname()==1 && checkEmail()==1)
 	{
 		//alert(checkUsername()+"  " +checkPassword()+"  " +checkPassword2()+"   "+checkNickname()+"    "+checkEmail())
@@ -114,16 +148,69 @@ function check(){
         	type: 'Post',
         	url: '../servlet/RegisterServlet',
         	success: function(resp) {
-        		
-        		window.location.href="../jsp/contest.jsp";
-        		console.log("保存用户信息成功!");
+        		var json = $.parseJSON(resp);
+        		if(json.result==1)
+        		{
+        			console.log("保存用户信息成功!");
+        			window.location.href="../jsp/moreInfo.jsp";
+        		}
+        		else
+        		{
+        			$('#btn-register').removeAttr("disabled");
+        			alert("保存用户信息失败！！");
+        		}
+        			
         	},
         	error: function(err) {
+        		$('#btn-register').removeAttr("disabled");
         		console.log("保存用户信息失败!");
         	}
         });
 	}
 }
+
+function check_submit()
+{
+	$('#btn-submit').attr({"disabled":"disabled"});
+	if(checkHduname()==true && checkVJname()==true && checkMotto()==true)
+	{
+		var hduUsername = $("input[name=hduUsername]").val();
+		var pojUsername = $("input[name=pojUsername]").val();
+	    var VjudgeUsername = $("input[name=VjudgeUsername]").val();
+	    var blog = $("input[name=blog]").val();
+	    var motto = $("textarea[name=motto]").val();
+    	$.ajax({
+        	data:{
+        		user_id: 4,
+        		hduUsername: hduUsername,
+        		pojUsername: pojUsername,
+        		VjudgeUsername: VjudgeUsername,
+        		blog: blog,
+        		motto: motto,
+        		type: 3
+        	},
+        	type: 'Post',
+        	url: '../servlet/RegisterServlet',
+        	success: function(resp) {
+        		var json = $.parseJSON(resp);
+        		if(json.result==1)
+        		{
+        			console.log("保存用户信息成功!");
+        			window.location.href="../jsp/Contests.jsp";
+        		}
+        		else
+        		{
+        			alert("保存用户信息失败！！");
+        		}
+        	},
+        	error: function(err) {
+        		console.log("保存用户信息失败!");
+        		$('#btn-submit').removeAttr("disabled");
+        	}
+        });		
+	}
+}
+
 
 $(function () { 
 	$("[data-toggle='tooltip']").tooltip({
@@ -147,6 +234,12 @@ $(function () {
 			check = checkPassword();
 		else if(name==="repassword")
 			check = checkPassword2();
+		else if(name=="hduUsername")
+			check = checkHduname();
+		else if(name=="VjudgeUsername")
+			check = checkVJname();
+		else if(name=="motto")
+			check = checkMotto();
 		console.log(check);
 		if(check==0)
 			$(this).tooltip('show');
@@ -161,3 +254,12 @@ $(function(){
 		check();
 	});
 })
+
+$(function(){
+	$('#btn-submit').click(function() {
+		check_submit();
+	});
+})
+
+
+

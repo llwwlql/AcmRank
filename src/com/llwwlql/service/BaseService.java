@@ -101,6 +101,7 @@ public class BaseService<T> implements IBaseService<T> {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
+		
 		try {
 			tx = session.beginTransaction();
 			T user = (T) session.get(userClass, id); // 获取
@@ -272,6 +273,29 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
+	
+	/**
+	 * 排序查询所有
+	 * 
+	 * @return
+	 */
+	public List<T> findAllSort(String tableName,String parmeter,String sortType) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			String hql = "FROM " + tableName + " order by "+ parmeter + " " +sortType;
+			List<T> list = session.createQuery(hql).list(); // 使用HQL查询
+			tx.commit();
+			return list;
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
 
 	/**
 	 * 分页查询
@@ -295,7 +319,7 @@ public class BaseService<T> implements IBaseService<T> {
 					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
 
 			// 2，查询一段数据
-			Query query = session.createQuery("FROM " + tableName + " order by id desc");
+			Query query = session.createQuery("FROM " + tableName);
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResults);
 			List<T> list = query.list(); // 执行查询
@@ -309,4 +333,62 @@ public class BaseService<T> implements IBaseService<T> {
 			session.close();
 		}
 	}
+	
+	public QueryResult<T> rankfindAll(String tableName, int firstResult,
+			int maxResults) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			// -------------------------------------
+			// 1，查询总记录数
+			Long count = (Long) session.createQuery(
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
+
+			// 2，查询一段数据
+			Query query = session.createQuery("FROM " + tableName + " where userType = ? order by rank asc");
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResults);
+			query.setParameter(0,(short)1);
+			List<T> list = query.list(); // 执行查询
+			// -------------------------------------
+			tx.commit();
+			return new QueryResult<T>(list, count);
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	public QueryResult<T> contestfindAll(String tableName, int firstResult,
+			int maxResults) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			// -------------------------------------
+			// 1，查询总记录数
+			Long count = (Long) session.createQuery(
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
+
+			// 2，查询一段数据
+			Query query = session.createQuery("FROM " + tableName + " where contestType = ? order by id desc");
+			query.setFirstResult(firstResult);
+			query.setMaxResults(maxResults);
+			query.setParameter(0,(short)1);
+			List<T> list = query.list(); // 执行查询
+			// -------------------------------------
+			tx.commit();
+			return new QueryResult<T>(list, count);
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
 }

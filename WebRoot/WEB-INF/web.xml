@@ -22,6 +22,26 @@
     <servlet-name>RegisterServlet</servlet-name>
     <servlet-class>com.llwwlql.servlet.RegisterServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>RankListServlet</servlet-name>
+    <servlet-class>com.llwwlql.servlet.RankListServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UserInfoServlet</servlet-name>
+    <servlet-class>com.llwwlql.servlet.UserInfoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>com.llwwlql.servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>com.llwwlql.servlet.LogoutServlet</servlet-class>
+  </servlet>
+
+
+
+
 
   <servlet-mapping>
     <servlet-name>ContestServlet</servlet-name>
@@ -30,6 +50,22 @@
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
     <url-pattern>/servlet/RegisterServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RankListServlet</servlet-name>
+    <url-pattern>/servlet/RankListServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UserInfoServlet</servlet-name>
+    <url-pattern>/servlet/UserInfoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/servlet/LoginServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/servlet/LogoutServlet</url-pattern>
   </servlet-mapping>
   
 	<welcome-file-list>
