@@ -13,8 +13,8 @@
         <many-to-one name="contestuser" class="com.llwwlql.bean.Contestuser" lazy="false" fetch="join">
             <column name="cuid" not-null="true" />
         </many-to-one>
-        <property name="proNumber" type="string">
-            <column name="proNumber" length="5" not-null="true" />
+        <property name="proNumber" type="integer">
+            <column name="proNumber" not-null="true" />
         </property>
         <property name="penalty" type="string">
             <column name="penalty" length="20" not-null="true" />

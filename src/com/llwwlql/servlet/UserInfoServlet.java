@@ -31,12 +31,12 @@ public class UserInfoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html");
+		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		int id = Integer.parseInt(request.getParameter("user_id"));
 		BaseService<User> userService =new BaseService<User>();
 		User user = userService.getById(User.class, id);
-		UserInfo userInfo = new UserInfo(user.getId(), user.getVjudgeuser().getVjudgeUserName(), user.getPojuser().getPojUserName(), user.getHduuser().getHduUserName(), user.getRank(), user.getNickName(), user.getUserBlog(), user.getMotto(), user.getSolved(), user.getSubmissions(), user.getRating(), user.getEmail()); 
+		UserInfo userInfo = new UserInfo(user.getId(), user.getVjudgeuser().getVjudgeUserName(), user.getPojuser().getPojUserName(), user.getHduuser().getHduUserName(), user.getRank(), user.getNickName(), user.getUserBlog(), user.getMotto(), user.getSolved(), user.getSubmissions(), user.getRating(), user.getEmail(),user.getContestRating()); 
 		BaseGson userGson = new BaseGson();
 		userGson.userInfoGson();
 		Gson gson = userGson.getGson();

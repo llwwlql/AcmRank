@@ -48,7 +48,7 @@ public class HduContestUPAnalysis implements BaseAnalysis {
 		Integer Solved;
 		String userPenalty;
 
-		String proNumber;
+		Integer proNumber;
 		String proPenalty;
 		int Submissions;
 		short AC;
@@ -90,7 +90,7 @@ public class HduContestUPAnalysis implements BaseAnalysis {
 			for (int j = 4; j < linklist.size(); j++) {
 				String temp = linklist.get(j);
 
-				proNumber = String.valueOf(j - 3);
+				proNumber = j-3;
 				// 00:24:02<br>(-1)
 				proPenalty = temp.replaceAll("<\\s*.*?>", "");
 				if (linklist.get(j).indexOf("#43CD80") != -1) {

@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<form name="" action="http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist" method="get">
 					<div class="input-group input-group-sm">
 						<span class="input-group-addon">Name</span>
-						<input class="form-control" type="text" placeholder="Contest Name" name="contestname" value="">
+						<input class="form-control" type="text" placeholder="UserName" name="contestname" value="">
 					</div>
 					<div class="input-group input-group-sm">
 					 	<span class="input-group-addon">Type</span>
@@ -44,15 +44,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 		<div class="row">
-				<table class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover text-center">
 				    <thead>
 				        <tr>
-				            <th style="width:3%">Rank</th>
-				            <th style="width:12%">Nickname</th>
-				            <th style="width:43%">Motto</th>
-				            <th style="width:12%">Solved</th>
-				            <th style="width:12%">Submitted</th>
-				            <th style="width:6%">Rating</th>
+				            <th style="width:3%;text-align:center;">Rank</th>
+				            <th style="width:10%;text-align:center;">Nickname</th>
+				            <th style="width:31%;text-align:center;">Motto</th>
+				            <th style="width:6%;text-align:center;">Solved</th>
+				            <th style="width:6%;text-align:center;">Submitted</th>
+				            <th style="width:8%;text-align:center;">Contest Rating</th>
+				            <th style="width:6%;text-align:center;">Rating</th>
 				        </tr>
 				    </thead>
 				    <tbody id="tbody">
@@ -102,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        </div>
 		        <div class="row">
 		            <div class="col-sm-11 text-center">
-		                <span>Copyright Â© 2013-2014 SDUTACM Team. All Rights Reserved.</span>
+		                <span>Copyright Â© 2013-2014 LDUACM Team. All Rights Reserved.</span>
 		            </div>
 		        </div>
 		</div>

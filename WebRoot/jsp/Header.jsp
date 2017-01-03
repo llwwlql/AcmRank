@@ -80,7 +80,7 @@
 				$('#unlogin').hide();
 				$('#show-login').show();
 				$('#show-nickname').html(
-						"<a href=" + userUrl +">" + nickname + "</a>");
+						"<a href=" + userUrl +">" + nickname + "</a>");d
 			} else {
 				$('#unlogin').show();
 				$('#show-login').hide();
@@ -90,7 +90,6 @@
 		$(function() {
 			$('#logout').click(function() {
 				$.ajax({
-					data : {},
 					type : 'Get',
 					url : '../servlet/LogoutServlet',
 					success : function(resp) {

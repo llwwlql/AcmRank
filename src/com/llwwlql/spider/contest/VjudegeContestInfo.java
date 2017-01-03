@@ -81,7 +81,7 @@ public class VjudegeContestInfo implements Runnable,ContestSpider {
 					System.out.println("获取失败！");
 				}
 			} catch (ClientProtocolException e) {
-				e.printStackTrace();
+				System.out.println("网络连接异常！");
 			} catch (ConnectTimeoutException e) {
 				// TODO: handle exception
 				System.out.println("请求VjudgeContest超时！");
@@ -89,7 +89,7 @@ public class VjudegeContestInfo implements Runnable,ContestSpider {
 				// TODO: handle exception
 				System.out.println("VjudgeContest响应超时！");
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("网络连接异常！");
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -103,8 +103,8 @@ public class VjudegeContestInfo implements Runnable,ContestSpider {
 	 */
 	public void getKeyValue(List<NameValuePair> nvp) throws IOException {
 		Properties prop = new Properties();
-		InputStream in = new BufferedInputStream(new FileInputStream(
-				"../AcmRank/src/VjudgeContest.properties"));
+		
+		InputStream in = this.getClass().getResourceAsStream("/VjudgeContest.properties");
 		prop.load(in);
 		Iterator<String> it = prop.stringPropertyNames().iterator();
 		while (it.hasNext()) {

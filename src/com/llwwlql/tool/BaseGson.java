@@ -32,8 +32,7 @@ public class BaseGson{
 						| f.getName().contains("email") 
 						| f.getName().contains("password") 
 						| f.getName().contains("userBlog") 
-						| f.getName().contains("problemRating") 
-						| f.getName().contains("contestRating") 
+						| f.getName().contains("problemRating")
 						| f.getName().contains("vjudgeuser")
 						| f.getName().contains("hduuser")
 						| f.getName().contains("pojuser")
@@ -75,5 +74,4 @@ public class BaseGson{
 			}
 		}).create();
 	}
-	
 }

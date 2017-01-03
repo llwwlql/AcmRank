@@ -218,3 +218,42 @@ h3.problem-header {
 #show-login{
 	display:none;
 }
+.wrong{
+	background-color: #fdd;	
+	color: grey;
+	text-align: center;
+}
+.ac{
+	background-color: #a9f5af;
+	text-align: center;
+}
+.first-ac{
+	background-color: #080;
+	color: #fff;
+    font-weight: 700;
+    text-align: center;
+}
+.rating-1,.rating-1:hover
+{
+	color:red;
+}
+.rating-2,.rating-2:hover
+{
+	color:#FF8C00;
+}
+.rating-3,.rating-3:hover
+{
+	color:#a0a;
+}
+.rating-4,.rating-4:hover
+{
+	color:blue;
+}
+.rating-5,.rating-5:hover
+{
+	color:green;
+}
+.rating-6,.rating-6:hover
+{
+	color:gray;
+}

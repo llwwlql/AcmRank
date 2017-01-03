@@ -14,6 +14,5 @@ public interface UserSpider {
 	 */
 	public void doGet();
 	
-	
 	public void savaUserInfo();
 }

@@ -26,6 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
+import com.llwwlql.analysis.HduUserAnalysis;
 import com.llwwlql.analysis.VjudgeUserAnalysis;
 import com.llwwlql.bean.Hduuser;
 import com.llwwlql.bean.User;
@@ -39,8 +40,8 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 
 	@ManyToOne
 	private Vjudgeuser vjudgeUser = null;
-	private String url = "https://vjudge.net/user/data";
-	private VjudgeUserAnalysis pageAnalysis = new VjudgeUserAnalysis();
+	private String url = "https://vjudge.net/user/";
+	private VjudgeUserAnalysis pageAnalysis;
 	private User user;
 	
 	protected VjudegeUserInfo() {
@@ -53,52 +54,53 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 	
 	public void doGet() {
 		// TODO Auto-generated method stub
-	}
-	
-	public void doPost() throws IOException {
-		// TODO Auto-generated method stub
-		//设置连接时间
-//		url = url + vjudgeUser.getVjudgeUserName();	
+		//跳过证书检查
+		SSLSkip.enableSSL(httpClient);
+		this.url = this.url + vjudgeUser.getVjudgeUserName();
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6*1000);
 		StringBuffer strResult = new StringBuffer();
 		//跳过证书检查
-		SSLSkip.enableSSL(httpClient);
-		
-		HttpPost post = new HttpPost(url);
-		post.getParams().setParameter("http.socket.timeout", 5000);
-		List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		this.getKeyValue(nvp);
-		nvp.add(new BasicNameValuePair("username", vjudgeUser.getVjudgeUserName()));
+		SSLSkip.enableSSL(httpClient);		
 		try {
-			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nvp,
-					"utf-8");
-			post.setEntity(entity);
-			try {
-				HttpResponse httpResponse = httpClient.execute(post);
-				if (httpResponse.getStatusLine().getStatusCode() == 200) {
-					HttpEntity entity2 = httpResponse.getEntity();
-					strResult.append(EntityUtils.toString(entity2));
+			HttpGet httpget = new HttpGet(url);
+			httpget.getParams().setParameter("http.socket.timeout", 5000);
+			HttpResponse response = httpClient.execute(httpget);
+			if (response != null) {
+
+				HttpEntity entity = response.getEntity();
+				// 获取网页源码信息
+				strResult.append(EntityUtils.toString(entity, "UTF-8"));
+				if(strResult.length()>7015)
+				{
+					// 获取到解析之后的结果信息
+					pageAnalysis = new VjudgeUserAnalysis();
 					pageAnalysis.Get_Info(strResult);
 					this.savaUserInfo();
 				}
 				else
 				{
-					System.out.println("获取失败！");
+					System.out.println("HDU 用户名错误");
 				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (ConnectTimeoutException e) {
-				// TODO: handle exception
-				System.out.println("请求Vjudge超时！");
-			} catch (SocketTimeoutException e) {
-				// TODO: handle exception
-				System.out.println("Vjudge响应超时！");
-			} catch (IOException e) {
-				e.printStackTrace();
+			} else {
+				System.out.println("获取失败!");
 			}
-		} catch (UnsupportedEncodingException e) {
+			httpget.abort();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConnectTimeoutException e) {
+			// TODO: handle exception
+			System.out.println("请求HDU超时！");
+		} catch (SocketTimeoutException e) {
+			// TODO: handle exception
+			System.out.println("HDU响应超时！");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void doPost() throws IOException {
 	}
 
 	/**
@@ -125,30 +127,24 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
 		int score = 0;
 		if (this.vjudgeUser.getVjudgeSolved() == null) {
-			score = pageAnalysis.getSoloved();
+			score = pageAnalysis.getSolved();
 			SaveLog log = new SaveLog(user, score, (short) 3);
 			log.Save();
-		} else if (pageAnalysis.getSoloved() > this.vjudgeUser.getVjudgeSolved()) {
+		} else if (pageAnalysis.getSolved() > this.vjudgeUser.getVjudgeSolved()) {
 			// 保存log信息
-			score = pageAnalysis.getSoloved()
+			score = pageAnalysis.getSolved()
 					- this.vjudgeUser.getVjudgeSolved();
 			SaveLog log = new SaveLog(user, score, (short) 3);
 			log.Save();
 		}
-		this.vjudgeUser.setVjudgeSolved(pageAnalysis.getSoloved());
-		this.vjudgeUser.setVjudgeSubmission(pageAnalysis.getSubmitted());
-		this.vjudgeUser.setVjudgeUserName(pageAnalysis.getNickName());
+		this.vjudgeUser.setVjudgeSolved(pageAnalysis.getSolved());
+		this.vjudgeUser.setVjudgeSubmission(pageAnalysis.getSubmissions());
 		
 		vjudgeService.update(this.vjudgeUser);
 	}
 
 	public void run() {
 		// TODO Auto-generated method stub
-		try {
-			this.doPost();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 }

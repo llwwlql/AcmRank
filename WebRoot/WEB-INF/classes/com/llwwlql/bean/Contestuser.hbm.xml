@@ -14,7 +14,7 @@
             <column name="cid" not-null="true" />
         </many-to-one>
         <many-to-one name="user" class="com.llwwlql.bean.User" lazy="false" fetch="join">
-            <column name="uid" not-null="true" />
+            <column name="uid"/>
         </many-to-one>
         <property name="userName" type="string">
             <column name="userName" length="30" not-null="true" />
@@ -24,6 +24,9 @@
         </property>
         <property name="solved" type="integer">
             <column name="solved" not-null="true" />
+        </property>
+        <property name="submissions" type="integer">
+            <column name="submissions"/>
         </property>
         <property name="penalty" type="string">
             <column name="penalty" length="20" not-null="true" />

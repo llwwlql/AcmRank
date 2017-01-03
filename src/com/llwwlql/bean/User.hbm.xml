@@ -47,6 +47,9 @@
 		<property name="contestRating" type="integer">
 			<column name="contestRating" />
 		</property>
+		<property name="cpRating" type="integer">
+			<column name="cpRating" />
+		</property>
 		<property name="userType" type="short">
 			<column name="userType" />
 		</property>

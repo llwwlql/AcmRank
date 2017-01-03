@@ -68,12 +68,9 @@ public class HduContestInfo implements Runnable,ContestSpider {
 					strResult.append(EntityUtils.toString(entity, "GB2312"));
 					HduContestAnalysis hduContestAnalysis = new HduContestAnalysis();
 					hduContestAnalysis.Get_Info(strResult);	
-					//保存Contest到数据库
+					//用于获取多个分页上的Contest
 					if(hduContestAnalysis.getContest().size()==0)
-					{
-						System.out.println(page);
 						break;
-					}
 					this.saveContest(hduContestAnalysis.getContest());
 				} else {
 					System.out.println("查找Contest失败！");

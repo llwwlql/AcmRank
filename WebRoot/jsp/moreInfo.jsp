@@ -19,6 +19,13 @@
 <script language="javascript" type="text/javascript" src="../js/register.js"></script>
 </head>
 <body>
+<div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert"
+                    aria-hidden="true">
+                &times;
+            </button>
+           注册成功！已完成基本信息注册，请完善您的详细信息。注意，详细信息将影响Rating的值。也可跳过填写，直接提交。
+</div>
 <div class="everything">
 		<div class="main">
 			<div style="padding-top: 10px;"></div>
@@ -32,18 +39,21 @@
 								<label class="col-md-2 control-label">Hdu UserName:</label>
 								<div class="col-md-10">
 									<input type="text" name="hduUsername" placeholder="请输入Hdu Online Judge的用户名" class="form-control" data-toggle="tooltip" data-placement="bottom" title="用户名格式不正确,字母数字组合 6-16个字符">
+									<a class="navbar-right" href="http://acm.hdu.edu.cn/userloginex.php?action=login" target=_blank style="padding-right: 25px;"><small>忘记请点我</small></a>
                                 </div>
                             </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Poj UserName:</label>
                                             <div class="col-md-10">
                                             <input type="text" name="pojUsername" placeholder="请输入Peking Online Judge的用户名" class="form-control">
+                                            <a class="navbar-right" href="http://poj.org/" target=_blank style="padding-right: 25px;"><small>忘记请点我</small></a>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Vjudge UserName:</label>
                                             <div class="col-md-10">
                                             <input type="text" name="VjudgeUsername" placeholder="请输入Virtual Judge的用户名" class="form-control" data-toggle="tooltip" data-placement="bottom" title="用户名格式不正确,字母数字组合 2-16个字符">
+                                            <a class="navbar-right" href="https://vjudge.net/" target=_blank style="padding-right: 25px;"><small>忘记请点我</small></a>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -79,7 +89,7 @@
 		        </div>
 		        <div class="row">
 		            <div class="col-sm-11 text-center">
-		                <span>Copyright © 2013-2014 SDUTACM Team. All Rights Reserved.</span>
+		                <span>Copyright © 2013-2014 LDUACM Team. All Rights Reserved.</span>
 		            </div>
 		        </div>
 		</div>

@@ -155,7 +155,7 @@ public class ContestRating implements BaseCompute, Runnable {
 				List<Log> log = logService.getByParameters("Log", key, value, true);
 				if(log.size()==0)
 				{
-					SaveLog slog = new SaveLog(user, this.rankScore(contestuser2.getRank()), this.origin,this.time);
+					SaveLog slog = new SaveLog(user, this.rankScore(contestuser2.getRank()), this.origin);
 					slog.Save();
 				}
 			}

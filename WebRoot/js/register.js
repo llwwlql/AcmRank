@@ -181,7 +181,6 @@ function check_submit()
 	    var motto = $("textarea[name=motto]").val();
     	$.ajax({
         	data:{
-        		user_id: 4,
         		hduUsername: hduUsername,
         		pojUsername: pojUsername,
         		VjudgeUsername: VjudgeUsername,

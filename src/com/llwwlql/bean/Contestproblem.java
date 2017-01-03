@@ -1,5 +1,7 @@
 package com.llwwlql.bean;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Contestproblem entity. @author MyEclipse Persistence Tools
  */
@@ -9,13 +11,12 @@ public class Contestproblem implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private Contestuser contestuser;
-	private String proNumber;
+	private transient Contestuser contestuser;
+	private Integer proNumber;
 	private String penalty;
 	private Integer submissions;
 	private short acOr;
 	private short firstAc;
-
 	// Constructors
 
 	/** default constructor */
@@ -23,7 +24,7 @@ public class Contestproblem implements java.io.Serializable {
 	}
 	
 	/** full constructor */
-	public Contestproblem(Contestuser contestuser, String proNumber,
+	public Contestproblem(Contestuser contestuser, Integer proNumber,
 			String penalty, Integer submissions, short acOr, short firstAc) {
 		this.contestuser = contestuser;
 		this.proNumber = proNumber;
@@ -51,11 +52,11 @@ public class Contestproblem implements java.io.Serializable {
 		this.contestuser = contestuser;
 	}
 
-	public String getProNumber() {
+	public Integer getProNumber() {
 		return this.proNumber;
 	}
 
-	public void setProNumber(String proNumber) {
+	public void setProNumber(Integer proNumber) {
 		this.proNumber = proNumber;
 	}
 

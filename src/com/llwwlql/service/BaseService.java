@@ -206,7 +206,6 @@ public class BaseService<T> implements IBaseService<T> {
 								+ relation + " ? ");
 					}
 				}
-				System.out.println("Key:" + Parameters[i] + " value:" + value[i]);
 			}
 
 			Query query = session.createQuery(hql.toString());

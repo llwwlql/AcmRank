@@ -18,6 +18,7 @@ import com.llwwlql.bean.Hduuser;
 import com.llwwlql.bean.Pojuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.bean.Vjudgeuser;
+import com.llwwlql.computeRanting.AllUserInfo;
 import com.llwwlql.service.BaseService;
 
 @SuppressWarnings("serial")
@@ -65,7 +66,7 @@ public class RegisterServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html");
+		response.setContentType("text/html;charset=utf-8");
 		int type = Integer.parseInt(request.getParameter("type"));
 		if (type == 1) {
 			this.checkUsername(request, response);
@@ -78,9 +79,8 @@ public class RegisterServlet extends HttpServlet {
 
 	private void savaMoreInfo(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		int id = Integer.parseInt(request.getParameter("user_id"));
+		int id = (Integer) request.getSession().getAttribute("user_id");
 		String hduUsername = request.getParameter("hduUsername");
 		String pojUsername = request.getParameter("pojUsername");
 		String VjudgeUsername = request.getParameter("VjudgeUsername");
@@ -116,7 +116,8 @@ public class RegisterServlet extends HttpServlet {
 			//============================
 			request.getSession().setAttribute("user_id", user.getId());
 			request.getSession().setAttribute("nickName", user.getNickName());
-			
+			AllUserInfo allUserInfo = new AllUserInfo();
+			new Thread(allUserInfo).start();
 			jsonObject.addProperty("result", 1);
 		} catch (Exception e) {
 			// TODO: handle exception

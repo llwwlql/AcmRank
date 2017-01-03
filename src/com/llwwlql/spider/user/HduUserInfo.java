@@ -56,10 +56,18 @@ public class HduUserInfo implements UserSpider,Runnable{
 				HttpEntity entity = response.getEntity();
 				// 获取网页源码信息
 				strResult.append(EntityUtils.toString(entity, "UTF-8"));
-				pageAnalysis = new HduUserAnalysis(url);
-				// 获取到解析之后的结果信息
-				pageAnalysis.Get_Info(strResult);
-				this.savaUserInfo();
+				if(strResult.length()>7015)
+				{
+					pageAnalysis = new HduUserAnalysis(url);
+					// 获取到解析之后的结果信息
+					pageAnalysis.Get_Info(strResult);
+					this.savaUserInfo();
+				}
+				else
+				{
+					System.out.println("HDU 用户名错误");
+				}
+				
 			} else {
 				System.out.println("获取失败!");
 			}

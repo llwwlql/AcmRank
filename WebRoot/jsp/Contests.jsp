@@ -107,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        </div>
 		        <div class="row">
 		            <div class="col-sm-11 text-center">
-		                <span>Copyright © 2013-2014 SDUTACM Team. All Rights Reserved.</span>
+		                <span>Copyright © 2013-2014 LDUACM Team. All Rights Reserved.</span>
 		            </div>
 		        </div>
 		</div>

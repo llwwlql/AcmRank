@@ -17,7 +17,7 @@ function load() {
                 var origin = json[index].origin;
                 var strOrigin;
                 var originUrl;
-                var contestRank = "#";
+                var contestRank = "../jsp/contestRank.jsp?contest_id=" + id;
                 if(origin ==1)
                 {
                     strOrigin = "HDU Contest";
@@ -36,4 +36,5 @@ function load() {
     	}
     });
 }
+
 window.onload = load();

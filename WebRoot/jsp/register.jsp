@@ -21,7 +21,6 @@
 <body>
 <div class="everything">
 		<div class="main">
-
 			<div style="padding-top: 10px;"></div>
 			<h1 class="text-center" style="padding-bottom: 30px;">OnlineJudge
 				Register</h1>
@@ -81,7 +80,7 @@
 		        </div>
 		        <div class="row">
 		            <div class="col-sm-11 text-center">
-		                <span>Copyright © 2013-2014 SDUTACM Team. All Rights Reserved.</span>
+		                <span>Copyright © 2013-2014 LDUACM Team. All Rights Reserved.</span>
 		            </div>
 		        </div>
 		</div>

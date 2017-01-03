@@ -43,6 +43,7 @@ public class HduContestLogin implements Runnable{
 	private HttpHost host = new HttpHost("acm.hdu.edu.cn");
 	private String baseUrl = "http://acm.hdu.edu.cn/diy/";
 	private String location;
+	private int submissions = 0;
 	
 	public HduContestLogin(Contest contest) {
 		// TODO Auto-generated constructor stub
@@ -66,8 +67,7 @@ public class HduContestLogin implements Runnable{
 				//ÅÐ¶ÏÊÇ·ñ±£´æ¸ÃÊý¾Ý
 				this.saveContestUser(pageAnalysis.getContestUser());
 			} else {
-				System.out.println(response.getStatusLine().getStatusCode());
-				System.out.println("µÇÂ¼Ê§°Ü£¡");
+				System.out.println(response.getStatusLine().getStatusCode()+"µÇÂ¼Ê§°Ü£¡");
 			}
 			httpget.abort();
 		} catch (ClientProtocolException e) {
@@ -115,7 +115,7 @@ public class HduContestLogin implements Runnable{
 	}
 	
 	public void saveContestUser(List<Contestuser> contestUser) {
-		BaseService<Contestuser> contestService = new BaseService<Contestuser>();
+		BaseService<Contestuser> cuService = new BaseService<Contestuser>();
 		for (Contestuser contestUser2 : contestUser) {
 			Map <String,Object> propertyVlaue = new HashMap<String, Object>();
 			propertyVlaue.put("contest", contestUser2.getContest());
@@ -123,14 +123,14 @@ public class HduContestLogin implements Runnable{
 			String[] key = Property.getProperty(propertyVlaue);
 			Object[] value = Property.getValue(propertyVlaue);
 			
-			List<Contestuser> contestUser3 = contestService.getByParameters("Contestuser", key, value, true);
+			List<Contestuser> contestUser3 = cuService.getByParameters("Contestuser", key, value, true);
+			
 			if(contestUser3.size()==0)
 			{
-				if(contestUser2.getUser()!=null)
-				{
-					contestService.save(contestUser2);
-					this.saveContestProblem(contestUser2.getContestproblems());
-				}
+				cuService.save(contestUser2);
+				this.saveContestProblem(contestUser2,contestUser2.getContestproblems());
+				contestUser2.setSubmissions(submissions);
+				cuService.update(contestUser2);
 			}
 			else
 			{
@@ -141,16 +141,19 @@ public class HduContestLogin implements Runnable{
 				CUser.setSolved(contestUser2.getSolved());
 				CUser.setContestproblems(contestUser2.getContestproblems());
 				CUser.setPenalty(contestUser2.getPenalty());
-				contestService.update(CUser);
+				CUser.setSubmissions(submissions);
+				cuService.update(CUser);
 			}
 		}
 	}
 	
-	public void saveContestProblem(Set<Contestproblem> contestProblems)
+	public void saveContestProblem(Contestuser contestuser,Set<Contestproblem> contestProblems)
 	{
 		BaseService<Contestproblem> cPService = new BaseService<Contestproblem>();
+		submissions = 0;
 		for (Contestproblem contestproblem : contestProblems) {
 			cPService.save(contestproblem);
+			submissions +=contestproblem.getSubmissions();
 		}
 	}
 	
@@ -161,12 +164,13 @@ public class HduContestLogin implements Runnable{
 		for (Contestproblem contestproblem : contestproblems2) {
 			cPService.delete(contestproblem);
 		}
-		
+		submissions = 0;
 		contestuser.setContestproblems(contestProblems);
 		
 		for (Contestproblem contestproblem : contestProblems) {
 			contestproblem.setContestuser(contestuser);
 			cPService.save(contestproblem);
+			submissions +=contestproblem.getSubmissions(); 
 		}
 	}
 

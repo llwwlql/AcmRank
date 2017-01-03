@@ -4,83 +4,84 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.llwwlql.bean.Vjudgeuser;
-
-public class VjudgeUserAnalysis implements BaseAnalysis{
-	private String UserName;
-	private String NickName;
-	private Integer Soloved;
-	private Integer Submitted;
-
+public class VjudgeUserAnalysis implements BaseAnalysis {
+	private int solved;
+	private int attempted;
+	private int submissions;
+	
+	
 	/**
-	 * @return the userName
+	 * @return the submissions
 	 */
-	public String getUserName() {
-		return UserName;
+	public int getSubmissions() {
+		return submissions;
 	}
 
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		UserName = userName;
-	}
 
 	/**
-	 * @return the nickName
+	 * @param submissions the submissions to set
 	 */
-	public String getNickName() {
-		return NickName;
+	public void setSubmissions(int submissions) {
+		this.submissions = submissions;
 	}
 
-	/**
-	 * @param nickName the nickName to set
-	 */
-	public void setNickName(String nickName) {
-		NickName = nickName;
-	}
 
 	/**
-	 * @return the soloved
+	 * @return the solved
 	 */
-	public Integer getSoloved() {
-		return Soloved;
+	public int getSolved() {
+		return solved;
 	}
 
-	/**
-	 * @param soloved the soloved to set
-	 */
-	public void setSoloved(Integer soloved) {
-		Soloved = soloved;
-	}
 
 	/**
-	 * @return the submitted
+	 * @param solved the solved to set
 	 */
-	public Integer getSubmitted() {
-		return Submitted;
+	public void setSolved(int solved) {
+		this.solved = solved;
 	}
 
+
 	/**
-	 * @param submitted the submitted to set
+	 * @return the attempted
 	 */
-	public void setSubmitted(Integer submitted) {
-		Submitted = submitted;
+	public int getAttempted() {
+		return attempted;
 	}
+
+
+	/**
+	 * @param attempted the attempted to set
+	 */
+	public void setAttempted(int attempted) {
+		this.attempted = attempted;
+	}
+
 
 	public void Get_Info(StringBuffer pageContents) {
 		// TODO Auto-generated method stub
-		Pattern p = Pattern.compile("\\[[0-9](.*?)\\]",
+		Pattern p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall solved\"(.*?)</a>",
 				Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(pageContents.toString());
-		String link=null;
-		if (m.find())
-			 link = m.group().replaceAll("[\\[\"\\]]", "");
-		String[] a=link.split(",");
-		UserName = a[1];
-		NickName = a[2];
-		Soloved = Integer.parseInt(a[4]);
-		Submitted =Integer.parseInt(a[5]);
-		System.out.println(UserName+","+NickName+","+Soloved+","+Submitted);
+		ArrayList<String> linkList=new ArrayList<String>();
+		if(m.find()) {
+			String link = m.group();
+			linkList.add(link);
+		}
+		String temp = linkList.get(0).replaceAll("\n", "");
+		temp=temp.replaceAll("<(.*?)>", "");
+		solved=Integer.parseInt(temp);
+		
+		p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall attempted\"(.*?)</a>",
+				Pattern.CASE_INSENSITIVE);
+		m = p.matcher(pageContents.toString());
+		if(m.find()) {
+			String link = m.group();
+			linkList.add(link);
+		}
+		temp = linkList.get(1).replaceAll("\n", "");
+		temp=temp.replaceAll("<(.*?)>", "");
+		attempted=Integer.parseInt(temp);
+		this.submissions = this.solved + this.attempted;
 	}
 }

@@ -13,6 +13,7 @@ public class UserInfo {
 	private Integer submissions;
 	private Integer rating;
 	private String email;
+	private Integer contestRating;
 	
 	public UserInfo() {
 		// TODO Auto-generated constructor stub
@@ -21,7 +22,7 @@ public class UserInfo {
 	public UserInfo(Integer id, String vjudgeuser, String pojuser,
 			String hduuser, Integer rank, String nickName,
 			String userBlog, String motto, Integer solved,
-			Integer submissions, Integer rating, String email) {
+			Integer submissions, Integer rating, String email,Integer contestRating) {
 		this.id = id;
 		this.vjudgeuser = vjudgeuser;
 		this.pojuser = pojuser;
@@ -34,6 +35,7 @@ public class UserInfo {
 		this.submissions = submissions;
 		this.rating = rating;
 		this.email = email;
+		this.contestRating = contestRating;
 	}
 	/**
 	 * @return the email
@@ -182,4 +184,20 @@ public class UserInfo {
 		this.rating = rating;
 	}
 
+	/**
+	 * @return the contestRating
+	 */
+	public Integer getContestRating() {
+		return contestRating;
+	}
+
+	/**
+	 * @param contestRating the contestRating to set
+	 */
+	public void setContestRating(Integer contestRating) {
+		this.contestRating = contestRating;
+	}
+
+	
+	
 }

@@ -53,9 +53,16 @@ public class PojUserInfo implements UserSpider,Runnable{
 			if(response!=null){
 				HttpEntity entity = response.getEntity();
 				strResult.append(EntityUtils.toString(entity,"UTF-8"));
-				pageAnalysis = new PojUserAnalysis();
-				pageAnalysis.Get_Info(strResult);
-				this.savaUserInfo();
+				if(strResult.length()>2000)
+				{
+					pageAnalysis = new PojUserAnalysis();
+					pageAnalysis.Get_Info(strResult);
+					this.savaUserInfo();
+				}
+				else
+				{
+					System.out.println("Poj ÓÃ»§Ãû´íÎó");
+				}
 			}
 			else
 			{

@@ -3,6 +3,8 @@ package com.llwwlql.bean;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Contestuser entity. @author MyEclipse Persistence Tools
  */
@@ -12,13 +14,14 @@ public class Contestuser implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private Contest contest;
+	private transient Contest contest;
 	private User user;
 	private String userName;
 	private Integer rank;
 	private Integer solved;
+	private Integer submissions;
 	private String penalty;
-	private Set contestproblems = new HashSet(0);
+	private Set<Contestproblem> contestproblems = new HashSet<Contestproblem>(0);	
 
 	// Constructors
 
@@ -39,12 +42,13 @@ public class Contestuser implements java.io.Serializable {
 	
 	/** full constructor */
 	public Contestuser(Contest contest, User user, String userName,
-			Integer rank, Integer solved, String penalty, Set contestproblems) {
+			Integer rank, Integer solved, Integer submissions,String penalty, Set contestproblems) {
 		this.contest = contest;
 		this.user = user;
 		this.userName = userName;
 		this.rank = rank;
 		this.solved = solved;
+		this.submissions = submissions;
 		this.penalty = penalty;
 		this.contestproblems = contestproblems;
 	}
@@ -115,4 +119,17 @@ public class Contestuser implements java.io.Serializable {
 		this.contestproblems = contestproblems;
 	}
 
+	/**
+	 * @return the submissions
+	 */
+	public Integer getSubmissions() {
+		return submissions;
+	}
+
+	/**
+	 * @param submissions the submissions to set
+	 */
+	public void setSubmissions(Integer submissions) {
+		this.submissions = submissions;
+	}
 }

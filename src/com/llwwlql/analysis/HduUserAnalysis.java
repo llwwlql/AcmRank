@@ -120,10 +120,7 @@ public class HduUserAnalysis implements BaseAnalysis {
 			this.nickName = elements.text();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("HDU User Á¬½Ó³¬Ê±");
 		}
-		//================================
-		System.out.println("Solved:" + ProblemsSolved +"\tSubmissions:"+ProblemsSubmitted);
-		//================================
 	}
 }

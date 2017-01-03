@@ -33,9 +33,12 @@ public class AllUserInfo implements Runnable{
 	public void updateUserInfo() {
 		ContestRating contestRating =null;
 		ProblemRating problemRating = null;
+		CPRating cpRating = null;
 		for (User user : users) {
 			contestRating = new ContestRating(user);
 			contestRating.run();
+			cpRating = new CPRating(user);
+			cpRating.run();
 			problemRating = new ProblemRating(user);
 			problemRating.run();
 		}
@@ -44,9 +47,8 @@ public class AllUserInfo implements Runnable{
 	}
 	
 	public void updateContestInfo() {
-		//HduContestInfo hduContestInfo = new HduContestInfo();
-		//hduContestInfo.run();
-
+		HduContestInfo hduContestInfo = new HduContestInfo();
+		hduContestInfo.run();
 		VjudegeContestInfo vjudgeContestInfo = new VjudegeContestInfo();
 		vjudgeContestInfo.run();
 	}
@@ -60,15 +62,18 @@ public class AllUserInfo implements Runnable{
 				hduContestLogin = new HduContestLogin(contest);
 				hduContestLogin.run();
 			}
-				
 		}
 	}
 
 	public void run() {
 		// TODO Auto-generated method stub
+		System.out.println("更新Contest信息");
 		this.updateContestInfo();
+		System.out.println("更新ContestUser信息和ContestProblem信息");
 		this.updateCUInfo();
+		System.out.println("更新User信息");
 		this.updateUserInfo();
+		System.out.println("所有信息更新完成");
 	}
 
 }
