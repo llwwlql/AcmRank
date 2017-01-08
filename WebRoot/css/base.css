@@ -218,6 +218,13 @@ h3.problem-header {
 #show-login{
 	display:none;
 }
+#unlogin{
+	display:none;
+}
+#updateInfo{
+	display:none;
+}
+
 .wrong{
 	background-color: #fdd;	
 	color: grey;

@@ -16,7 +16,7 @@ import com.llwwlql.bean.User;
 import com.llwwlql.bean.Vjudgeuser;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.spider.contest.HduContestInfo;
-import com.llwwlql.spider.contest.HduContestLogin;
+import com.llwwlql.spider.contest.HduContestUserInfo;
 import com.llwwlql.tool.Property;
 import com.llwwlql.tool.SaveLog;
 
@@ -51,12 +51,12 @@ public class ContestRating implements BaseCompute, Runnable {
 	 */
 	public ContestRating(User user) {
 		this.user = user;		
+		this.hduUser = this.user.getHduuser();
+		this.vjudgeUser = this.user.getVjudgeuser();	
 	}
 
 	public void ComputeContestRank() throws IOException {
 		//计算Contest排名积分，并存入Log
-		this.hduUser = this.user.getHduuser();
-		this.vjudgeUser = this.user.getVjudgeuser();		
 		if(this.hduUser!=null)
 		{
 			this.hduContest();
@@ -108,7 +108,7 @@ public class ContestRating implements BaseCompute, Runnable {
 	
 	public void hduContest()
 	{
-		//获取ContestUser 需要 hduUser 的 userName，Contest 的  orgin
+		//获取ContestUser 需要 hduUser 的 nickName，Contest 的  orgin
 		BaseService<Contestuser> CUService = new BaseService<Contestuser>();
 		BaseService<Log> logService = new BaseService<Log>();
 		
@@ -141,7 +141,7 @@ public class ContestRating implements BaseCompute, Runnable {
 		BaseService<Log> logService = new BaseService<Log>();
 		List<Contestuser> contestUser = CUService.getByParameter("Contestuser", "userName", vjudgeUser.getVjudgeUserName());
 		for (Contestuser contestuser2 : contestUser) {
-			if(contestuser2.getContest().getOrigin()==2);
+			if(contestuser2.getContest().getOrigin()==2)
 			{
 				Map <String,Object> propertyVlaue = new HashMap<String, Object>();
 				this.origin = 6;

@@ -128,23 +128,29 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 		int score = 0;
 		if (this.vjudgeUser.getVjudgeSolved() == null) {
 			score = pageAnalysis.getSolved();
-			SaveLog log = new SaveLog(user, score, (short) 3);
+			SaveLog log = new SaveLog(user, score, (short) 7);
 			log.Save();
 		} else if (pageAnalysis.getSolved() > this.vjudgeUser.getVjudgeSolved()) {
 			// ±£¥Êlog–≈œ¢
 			score = pageAnalysis.getSolved()
 					- this.vjudgeUser.getVjudgeSolved();
-			SaveLog log = new SaveLog(user, score, (short) 3);
+			SaveLog log = new SaveLog(user, score, (short) 7);
 			log.Save();
 		}
 		this.vjudgeUser.setVjudgeSolved(pageAnalysis.getSolved());
 		this.vjudgeUser.setVjudgeSubmission(pageAnalysis.getSubmissions());
-		
+		this.vjudgeUser.setVjudgeType((short)1);
+		vjudgeService.update(this.vjudgeUser);
+	}
+	public void savaWarningInfo() {
+		// TODO Auto-generated method stub
+		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
+		this.vjudgeUser.setVjudgeType((short)0);
 		vjudgeService.update(this.vjudgeUser);
 	}
 
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		this.doGet();
 	}
 }

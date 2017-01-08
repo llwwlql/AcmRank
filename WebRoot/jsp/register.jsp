@@ -71,19 +71,6 @@
 <div style="padding-top: 80px;"></div>
 
 	</div>
-	<div class="footer">
-		<div class="container">
-		        <div class="row">
-		            <div class="col-sm-11 text-center">
-		                <a href="http://www.sdutacm.org/onlinejudge2/index.php/Home/User/register#">SDUTACM运维技术中心</a>
-		            </div>
-		        </div>
-		        <div class="row">
-		            <div class="col-sm-11 text-center">
-		                <span>Copyright © 2013-2014 LDUACM Team. All Rights Reserved.</span>
-		            </div>
-		        </div>
-		</div>
-	</div>
+	<jsp:include page="../jsp/foot.jsp"></jsp:include>
 </div>
 </body></html>

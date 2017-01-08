@@ -37,13 +37,13 @@ public class HduUserInfo implements UserSpider,Runnable{
 	public HduUserInfo(User user) {
 		// TODO Auto-generated constructor stub
 		this.user = user;
+		this.hduUser = user.getHduuser();
 	}
 
 	public void doGet() {
 		// TODO Auto-generated method stub
 		httpClient.getParams().setParameter(
 				CoreConnectionPNames.CONNECTION_TIMEOUT, 6 * 1000);
-		this.hduUser = user.getHduuser();
 		String userName = hduUser.getHduUserName();
 		StringBuffer strResult = new StringBuffer();
 		try {
@@ -66,6 +66,7 @@ public class HduUserInfo implements UserSpider,Runnable{
 				else
 				{
 					System.out.println("HDU 用户名错误");
+					this.savaWarningInfo();
 				}
 				
 			} else {
@@ -101,6 +102,7 @@ public class HduUserInfo implements UserSpider,Runnable{
 		} else if (pageAnalysis.getProblemsSolved() > this.hduUser
 				.getHduSolve()) {
 			// 保存log信息
+			//System.out.println("HDU log 信息");
 			score = pageAnalysis.getProblemsSolved()
 					- this.hduUser.getHduSolve();
 			SaveLog log = new SaveLog(user, score, (short) 3);
@@ -109,6 +111,13 @@ public class HduUserInfo implements UserSpider,Runnable{
 		this.hduUser.setHduSolve(pageAnalysis.getProblemsSolved());
 		this.hduUser.setHduSubmission(pageAnalysis.getSubmissions());
 		this.hduUser.setHduNickName(pageAnalysis.getNickName());
+		this.hduUser.setHduType((short)1);
+		hduUserService.update(this.hduUser);
+	}
+	
+	public void savaWarningInfo(){
+		BaseService<Hduuser> hduUserService = new BaseService<Hduuser>();
+		this.hduUser.setHduType((short)0);
 		hduUserService.update(this.hduUser);
 	}
 
@@ -116,4 +125,5 @@ public class HduUserInfo implements UserSpider,Runnable{
 		// TODO Auto-generated method stub
 		this.doGet();
 	}
+	
 }

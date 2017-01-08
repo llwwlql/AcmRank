@@ -74,4 +74,18 @@ public class BaseGson{
 			}
 		}).create();
 	}
+	public void logGson()
+	{
+		gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+			public boolean shouldSkipField(FieldAttributes f) {
+				// TODO Auto-generated method stub
+				return f.getName().contains("user") | f.getName().contains("id");
+			}
+			
+			public boolean shouldSkipClass(Class<?> arg0) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		}).create();
+	}
 }

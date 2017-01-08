@@ -274,7 +274,7 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 	
 	/**
-	 * 排序查询所有
+	 * 根据parmeter排序查询所有
 	 * 
 	 * @return
 	 */
@@ -286,6 +286,31 @@ public class BaseService<T> implements IBaseService<T> {
 			tx = session.beginTransaction();
 			String hql = "FROM " + tableName + " order by "+ parmeter + " " +sortType;
 			List<T> list = session.createQuery(hql).list(); // 使用HQL查询
+			tx.commit();
+			return list;
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
+	/**
+	 * 根据parmater排序查询key = value的元素
+	 * 
+	 * @return
+	 */
+	public List<T> findAllSort(String tableName,String key,Object value,String parmeter,String sortType) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			String hql = "FROM " + tableName +" where "+key+"=?"+ " order by "+ parmeter + " " +sortType;
+			Query query = session.createQuery(hql); // 使用HQL查询
+			query.setParameter(0, value);
+			List<T> list = query.list();
 			tx.commit();
 			return list;
 		} catch (RuntimeException e) {
@@ -382,6 +407,27 @@ public class BaseService<T> implements IBaseService<T> {
 			// -------------------------------------
 			tx.commit();
 			return new QueryResult<T>(list, count);
+		} catch (RuntimeException e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Long findAllCount(String tableName)
+	{
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			// -------------------------------------
+			// 1，查询总记录数
+			Long count = (Long) session.createQuery(
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
+			// -------------------------------------
+			tx.commit();
+			return count;
 		} catch (RuntimeException e) {
 			tx.rollback();
 			throw e;

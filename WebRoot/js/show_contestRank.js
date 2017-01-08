@@ -11,7 +11,6 @@ $(function(){
     	success: function(resp) {
     		var json = eval(resp);
     		var len = json[0].contestproblems.length;
-			console.log(json);
 			var half = 75/len;
 			if(half>10)
 				half=10;
@@ -28,27 +27,33 @@ $(function(){
                 var penalty = json[index].penalty;  
                 var contestproblems = json[index].contestproblems;
                 var userName = json[index].userName;
+                var user_id = json[index].userId;
                 var contestRank = "#";
-                var originUrl = "#";
+                var originUrl;
                 var str= $("#tbody").html();
-                str = str + "<tr><td>" + rank +"</td><td><a href="+originUrl + " target=_blank>"+userName + "</a></td><td>" + solved+"</td><td>" + penalty +"</td>";
+                if(user_id == 0)
+                	originUrl = "#";
+                else
+                	originUrl = "../jsp/userInfo.jsp?user_id=" + user_id;
+                console.log(user_id);
+                str = str + "<tr><td>" + rank +"</td><td><a href="+originUrl + ">"+userName + "</a></td><td>" + solved+"</td><td>" + penalty +"</td>";
                 for(var i=0;i<len;i++)
                 {
                 	var submissions = parseInt(contestproblems[i].submissions);
                 	var penalty = contestproblems[i].penalty;
                 	var firstAc = contestproblems[i].firstAc;
                 	var acOr = contestproblems[i].acOr;
-                	var style="";          	
+                	var style="";
                 	if(firstAc=="1")
                 		style="first-ac";
                 	else if(acOr=="1")
                 		style="ac";
                 	else if(submissions!=0)
                 		style="wrong";
-                	if(submissions>1)
-                		str = str + "<td class="+style+">"+penalty+"<br>( -"+(submissions-1) +" )</td>";
-                	else if(style=="wrong")
+                	if(style=="wrong")
                 		str = str + "<td class="+style+"><br>( -"+(submissions) +" )</td>";
+                	else if(submissions>1)
+                		str = str + "<td class="+style+">"+penalty+"<br>( -"+(submissions-1) +" )</td>";
                 	else if(submissions==1)
                 		str = str + "<td class="+style+">"+penalty+"<br>&nbsp</td>";
                 	else

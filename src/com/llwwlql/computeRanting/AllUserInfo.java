@@ -1,20 +1,13 @@
 package com.llwwlql.computeRanting;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.llwwlql.bean.Contest;
 import com.llwwlql.bean.Contestuser;
-import com.llwwlql.bean.Log;
 import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.spider.contest.HduContestInfo;
-import com.llwwlql.spider.contest.HduContestLogin;
+import com.llwwlql.spider.contest.HduContestUserInfo;
 import com.llwwlql.spider.contest.VjudegeContestInfo;
-import com.llwwlql.tool.Property;
-import com.llwwlql.tool.SaveLog;
 
 public class AllUserInfo implements Runnable{
 
@@ -55,11 +48,11 @@ public class AllUserInfo implements Runnable{
 
 	public void updateCUInfo() {
 		List<Contest> contests = contestService.findAll("Contest");
-		HduContestLogin hduContestLogin = null;
+		HduContestUserInfo hduContestLogin = null;
 		for (Contest contest : contests) {
 			if(contest.getOrigin()==1)
 			{
-				hduContestLogin = new HduContestLogin(contest);
+				hduContestLogin = new HduContestUserInfo(contest);
 				hduContestLogin.run();
 			}
 		}

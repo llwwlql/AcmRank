@@ -61,7 +61,7 @@ public class VjudgeContestAnalysis implements BaseAnalysis{
 			End_Time = df.format(unixEtime);
 			
 			Contest vjContest = new Contest(Contest_Name, Contest_ID,
-					Start_Time, End_Time, (short) 2, (short) 1);
+					Start_Time, End_Time, (short) 2, (short) 1 , 0);
 			contest.add(vjContest);
 		}
 	}

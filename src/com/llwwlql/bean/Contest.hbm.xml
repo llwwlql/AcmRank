@@ -25,6 +25,9 @@
         <property name="origin" type="short">
             <column name="origin" not-null="true" />
         </property>
+        <property name="peopleNum" type="integer">
+            <column name="peopleNum"/>
+        </property>
         <property name="contestType" type="short">
             <column name="contestType" not-null="true" />
         </property>

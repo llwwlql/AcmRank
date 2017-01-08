@@ -25,5 +25,8 @@
         <property name="hduNickName" type="string">
             <column name="hduNickName" length="30" />
         </property>
+        <property name="hduType" type="short">
+			<column name="hduType" />
+		</property>
     </class>
 </hibernate-mapping>

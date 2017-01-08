@@ -9,11 +9,13 @@ public class ContestRankInfo {
 	private Integer rank;
 	private Integer solved;
 	private String penalty;
+	private Integer userId;
 	private List<Contestproblem> contestproblems;
 	
-	public ContestRankInfo(Integer rank, String userName ,Integer solved,
+	public ContestRankInfo(Integer id ,Integer rank, String userName ,Integer solved,
 			String penalty, List contestproblems) {
 		super();
+		this.userId = id;
 		this.rank = rank;
 		this.userName = userName;
 		this.solved = solved;

@@ -22,5 +22,8 @@
         <property name="pojSubmission" type="integer">
             <column name="pojSubmission" />
         </property>
+        <property name="pojType" type="short">
+            <column name="pojType" />
+        </property>
     </class>
 </hibernate-mapping>

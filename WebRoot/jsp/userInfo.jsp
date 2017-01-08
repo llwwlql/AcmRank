@@ -18,7 +18,7 @@
 <title>Userinfo</title>
 
 <jsp:include page="Header.jsp"></jsp:include>
-<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script src="http://echarts.baidu.com/build/dist/echarts.js" charset="UTF-8"></script>
 <script language="javascript" type="text/javascript"
 	src="../js/show_userInfo.js"></script>
 </head>
@@ -76,18 +76,15 @@
 
 				<div class="row">
 					<div class="col-md-12 text-right"
-						style="padding-top: 10px;padding-bottom: 10px;">
-						<a class="btn btn-default"
-							href="http://www.sdutacm.org/onlinejudge2/index.php/Home/User/updateinfo/uid/21636">修改个人信息</a>
-						<a class="btn btn-default"
-							href="http://www.sdutacm.org/onlinejudge2/index.php/Home/User/updatepasswd/uid/21636">修改密码</a>
+						style="padding-top: 10px;padding-bottom: 10px;" id="update-btn">
+						<a class="btn btn-default" id="updateInfo" onclick="alterInfo()">修改个人信息</a>
 					</div>
 				</div>
 				<div class="row">
 					<div class="block block-danger">
 						<div class="block-content">
 							<div class="heading">
-								User's <span class="ce-text bold">submissions</span>
+								User's <span class="ce-text bold">Rating</span>
 							</div>
 							<div id="line" style="height:500px">
 							</div>
@@ -96,26 +93,19 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-11 text-center">
-						<a
-							href="http://www.sdutacm.org/onlinejudge2/index.php/Home/User/info/uid/21636.html#">SDUTACM运维技术中心</a>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-11 text-center">
-						<span>Copyright © 2013-2014 LDUACM Team. All Rights
-							Reserved.</span>
-					</div>
-				</div>
-			</div>
-		</div>
+		<jsp:include page="../jsp/foot.jsp"></jsp:include>
 	</div>
-	
 	<script type="text/javascript">
+	$(function() {
+		var user_id = '<%=session.getAttribute("user_id")%>';
+		var userInfo_id = '<%=request.getParameter("user_id")%>';
+		if(user_id!="null" && user_id==userInfo_id)
+		{
+			$('#updateInfo').show();
+		}else{
+			$('#updateInfo').hide();
+		}
+	});
 	</script>
 </body>
 </html>

@@ -22,5 +22,8 @@
         <property name="vjudgeSubmission" type="integer">
             <column name="vjudgeSubmission" />
         </property>
+		<property name="vjudgeType" type="short">
+            <column name="vjudgeType" />
+        </property>
     </class>
 </hibernate-mapping>

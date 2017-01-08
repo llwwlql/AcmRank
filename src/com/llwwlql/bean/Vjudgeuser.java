@@ -13,6 +13,7 @@ public class Vjudgeuser implements java.io.Serializable {
 	private String vjudgeUserName;
 	private Integer vjudgeSolved;
 	private Integer vjudgeSubmission;
+	private short vjudgeType;
 
 	// Constructors
 
@@ -76,5 +77,20 @@ public class Vjudgeuser implements java.io.Serializable {
 	public void setVjudgeSubmission(Integer vjudgeSubmission) {
 		this.vjudgeSubmission = vjudgeSubmission;
 	}
+
+	/**
+	 * @return the vjudgeType
+	 */
+	public short getVjudgeType() {
+		return vjudgeType;
+	}
+
+	/**
+	 * @param vjudgeType the vjudgeType to set
+	 */
+	public void setVjudgeType(short vjudgeType) {
+		this.vjudgeType = vjudgeType;
+	}
+	
 
 }

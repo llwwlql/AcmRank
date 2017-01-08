@@ -26,11 +26,6 @@ public class testdb {
 	public static void main(String[] args) {
 		//不定属性查询
 		
-//		BaseService<User> userSerivce= new BaseService<User>();
-//		
-//		User user = userSerivce.getById(User.class, 5);
-//		System.out.println(user);
-		
 		AllUserInfo allUserInfo = new AllUserInfo();
 		new Thread(allUserInfo).start();
 	}

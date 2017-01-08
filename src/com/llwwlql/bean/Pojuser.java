@@ -17,6 +17,7 @@ public class Pojuser implements java.io.Serializable {
 	private Integer pojSolved;
 	private Integer pojSubmission;
 	private Set users = new HashSet(0);
+	private short pojType;
 
 	// Constructors
 
@@ -88,6 +89,21 @@ public class Pojuser implements java.io.Serializable {
 
 	public void setUsers(Set users) {
 		this.users = users;
+	}
+	
+
+	/**
+	 * @return the pojType
+	 */
+	public short getPojType() {
+		return pojType;
+	}
+
+	/**
+	 * @param pojType the pojType to set
+	 */
+	public void setPojType(short pojType) {
+		this.pojType = pojType;
 	}
 
 	@Override

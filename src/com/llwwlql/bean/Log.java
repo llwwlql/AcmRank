@@ -69,5 +69,9 @@ public class Log implements java.io.Serializable {
 	public void setTime(String time) {
 		this.time = time;
 	}
-
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "score:" + score + "\ttime:"+time;
+	}
 }

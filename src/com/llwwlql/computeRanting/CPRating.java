@@ -90,7 +90,6 @@ public class CPRating implements BaseCompute,Runnable{
 	 * @return the cpAmount
 	 */
 	public void Compute() {
-		// TODO Auto-generated method stub
 		BaseService<User> userService = new BaseService<User>();
 		if(user.getCpRating()==null)
 			user.setCpRating(0);
@@ -123,7 +122,6 @@ public class CPRating implements BaseCompute,Runnable{
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
 		this.CPAmount();
 		this.Compute();
 	}

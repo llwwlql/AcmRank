@@ -31,11 +31,12 @@ import com.llwwlql.bean.Contest;
 import com.llwwlql.bean.Contestproblem;
 import com.llwwlql.bean.Contestuser;
 import com.llwwlql.bean.Hduuser;
+import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.tool.Property;
 import com.llwwlql.tool.SaveLog;
 
-public class HduContestLogin implements Runnable{
+public class HduContestUserInfo implements Runnable{
 
 	private HttpClient httpClient = new DefaultHttpClient();
 	private String loginUrl = "http://acm.hdu.edu.cn/diy/contest_login.php?action=login&cid=";
@@ -45,7 +46,7 @@ public class HduContestLogin implements Runnable{
 	private String location;
 	private int submissions = 0;
 	
-	public HduContestLogin(Contest contest) {
+	public HduContestUserInfo(Contest contest) {
 		// TODO Auto-generated constructor stub
 		this.contest = contest;
 	}
@@ -116,17 +117,29 @@ public class HduContestLogin implements Runnable{
 	
 	public void saveContestUser(List<Contestuser> contestUser) {
 		BaseService<Contestuser> cuService = new BaseService<Contestuser>();
+		BaseService<Contest> contestService =new BaseService<Contest>();
+		BaseService<Hduuser> hduService = new BaseService<Hduuser>();
+		BaseService<User> userService = new BaseService<User>();
 		for (Contestuser contestUser2 : contestUser) {
 			Map <String,Object> propertyVlaue = new HashMap<String, Object>();
 			propertyVlaue.put("contest", contestUser2.getContest());
 			propertyVlaue.put("userName", contestUser2.getUserName());
 			String[] key = Property.getProperty(propertyVlaue);
 			Object[] value = Property.getValue(propertyVlaue);
-			
 			List<Contestuser> contestUser3 = cuService.getByParameters("Contestuser", key, value, true);
-			
+			//找到关联的User
+			List<Hduuser> hduUser = hduService.getByParameter("Hduuser", "hduNickName", contestUser2.getUserName());
+			User user = null;;
+			if(hduUser.size()>0)
+				user = hduUser.get(0).getUser();
 			if(contestUser3.size()==0)
 			{
+				if(user !=null)
+				{//生成User 与 contestUser 的关联
+					contestUser2.setUser(user);
+					user.getContestusers().add(contestUser2);
+					userService.update(user);
+				}
 				cuService.save(contestUser2);
 				this.saveContestProblem(contestUser2,contestUser2.getContestproblems());
 				contestUser2.setSubmissions(submissions);
@@ -145,6 +158,8 @@ public class HduContestLogin implements Runnable{
 				cuService.update(CUser);
 			}
 		}
+		contest.setPeopleNum(contestUser.size());
+		contestService.update(contest);
 	}
 	
 	public void saveContestProblem(Contestuser contestuser,Set<Contestproblem> contestProblems)

@@ -20,25 +20,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="row block block-info">
 			<div class="form-inline">
 				<div class="pull-right pad"> 
-					<form name="" action="http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist" method="get">
+					<form>
 					<div class="input-group input-group-sm">
 						<span class="input-group-addon">Name</span>
-						<input class="form-control" type="text" placeholder="UserName" name="contestname" value="">
+						<input class="form-control" id="nickName" type="text" placeholder="UserName" name="contestname" value="">
 					</div>
-					<div class="input-group input-group-sm">
-					 	<span class="input-group-addon">Type</span>
-						 <select class="form-control" name="contesttype">
-							 <option value="">All</option>
-							 <option class="bold wrong-text" value="3">Public</option>
-							 <option class="bold accept-text" value="1">Private</option>
-							 <option class="bold pe-text" value="2">Register</option>
-						 </select>
-					 </div>  
-					<div class="input-group input-group-sm">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-						<input class="form-control" type="text" placeholder="Contest ID" name="cid" value="">
-					</div> 
-					<button class="btn btn-default btn-sm" type="submit">GO</button> 
+					<button class="btn btn-default btn-sm" type="button" id="ser-user">GO</button> 
 					</form>
 				</div>
 			</div>
@@ -58,33 +45,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    </thead>
 				    <tbody id="tbody">
 				    </tbody>
-				    <tfoot>
+				    <tfoot>					
 					    <tr>
-					    	<td colspan="6">
-					    	<div class="bootpage ">
-							<div class="btn-group btn-group-sm">  
-							<!-- 
-								<span class="current btn btn-primary">1</span>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=2">2</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=3">3</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=4">4</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=5">5</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=6">6</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=7">7</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=8">8</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=9">9</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=10">10</a>
-								<a class="num btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=11">11</a>
-								<a class="next btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=2">ä¸ä¸é¡µ</a>
-								<a class="end btn btn-default" href="http://www.sdutacm.org/onlinejudge2/index.php?m=&amp;c=Contest&amp;a=contestlist&amp;p=14">14</a>
-							-->
-							</div>							
-							<script type="text/javascript">
-								$(".bootpage div").addClass("btn-group btn-group-sm");
-								$(".bootpage a").addClass("btn btn-default");
-								$(".bootpage span").addClass("btn btn-primary");
-							</script>
-						</div>
+					    	<td colspan="7">
+					    	<div class="bootpage">
+								<div class="btn-group btn-group-sm" id="page-div">
+								</div>
+							</div>
 					    	</td>
 					    </tr>
 				    </tfoot>
@@ -94,20 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	</div>
 
-	<div class="footer">
-		<div class="container">
-		        <div class="row">
-		            <div class="col-sm-11 text-center">
-		                <a href="http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist#">SDUTACMè¿ç»´ææ¯ä¸­å¿</a>
-		            </div>
-		        </div>
-		        <div class="row">
-		            <div class="col-sm-11 text-center">
-		                <span>Copyright Â© 2013-2014 LDUACM Team. All Rights Reserved.</span>
-		            </div>
-		        </div>
-		</div>
-	</div>
+	<jsp:include page="../jsp/foot.jsp"></jsp:include>
 </div>
 
 

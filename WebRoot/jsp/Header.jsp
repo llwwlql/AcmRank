@@ -26,56 +26,20 @@
 	src="../js/html5shiv.min.js"></script>
 <script language="javascript" type="text/javascript"
 	src="../js/respond.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="../js/page_div.js"></script>	
 <!--IE-->
 <link type="text/css" rel="stylesheet" href="../css/home.css">
 <link type="text/css" rel="stylesheet" href="../css/base.css">
 </style>
 </head>
 <body>
-
-	<div class="banner">
-		<div class="container"></div>
-	</div>
-
-	<nav class="navbar navbar-default" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Home</a>
-			</div>
-
-			<div class="collapse navbar-collapse" id="navbar-collapse">
-				<ul class="nav navbar-nav text-primary">
-					<li><a href="../jsp/Contests.jsp">Contests</a></li>
-					<li><a href="../jsp/Ranklist.jsp">Ranklist</a></li>
-					<li><a href="../jsp/Discuss">Discuss</a></li>
-					<li><a href="../jsp/News">News</a></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right" id="unlogin">
-					<li><a href="../jsp/login.jsp">Login</a></li>
-					<li><a href="../jsp/register.jsp">Register</a></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right" id="show-login">
-					<li id="show-nickname"></li>
-					<li id="logout"><a href="#">Logout</a></li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
 	<script type="text/javascript">	
-	
 		$(function() {
-		var user_id = '<%=session.getAttribute("user_id")%>';
-		if(user_id!="null")
-		{
-			var nickname = '<%=session.getAttribute("nickName")%>';
+			var user_id = '<%=session.getAttribute("user_id")%>';
+			if(user_id!="null")
+			{
+				var nickname = '<%=session.getAttribute("nickName")%>';
 				var userUrl = "../jsp/userInfo.jsp?user_id=" + user_id;
 				$('#unlogin').hide();
 				$('#show-login').show();
@@ -103,5 +67,41 @@
 			});
 		});
 	</script>
+	<div class="banner">
+		<div class="container"></div>
+	</div>
+
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="../jsp/Home.jsp">Home</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav text-primary">
+					<li><a href="../jsp/Contests.jsp">Contests</a></li>
+					<li><a href="../jsp/Ranklist.jsp">Ranklist</a></li>
+					<li><a href="#">Discuss</a></li>
+					<li><a href="#">News</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right" id="unlogin">
+					<li><a href="../jsp/login.jsp">Login</a></li>
+					<li><a href="../jsp/register.jsp">Register</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right" id="show-login">
+					<li id="show-nickname"></li>
+					<li id="logout"><a href="#">Logout</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
 </body>
 </html>

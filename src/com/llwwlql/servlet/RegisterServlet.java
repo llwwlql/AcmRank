@@ -190,12 +190,15 @@ public class RegisterServlet extends HttpServlet {
 			String enPassword = base64en.encode(md5.digest(password));
 
 			BaseService<User> userSerivce = new BaseService<User>();
-
+			long count = userSerivce.findAllCount("User");
+			
 			User user = new User(userName, nickName, enPassword, email, 0, 0,
 					(short) 1);
 			userSerivce.save(user);
 			List<User> user2 = userSerivce.getByParameter("User", "userName",
 					user.getUserName());
+			user.setRank((int)count);
+			
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("result", 1);
 			request.getSession().setAttribute("user_id", user2.get(0).getId());

@@ -14,6 +14,7 @@ public class Hduuser implements java.io.Serializable {
 	private Integer hduSolve;
 	private Integer hduSubmission;
 	private String hduNickName;
+	private short hduType;
 
 	// Constructors
 
@@ -87,4 +88,18 @@ public class Hduuser implements java.io.Serializable {
 		this.hduNickName = hduNickName;
 	}
 
+	/**
+	 * @return the hduType
+	 */
+	public short getHduType() {
+		return hduType;
+	}
+
+	/**
+	 * @param hduType the hduType to set
+	 */
+	public void setHduType(short hduType) {
+		this.hduType = hduType;
+	}
+	
 }

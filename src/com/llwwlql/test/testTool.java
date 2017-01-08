@@ -30,7 +30,10 @@ import com.llwwlql.bean.Contest;
 import com.llwwlql.bean.Contestproblem;
 import com.llwwlql.bean.Contestuser;
 import com.llwwlql.bean.Hduuser;
+import com.llwwlql.bean.Log;
+import com.llwwlql.bean.Pojuser;
 import com.llwwlql.bean.User;
+import com.llwwlql.bean.Vjudgeuser;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.service.QueryResult;
 import com.llwwlql.spider.user.HduUserInfo;
@@ -38,14 +41,49 @@ import com.llwwlql.tool.*;
 
 public class testTool {
 	
-	public testTool() {
-		// TODO Auto-generated constructor stub
-		String path = this.getClass().getClassLoader().getResource(".").getPath();
-		System.out.println(path);
-	}
-	
 	public static void main(String[] args) throws IOException {
-		testTool test = new testTool();
+		//清空用户题量信息。
+		BaseService<User> userService = new BaseService<User>();
+		BaseService<Hduuser> hduService = new BaseService<Hduuser>();
+		BaseService<Pojuser> pojService = new BaseService<Pojuser>();
+		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
+		BaseService<Log> logService = new BaseService<Log>();
+		BaseService<Contestuser> cuService = new BaseService<Contestuser>();
+		List<User> users = userService.findAll("User");
+		for (User user : users) {
+			user.setProblemRating(0);
+			user.setSolved(0);
+			user.setSubmissions(0);
+			user.setCpRating(0);
+			user.setContestRating(0);
+			userService.update(user);
+		}
+		List<Hduuser> hduUsers = hduService.findAll("Hduuser");
+		for (Hduuser hduuser : hduUsers) {
+			hduuser.setHduSolve(0);
+			hduuser.setHduSubmission(0);
+			hduService.update(hduuser);
+		}
+		List<Pojuser> pojUsers = pojService.findAll("Pojuser");
+		for (Pojuser pojuser : pojUsers) {
+			pojuser.setPojSolved(0);
+			pojuser.setPojSubmission(0);
+			pojService.update(pojuser);
+		}
+		List<Vjudgeuser> vjudgeUsers = vjudgeService.findAll("Vjudgeuser");
+		for (Vjudgeuser vjudgeuser : vjudgeUsers) {
+			vjudgeuser.setVjudgeSolved(0);
+			vjudgeuser.setVjudgeSubmission(0);
+			vjudgeService.update(vjudgeuser);
+		}
 		
+		List<Log> logs = logService.findAll("Log");
+		for (Log log : logs) {
+			logService.delete(log);
+		}
+//		List<Contestuser> contestusers = cuService.findAll("Contestuser");
+//		for (Contestuser contestuser : contestusers) {
+//			cuService.delete(contestuser);
+//		}
 	}
 }

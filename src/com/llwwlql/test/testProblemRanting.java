@@ -14,7 +14,7 @@ import com.llwwlql.computeRanting.ContestRating;
 import com.llwwlql.computeRanting.ProblemRating;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.spider.contest.HduContestInfo;
-import com.llwwlql.spider.contest.HduContestLogin;
+import com.llwwlql.spider.contest.HduContestUserInfo;
 import com.llwwlql.spider.user.HduUserInfo;
 import com.llwwlql.spider.user.PojUserInfo;
 

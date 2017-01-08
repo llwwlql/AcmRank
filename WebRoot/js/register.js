@@ -1,4 +1,4 @@
-function checkUsername()
+﻿function checkUsername()
 {
     var username=$("input[name=user_name]").val();
     var patrn = /^[a-zA-Z0-9_]{5,15}$/;
@@ -129,7 +129,7 @@ function checkMotto()
 }
 
 function check(){
-	$('#btn-register').attr({"disabled":"disabled"});
+	
 	if(checkUsername()==1 && checkPassword()==1 && checkPassword2()==1 && checkNickname()==1 && checkEmail()==1)
 	{
 		//alert(checkUsername()+"  " +checkPassword()+"  " +checkPassword2()+"   "+checkNickname()+"    "+checkEmail())
@@ -199,6 +199,7 @@ function check_submit()
         		}
         		else
         		{
+        			$('#btn-submit').removeAttr("disabled");
         			alert("保存用户信息失败！！");
         		}
         	},

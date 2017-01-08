@@ -59,7 +59,7 @@
                                         <div class="form-group">
                                             <label class="col-md-2 control-label">Blog:</label>
                                             <div class="col-md-10">
-                                            <input type="text" name="blog" class="form-control" placeholder="请输入博客地址（不需要加'http://'）">
+                                            <input type="text" name="blog" class="form-control" placeholder="请输入博客地址（输入完整地址）">
                                             </div>
                                         </div>
                                         <div class="form-group" style="margin-top: 27px;">
@@ -80,19 +80,6 @@
 <div style="padding-top: 80px;"></div>
 
 	</div>
-	<div class="footer">
-		<div class="container">
-		        <div class="row">
-		            <div class="col-sm-11 text-center">
-		                <a href="http://www.sdutacm.org/onlinejudge2/index.php/Home/User/register#">SDUTACM运维技术中心</a>
-		            </div>
-		        </div>
-		        <div class="row">
-		            <div class="col-sm-11 text-center">
-		                <span>Copyright © 2013-2014 LDUACM Team. All Rights Reserved.</span>
-		            </div>
-		        </div>
-		</div>
-	</div>
+	<jsp:include page="../jsp/foot.jsp"></jsp:include>
 </div>
 </body></html>

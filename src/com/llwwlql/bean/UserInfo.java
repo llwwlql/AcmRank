@@ -14,15 +14,22 @@ public class UserInfo {
 	private Integer rating;
 	private String email;
 	private Integer contestRating;
+	private short hduType;
+	private short pojType;
+	private short vjudgeType;
 	
 	public UserInfo() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
 	public UserInfo(Integer id, String vjudgeuser, String pojuser,
-			String hduuser, Integer rank, String nickName,
-			String userBlog, String motto, Integer solved,
-			Integer submissions, Integer rating, String email,Integer contestRating) {
+			String hduuser, Integer rank, String nickName, String userBlog,
+			String motto, Integer solved, Integer submissions, Integer rating,
+			String email, Integer contestRating, short hduType, short pojType,
+			short vjudgeType) {
+		super();
 		this.id = id;
 		this.vjudgeuser = vjudgeuser;
 		this.pojuser = pojuser;
@@ -36,7 +43,13 @@ public class UserInfo {
 		this.rating = rating;
 		this.email = email;
 		this.contestRating = contestRating;
+		this.hduType = hduType;
+		this.pojType = pojType;
+		this.vjudgeType = vjudgeType;
 	}
+
+
+
 	/**
 	 * @return the email
 	 */
@@ -196,6 +209,48 @@ public class UserInfo {
 	 */
 	public void setContestRating(Integer contestRating) {
 		this.contestRating = contestRating;
+	}
+
+	/**
+	 * @return the hduType
+	 */
+	public short getHduType() {
+		return hduType;
+	}
+
+	/**
+	 * @param hduType the hduType to set
+	 */
+	public void setHduType(short hduType) {
+		this.hduType = hduType;
+	}
+
+	/**
+	 * @return the pojType
+	 */
+	public short getPojType() {
+		return pojType;
+	}
+
+	/**
+	 * @param pojType the pojType to set
+	 */
+	public void setPojType(short pojType) {
+		this.pojType = pojType;
+	}
+
+	/**
+	 * @return the vjudgeType
+	 */
+	public short getVjudgeType() {
+		return vjudgeType;
+	}
+
+	/**
+	 * @param vjudgeType the vjudgeType to set
+	 */
+	public void setVjudgeType(short vjudgeType) {
+		this.vjudgeType = vjudgeType;
 	}
 
 	

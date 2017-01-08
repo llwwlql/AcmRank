@@ -2,7 +2,9 @@ package com.llwwlql.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.service.QueryResult;
 import com.llwwlql.tool.BaseGson;
+import com.llwwlql.tool.Property;
 
 public class RankListServlet extends HttpServlet {
 
@@ -31,12 +34,36 @@ public class RankListServlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		int type = Integer.parseInt(request.getParameter("type"));
+		if(type == 1)
+			this.showRank(request, response);
+		else if(type==2)
+			this.searchContest(request, response);
+	}
+	
+	public void showRank(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		int page = Integer.parseInt(request.getParameter("page"));
 		BaseService<User> userService =new BaseService<User>();
-		QueryResult<User> qResult = userService.rankfindAll("User", 100*(page-1), 100);
-		List<User> users = qResult.getList();
+		QueryResult<User> qResult = userService.rankfindAll("User", 50*(page-1), 50);
+		BaseGson userGson = new BaseGson();
+		userGson.userGson();
+		Gson gson = userGson.getGson();
+		String str = gson.toJson(qResult);
+		out.write(str.toString());
+		out.flush();
+		out.close();
+	}
+	
+	public void searchContest(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		String nickName = new String(request.getParameter("nickName").getBytes("iso-8859-1"), "utf-8");
+		BaseService<User> userService =new BaseService<User>();
+		List<User> users = userService.getByParameter("User", "nickName", nickName);
 		BaseGson userGson = new BaseGson();
 		userGson.userGson();
 		Gson gson = userGson.getGson();
@@ -45,7 +72,6 @@ public class RankListServlet extends HttpServlet {
 		out.flush();
 		out.close();
 	}
-
 	/**
 	 * The doPost method of the servlet. <br>
 	 *

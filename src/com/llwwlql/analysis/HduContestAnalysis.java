@@ -69,7 +69,7 @@ public class HduContestAnalysis implements BaseAnalysis {
 			Start_Time = link.get(2).replaceAll("<\\s*.*?>", "");
 			End_Time = link.get(3).replaceAll("<\\s*.*?>", "");
 			
-			Contest con = new Contest(Contest_Name, Contest_ID, Start_Time, End_Time, (short)1, (short)1);
+			Contest con = new Contest(Contest_Name, Contest_ID, Start_Time, End_Time, (short)1, (short)1 , 0);
 			contest.add(con);
 		}
 	}

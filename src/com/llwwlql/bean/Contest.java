@@ -16,6 +16,7 @@ public class Contest implements java.io.Serializable {
 	private Integer orginId;
 	private String startTime;
 	private String endTime;
+	private Integer peopleNum;
 	private short origin;
 	private short contestType;
 	private Set contestusers = new HashSet(0);
@@ -28,13 +29,14 @@ public class Contest implements java.io.Serializable {
 
 	/** minimal constructor */
 	public Contest(String contestName, Integer orginId, String startTime,
-			String endTime, short origin, short contestType) {
+			String endTime, short origin, short contestType,Integer peopleNum) {
 		this.contestName = contestName;
 		this.orginId = orginId;
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.origin = origin;
 		this.contestType = contestType;
+		this.peopleNum = peopleNum;
 	}
 
 	/** full constructor */
@@ -115,4 +117,19 @@ public class Contest implements java.io.Serializable {
 		this.contestusers = contestusers;
 	}
 
+	/**
+	 * @return the peopleNum
+	 */
+	public Integer getPeopleNum() {
+		return peopleNum;
+	}
+
+	/**
+	 * @param peopleNum the peopleNum to set
+	 */
+	public void setPeopleNum(Integer peopleNum) {
+		this.peopleNum = peopleNum;
+	}
+	
+	
 }

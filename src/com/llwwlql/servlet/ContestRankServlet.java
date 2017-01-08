@@ -78,7 +78,7 @@ public class ContestRankServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		request.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
-		
+		int id;
 		int contestId = Integer.parseInt(request.getParameter("contest_id"));
 		
 		BaseService<Contest> userService = new BaseService<Contest>();
@@ -90,13 +90,15 @@ public class ContestRankServlet extends HttpServlet {
 		for (Contestuser contestuser : contestUsers) {
 			List<Contestproblem> contestproblems = new ArrayList<Contestproblem>(contestuser.getContestproblems());
 			Collections.sort(contestproblems,new CPComparator());
-			contestRank = new ContestRankInfo(contestuser.getRank(), contestuser.getUserName(),contestuser.getSolved(), contestuser.getPenalty(), contestproblems);
+			id = 0;
+			if(contestuser.getUser()!=null)
+				id = contestuser.getUser().getId();
+			contestRank = new ContestRankInfo(id, contestuser.getRank(), contestuser.getUserName(),contestuser.getSolved(), contestuser.getPenalty(), contestproblems);
 			crInfo.add(contestRank);
 		}
 		Gson gson = new Gson();
 		String json = gson.toJson(crInfo);
 		out.write(json);
-		
 		out.flush();
 		out.close();
 	}
