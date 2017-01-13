@@ -18,16 +18,17 @@
 <title>Userinfo</title>
 
 <jsp:include page="Header.jsp"></jsp:include>
-<script src="http://echarts.baidu.com/build/dist/echarts.js" charset="UTF-8"></script>
+<script src="http://echarts.baidu.com/build/dist/echarts.js"
+	charset="UTF-8"></script>
 <script language="javascript" type="text/javascript"
 	src="../js/show_userInfo.js"></script>
 </head>
 <body>
 	<div class="everything">
-
 		<div class="main">
-
 			<div class="container">
+				<div id="warning">
+				</div>
 				<div class="block block-info" style="padding-top:40px;"></div>
 				<div class="row">
 					<div class="col-md-12">
@@ -86,8 +87,7 @@
 							<div class="heading">
 								User's <span class="ce-text bold">Rating</span>
 							</div>
-							<div id="line" style="height:500px">
-							</div>
+							<div id="line" style="height:500px"></div>
 						</div>
 					</div>
 				</div>
@@ -99,13 +99,14 @@
 	$(function() {
 		var user_id = '<%=session.getAttribute("user_id")%>';
 		var userInfo_id = '<%=request.getParameter("user_id")%>';
-		if(user_id!="null" && user_id==userInfo_id)
-		{
-			$('#updateInfo').show();
-		}else{
-			$('#updateInfo').hide();
-		}
-	});
+			if (user_id != "null" && user_id == userInfo_id) {
+				$('#updateInfo').show();
+				$('#warning').show();
+			} else {
+				$('#updateInfo').hide();
+				$('#warning').hide();
+			}
+		});
 	</script>
 </body>
 </html>

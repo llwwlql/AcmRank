@@ -45,7 +45,7 @@ function load() {
                 else
                 	style="rating-6";
                 console.log(style);
-                $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + " target=_blank><strong>"+ nickName + "</strong></a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
+                $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + " target=_blank>"+ nickName + "</a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
             });
             console.log("ajax ok");
     	},

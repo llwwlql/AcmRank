@@ -26,7 +26,51 @@ function load() {
 			var hduType = json.hduType;
 			var pojType = json.pojType;
 			var vjudgeType = json.vjudgeType;
-			$showUser1.find('#nickname').text(json.nickName);
+			var rating = json.rating;
+			
+			var warnStr="";
+			var flag=0;
+			if(hduType==0)
+			{
+				flag=1;
+				warnStr+="hduUser";
+			}
+			if(pojType==0)
+			{
+				if(flag==1)
+					warnStr+="、PojUser";
+				else
+					warnStr+="PojUser";
+				flag=1;
+			}
+			if(vjudgeType==0)
+			{
+				if(flag==1)
+					warnStr+="、VjudgeUser";
+				else
+					warnStr+="VjudgeUser";
+				flag=1;
+			}
+			if(flag==1)
+			{
+				$('#warning').addClass("alert alert-warning");
+				$('#warning').html("<a href='' class=close data-dismiss='alert'> &times; </a> <strong>警告！</strong>" + warnStr + "有误，请修改错误信息");
+			}
+			var style="";
+            if(rating>=1000)
+            	style="rating-1";
+            else if(rating>=800)
+            	style="rating-2";
+            else if(rating>=600)
+            	style="rating-3";
+            else if(rating>=400)
+            	style="rating-4";
+            else if(rating>=200)
+            	style="rating-5";
+            else
+            	style="rating-6";
+			$showUser1.find('#nickname').html(json.nickName);
+			$showUser1.find('#nickname').addClass(style);
 			$showUser1.find('#blog').html(
 					"<a href =" + json.userBlog + ">" + json.userBlog
 							+ "</a>");
@@ -40,13 +84,6 @@ function load() {
 			$showUser2.find('#solved').text(json.solved);
 			$showUser2.find('#submissions').text(json.submissions);
 			$showUser2.find('#contest-rating').text(json.contestRating);
-
-			if(hduType==0)
-				show-waring("hduWarning");
-			if(pojType==0)
-				show-waring("pojWarning");
-			if(vjudgeType==0)
-				show-waring("vjudgeWarning");
 			
 			console.log("ajax success");
 		},
@@ -261,6 +298,3 @@ function updateInfo(){
 		}
 	});
 }
-/*function show-warning(var imgId){
-	$('#'+imgId);
-}*/
