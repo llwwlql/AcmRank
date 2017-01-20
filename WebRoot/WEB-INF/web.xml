@@ -3,17 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	<display-name></display-name>
-  <servlet>
-    <servlet-name>test</servlet-name>
-    <servlet-class>com.llwwlql.servlet.test</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>test</servlet-name>
-    <url-pattern>/servlet/test</url-pattern>
-  </servlet-mapping>
-  
+	<display-name></display-name>  
   <servlet>
     <servlet-name>ContestServlet</servlet-name>
     <servlet-class>com.llwwlql.servlet.ContestServlet</servlet-class>
@@ -42,11 +32,6 @@
     <servlet-name>ContestRankServlet</servlet-name>
     <servlet-class>com.llwwlql.servlet.ContestRankServlet</servlet-class>
   </servlet>
-
-
-
-
-
 
   <servlet-mapping>
     <servlet-name>ContestServlet</servlet-name>
@@ -78,7 +63,7 @@
   </servlet-mapping>
   
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>/jsp/Home.jsp</welcome-file>
 	</welcome-file-list>
 	
 </web-app>
