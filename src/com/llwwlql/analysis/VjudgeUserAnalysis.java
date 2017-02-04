@@ -60,28 +60,32 @@ public class VjudgeUserAnalysis implements BaseAnalysis {
 
 	public void Get_Info(StringBuffer pageContents) {
 		// TODO Auto-generated method stub
-		Pattern p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall solved\"(.*?)</a>",
-				Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(pageContents.toString());
-		ArrayList<String> linkList=new ArrayList<String>();
-		if(m.find()) {
-			String link = m.group();
-			linkList.add(link);
+		try {
+			Pattern p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall solved\"(.*?)</a>",
+					Pattern.CASE_INSENSITIVE);
+			Matcher m = p.matcher(pageContents.toString());
+			ArrayList<String> linkList=new ArrayList<String>();
+			if(m.find()) {
+				String link = m.group();
+				linkList.add(link);
+			}
+			String temp = linkList.get(0).replaceAll("\n", "");
+			temp=temp.replaceAll("<(.*?)>", "");
+			solved=Integer.parseInt(temp);
+			
+			p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall attempted\"(.*?)</a>",
+					Pattern.CASE_INSENSITIVE);
+			m = p.matcher(pageContents.toString());
+			if(m.find()) {
+				String link = m.group();
+				linkList.add(link);
+			}
+			temp = linkList.get(1).replaceAll("\n", "");
+			temp=temp.replaceAll("<(.*?)>", "");
+			attempted=Integer.parseInt(temp);
+			this.submissions = this.solved + this.attempted;
+		} catch (Exception e) {
+			System.out.println("POJ User “Ï≥£");
 		}
-		String temp = linkList.get(0).replaceAll("\n", "");
-		temp=temp.replaceAll("<(.*?)>", "");
-		solved=Integer.parseInt(temp);
-		
-		p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall attempted\"(.*?)</a>",
-				Pattern.CASE_INSENSITIVE);
-		m = p.matcher(pageContents.toString());
-		if(m.find()) {
-			String link = m.group();
-			linkList.add(link);
-		}
-		temp = linkList.get(1).replaceAll("\n", "");
-		temp=temp.replaceAll("<(.*?)>", "");
-		attempted=Integer.parseInt(temp);
-		this.submissions = this.solved + this.attempted;
 	}
 }

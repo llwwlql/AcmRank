@@ -13,12 +13,12 @@ function check() {
 		},
 		type : 'Post',
 		contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		url : '../servlet/LoginServlet',
+		url : 'servlet/LoginServlet',
 		success : function(resp) {
 			var json = $.parseJSON(resp);
 			if (json.result == 1) {
 				console.log("用户登录成功！");
-				window.location.href = "../jsp/Contests.jsp";
+				window.location.href = "Home.jsp";
 			} else if (json.result == 2) {
 				$('#btn-register').removeAttr("disabled");
 				$('#user_name').tooltip('show');
@@ -41,11 +41,6 @@ $(function() {
 	});
 });
 
-/*$(function() {
-	$('#btn-login').click(function() {
-		check();
-	});
-});*/
 $(function() {
 	$('#btn-login').click(function() {
 		check();

@@ -17,7 +17,7 @@ function load() {
 		},
 		type : 'Get',
 		// async: false,
-		url : '../servlet/UserInfoServlet',
+		url : 'servlet/UserInfoServlet',
 		contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 		success : function(data) {
 			var json = $.parseJSON(data);
@@ -115,7 +115,7 @@ require(
 			},
 			type : 'Get',
 			async: false,
-			url : '../servlet/UserInfoServlet',
+			url : 'servlet/UserInfoServlet',
 			contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 			success : function(data) {
 				json = eval(data);
@@ -270,7 +270,7 @@ function updateInfo(){
 		},
 		type : 'Post',
 		// async: false,
-		url : '../servlet/UserInfoServlet',
+		url : 'servlet/UserInfoServlet',
 		contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 		success : function(data) {
 			var json = $.parseJSON(data);

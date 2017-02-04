@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta http-equiv="X-UA-Compatible" content="IE=9">
 	<title>Ranklist</title>
 <jsp:include page="Header.jsp"></jsp:include>
-<script language="javascript" type="text/javascript" src="../js/show_ranklist.js"></script>
+<script language="javascript" type="text/javascript" src="js/show_ranklist.js"></script>
 </head>
 <body>
 <div class="everything">
@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	</div>
 
-	<jsp:include page="../jsp/foot.jsp"></jsp:include>
+	<jsp:include page="foot.jsp"></jsp:include>
 </div>
 
 

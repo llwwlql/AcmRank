@@ -20,9 +20,8 @@
         	},
         	type: 'Post',
         	async: false,
-        	url: '../servlet/RegisterServlet',
+        	url: 'servlet/RegisterServlet',
         	success: function(data) {
-        		console.log(data);
         		var json = $.parseJSON(data);
         		if(json.isExist=="false")
         			flag=1;
@@ -146,13 +145,14 @@ function check(){
         		type: 2
         	},
         	type: 'Post',
-        	url: '../servlet/RegisterServlet',
+        	url: 'servlet/RegisterServlet',
+        	async: false,
         	success: function(resp) {
         		var json = $.parseJSON(resp);
         		if(json.result==1)
         		{
         			console.log("保存用户信息成功!");
-        			window.location.href="../jsp/moreInfo.jsp";
+        			window.location.href="moreInfo.jsp";
         		}
         		else
         		{
@@ -189,13 +189,13 @@ function check_submit()
         		type: 3
         	},
         	type: 'Post',
-        	url: '../servlet/RegisterServlet',
+        	url: 'servlet/RegisterServlet',
         	success: function(resp) {
         		var json = $.parseJSON(resp);
         		if(json.result==1)
         		{
         			console.log("保存用户信息成功!");
-        			window.location.href="../jsp/Contests.jsp";
+        			window.location.href="Home.jsp";
         		}
         		else
         		{
@@ -207,7 +207,7 @@ function check_submit()
         		console.log("保存用户信息失败!");
         		$('#btn-submit').removeAttr("disabled");
         	}
-        });		
+        });
 	}
 }
 
@@ -260,6 +260,3 @@ $(function(){
 		check_submit();
 	});
 })
-
-
-

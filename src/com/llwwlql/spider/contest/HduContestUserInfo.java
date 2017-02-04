@@ -95,7 +95,7 @@ public class HduContestUserInfo implements Runnable{
 			List<NameValuePair> nvp = new ArrayList<NameValuePair>();
 			nvp.add(new BasicNameValuePair("password", "lduacm"));
 			httpost.setEntity(new UrlEncodedFormEntity(nvp, Charset
-					.forName("gb2312")));
+					.forName("UTF-8")));
 			HttpResponse response = httpClient.execute(host, httpost);
 			if (response.getStatusLine().getStatusCode() == 302) {
 				httpost.abort();

@@ -1,16 +1,9 @@
-#Sun Jan 08 21:15:21 CST 2017
+#Wed Jan 25 21:32:19 CST 2017
 eclipse.preferences.version=1
 encoding//WebRoot/css/base.css=UTF-8
-encoding//WebRoot/index.jsp=UTF-8
 encoding//WebRoot/js/login.js=UTF-8
 encoding//WebRoot/js/page_div.js=UTF-8
 encoding//WebRoot/js/register.js=UTF-8
 encoding//WebRoot/js/show_contest.js=UTF-8
 encoding//WebRoot/js/show_userInfo.js=UTF-8
-encoding//WebRoot/jsp/Contests.jsp=UTF-8
-encoding//WebRoot/jsp/contestRank.jsp=UTF-8
-encoding//WebRoot/jsp/foot.jsp=UTF-8
-encoding//WebRoot/jsp/login.jsp=UTF-8
-encoding//WebRoot/jsp/moreInfo.jsp=UTF-8
-encoding//WebRoot/jsp/userInfo.jsp=UTF-8
 encoding//src/com/llwwlql/analysis/HduContestAnalysis.java=UTF-8

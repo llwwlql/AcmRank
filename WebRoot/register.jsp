@@ -16,7 +16,7 @@
 
 <title>register</title>
 <jsp:include page="Header.jsp"></jsp:include>
-<script language="javascript" type="text/javascript" src="../js/register.js"></script>
+<script language="javascript" type="text/javascript" src="js/register.js"></script>
 </head>
 <body>
 <div class="everything">
@@ -71,6 +71,6 @@
 <div style="padding-top: 80px;"></div>
 
 	</div>
-	<jsp:include page="../jsp/foot.jsp"></jsp:include>
+	<jsp:include page="foot.jsp"></jsp:include>
 </div>
 </body></html>

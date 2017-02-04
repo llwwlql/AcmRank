@@ -8,7 +8,7 @@ function load() {
     		type : 1
     	},
     	type: 'Get',
-    	url: '../servlet/ContestServlet',
+    	url: 'servlet/ContestServlet',
     	success: function(data) {
 
 	    	var json = $.parseJSON(data);
@@ -25,7 +25,7 @@ function load() {
                 var peopleNum = list[index].peopleNum;
                 var strOrigin;
                 var originUrl;
-                var contestRank = "../jsp/contestRank.jsp?contest_id=" + id;
+                var contestRank = "contestRank.jsp?contest_id=" + id;
                 if(origin ==1)
                 {
                     strOrigin = "HDU Contest";
@@ -37,7 +37,7 @@ function load() {
                     originUrl = "https://vjudge.net/contest/" + list[index].orginId;
                 }
                 
-                $("#tbody").html($("#tbody").html() + "<tr><td>" + id +"</td><td><a href="+originUrl + " target=_blank>"+contestName + "</a></td><td><img src='../img/people1.png' style='weight:80%'/>&nbsp&nbspx "+peopleNum +"</td><td>" + startTime+"</td><td>" + endTime +"</td><td>" + strOrigin +"</td>" + "<td><a href="+contestRank+">show</a></td></tr>");
+                $("#tbody").html($("#tbody").html() + "<tr><td>" + id +"</td><td><a href="+originUrl + " target=_blank>"+contestName + "</a></td><td><img src='img/people1.png' style='weight:80%'/>&nbsp&nbspx "+peopleNum +"</td><td>" + startTime+"</td><td>" + endTime +"</td><td>" + strOrigin +"</td>" + "<td><a href="+contestRank+">show</a></td></tr>");
             });
     	},
     	error: function(err) {
@@ -59,7 +59,7 @@ $(function(){
 		    		type : 2
 		    	},
 		    	type: 'Get',
-		    	url: '../servlet/ContestServlet',
+		    	url: 'servlet/ContestServlet',
 		    	contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 		    	success: function(data) {
 		    		var json = eval(data);
@@ -73,7 +73,7 @@ $(function(){
 		                var peopleNum = json[index].peopleNum;
 		                var strOrigin;
 		                var originUrl;
-		                var contestRank = "../jsp/contestRank.jsp?contest_id=" + id;
+		                var contestRank = "contestRank.jsp?contest_id=" + id;
 		                if(origin ==1)
 		                {
 		                    strOrigin = "HDU Contest";

@@ -6,7 +6,7 @@ $(function(){
     		type: 1
     	},
     	type: 'Post',
-    	url: '../servlet/ContestRankServlet',
+    	url: 'servlet/ContestRankServlet',
     	contentType:"application/x-www-form-urlencoded;charset=UTF-8",
     	success: function(resp) {
     		var json = eval(resp);
@@ -34,7 +34,7 @@ $(function(){
                 if(user_id == 0)
                 	originUrl = "#";
                 else
-                	originUrl = "../jsp/userInfo.jsp?user_id=" + user_id;
+                	originUrl = "userInfo.jsp?user_id=" + user_id;
                 console.log(user_id);
                 str = str + "<tr><td>" + rank +"</td><td><a href="+originUrl + ">"+userName + "</a></td><td>" + solved+"</td><td>" + penalty +"</td>";
                 for(var i=0;i<len;i++)

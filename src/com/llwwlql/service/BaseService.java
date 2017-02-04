@@ -1,22 +1,15 @@
 package com.llwwlql.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 
-import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
-import com.llwwlql.bean.User;
-import com.mysql.fabric.xmlrpc.base.Array;
 
 @Entity
 public class BaseService<T> implements IBaseService<T> {
@@ -369,7 +362,6 @@ public class BaseService<T> implements IBaseService<T> {
 			// 1，查询总记录数
 			Long count = (Long) session.createQuery(
 					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
-
 			// 2，查询一段数据
 			Query query = session.createQuery("FROM " + tableName + " where userType = ? order by rank asc");
 			query.setFirstResult(firstResult);

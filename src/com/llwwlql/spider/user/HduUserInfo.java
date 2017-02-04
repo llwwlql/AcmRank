@@ -15,11 +15,11 @@ import org.apache.http.util.EntityUtils;
 
 import com.llwwlql.analysis.HduUserAnalysis;
 import com.llwwlql.bean.Hduuser;
-import com.llwwlql.bean.Log;
 import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.tool.SaveLog;
 
+@SuppressWarnings("deprecation")
 @Entity
 public class HduUserInfo implements UserSpider,Runnable{
 	@ManyToOne
@@ -56,7 +56,7 @@ public class HduUserInfo implements UserSpider,Runnable{
 				HttpEntity entity = response.getEntity();
 				// 获取网页源码信息
 				strResult.append(EntityUtils.toString(entity, "UTF-8"));
-				if(strResult.length()>7015)
+				if(strResult.length()>8000)
 				{
 					pageAnalysis = new HduUserAnalysis(url);
 					// 获取到解析之后的结果信息

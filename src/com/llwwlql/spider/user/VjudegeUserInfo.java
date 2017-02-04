@@ -59,8 +59,6 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 		this.url = this.url + vjudgeUser.getVjudgeUserName();
 		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6*1000);
 		StringBuffer strResult = new StringBuffer();
-		//跳过证书检查
-		SSLSkip.enableSSL(httpClient);		
 		try {
 			HttpGet httpget = new HttpGet(url);
 			httpget.getParams().setParameter("http.socket.timeout", 5000);
@@ -70,7 +68,7 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 				HttpEntity entity = response.getEntity();
 				// 获取网页源码信息
 				strResult.append(EntityUtils.toString(entity, "UTF-8"));
-				if(strResult.length()>7015)
+				if(strResult.length()>12000)
 				{
 					// 获取到解析之后的结果信息
 					pageAnalysis = new VjudgeUserAnalysis();
@@ -111,7 +109,7 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 	public void getKeyValue(List<NameValuePair> nvp) throws IOException {
 		Properties prop = new Properties();
 		InputStream in = new BufferedInputStream(new FileInputStream(
-				"../AcmRank/src/VjudgeUser.properties"));
+				"VjudgeUser.properties"));
 		prop.load(in);
 		Iterator<String> it = prop.stringPropertyNames().iterator();
 		while (it.hasNext()) {

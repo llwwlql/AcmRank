@@ -181,8 +181,6 @@ public class RegisterServlet extends HttpServlet {
 		String nickName = request.getParameter("nickName");
 		byte[] password = request.getParameter("password").getBytes("UTF-8");
 		String email = request.getParameter("email");
-		System.out.println("userName:" + userName + "\tnickName:" + nickName
-				+ "\temail" + email);
 		MessageDigest md5;
 		try {
 			md5 = MessageDigest.getInstance("MD5");
@@ -194,15 +192,18 @@ public class RegisterServlet extends HttpServlet {
 			
 			User user = new User(userName, nickName, enPassword, email, 0, 0,
 					(short) 1);
+			user.setRank((int)count);
+			user.setSubmissions(0);
+			user.setSolved(0);
+			user.setContestRating(0);
+			user.setRating(0);
 			userSerivce.save(user);
 			List<User> user2 = userSerivce.getByParameter("User", "userName",
 					user.getUserName());
-			user.setRank((int)count);
-			
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("result", 1);
 			request.getSession().setAttribute("user_id", user2.get(0).getId());
-			
+			request.getSession().setAttribute("nickName",nickName);
 			String json = jsonObject.toString();
 			out.print(json);
 		} catch (NoSuchAlgorithmException e) {

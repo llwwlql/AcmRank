@@ -17,11 +17,11 @@
 <title>Contests</title>
 <jsp:include page="Header.jsp"></jsp:include>
 <script language="javascript" type="text/javascript"
-	src="../js/show_contest.js"></script>
+	src="js/show_contest.js"></script>
 <script language="javascript" type="text/javascript"
-	src="../js/bootstrap-datetimepicker.js" media="screen"></script>
+	src="js/bootstrap-datetimepicker.js" media="screen"></script>
 <link type="text/css" rel="stylesheet"
-	href="../css/bootstrap-datetimepicker.css">
+	href="css/bootstrap-datetimepicker.css">
 </head>
 <body>
 	<div class="everything">
@@ -85,7 +85,7 @@
 			</div>
 
 		</div>
-		<jsp:include page="../jsp/foot.jsp"></jsp:include>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</div>
 	<script type="text/javascript">
 		$('.form_date').datetimepicker({
@@ -98,6 +98,5 @@
 			forceParse : 0
 		});
 	</script>
-
 </body>
 </html>

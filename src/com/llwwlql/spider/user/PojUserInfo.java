@@ -55,14 +55,14 @@ public class PojUserInfo implements UserSpider,Runnable{
 			if(response!=null){
 				HttpEntity entity = response.getEntity();
 				strResult.append(EntityUtils.toString(entity,"UTF-8"));
-				if(strResult.length()>1702)
+				if(strResult.length()>4000)
 				{
 					count=0;
 					pageAnalysis = new PojUserAnalysis();
 					pageAnalysis.Get_Info(strResult);
 					this.savaUserInfo();
 				}
-				else if(strResult.length()>1676)
+				else if(strResult.length()==1702)
 				{//处理访问频繁问题
 					System.out.println("Poj访问过于频繁，10s之后再访问");
 					try {

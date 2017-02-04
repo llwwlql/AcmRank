@@ -16,21 +16,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9">
 
 
-<link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
 <script language="javascript" type="text/javascript"
-	src="../js/jquery-3.0.0.min.js"></script>
+	src="js/jquery-3.0.0.min.js"></script>
 <script language="javascript" type="text/javascript"
-	src="../js/bootstrap.min.js"></script>
+	src="js/bootstrap.min.js"></script>
 <!--IE -->
 <script language="javascript" type="text/javascript"
-	src="../js/html5shiv.min.js"></script>
+	src="js/html5shiv.min.js"></script>
 <script language="javascript" type="text/javascript"
-	src="../js/respond.min.js"></script>
+	src="js/respond.min.js"></script>
 <script language="javascript" type="text/javascript"
-	src="../js/page_div.js"></script>	
+	src="js/page_div.js"></script>	
 <!--IE-->
-<link type="text/css" rel="stylesheet" href="../css/home.css">
-<link type="text/css" rel="stylesheet" href="../css/base.css">
+<link type="text/css" rel="stylesheet" href="css/home.css">
+<link type="text/css" rel="stylesheet" href="css/base.css">
 </style>
 </head>
 <body>
@@ -40,7 +40,7 @@
 			if(user_id!="null")
 			{
 				var nickname = '<%=session.getAttribute("nickName")%>';
-				var userUrl = "../jsp/userInfo.jsp?user_id=" + user_id;
+				var userUrl = "userInfo.jsp?user_id=" + user_id;
 				$('#unlogin').hide();
 				$('#show-login').show();
 				$('#show-nickname').html(
@@ -55,7 +55,7 @@
 			$('#logout').click(function() {
 				$.ajax({
 					type : 'Get',
-					url : '../servlet/LogoutServlet',
+					url : 'servlet/LogoutServlet',
 					success : function(resp) {
 						console.log("用户登出成功！");
 						window.location.reload();
@@ -80,19 +80,19 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="../jsp/Home.jsp">Home</a>
+				<a class="navbar-brand" href="Home.jsp">Home</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="navbar-collapse">
 				<ul class="nav navbar-nav text-primary">
-					<li><a href="../jsp/Contests.jsp">Contests</a></li>
-					<li><a href="../jsp/Ranklist.jsp">Ranklist</a></li>
+					<li><a href="Contests.jsp">Contests</a></li>
+					<li><a href="Ranklist.jsp">Ranklist</a></li>
 					<li><a href="#">Discuss</a></li>
 					<li><a href="#">News</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="unlogin">
-					<li><a href="../jsp/login.jsp">Login</a></li>
-					<li><a href="../jsp/register.jsp">Register</a></li>
+					<li><a href="login.jsp">Login</a></li>
+					<li><a href="register.jsp">Register</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" id="show-login">
 					<li id="show-nickname"></li>

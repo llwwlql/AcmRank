@@ -2,7 +2,6 @@ function load() {
 	var page = $.getUrlParam('page');
 	if(page==null)
 		page=1;
-	console.log(page);
 	$.ajax({
     	data:{
     		page : page,
@@ -10,7 +9,7 @@ function load() {
     	},
     	type: 'Get',
     	//async: false,
-    	url: '../servlet/RankListServlet',
+    	url: 'servlet/RankListServlet',
     	contentType:"application/x-www-form-urlencoded;charset=UTF-8",
     	success: function(data) {
     		var json = $.parseJSON(data);
@@ -27,7 +26,7 @@ function load() {
                 var solved = list[index].solved;
                 var submissions = list[index].submissions;
                 var rating = parseInt(list[index].rating);
-                var userUrl = "../jsp/userInfo.jsp?user_id=" + id;
+                var userUrl = "userInfo.jsp?user_id=" + id;
                 var contestRating = parseInt(list[index].contestRating);
                 var style = null;
                 if(motto==null)
@@ -44,7 +43,6 @@ function load() {
                 	style="rating-5";
                 else
                 	style="rating-6";
-                console.log(style);
                 $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + " target=_blank>"+ nickName + "</a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
             });
             console.log("ajax ok");
@@ -66,7 +64,7 @@ $(function(){
 		    		type : 2
 		    	},
 		    	type: 'Get',
-		    	url: '../servlet/RankListServlet',
+		    	url: 'servlet/RankListServlet',
 		    	contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 		    	success: function(data) {
 		    		var json = eval(data);
@@ -80,7 +78,7 @@ $(function(){
 		                var solved = json[index].solved;
 		                var submissions = json[index].submissions;
 		                var rating = parseInt(json[index].rating);
-		                var userUrl = "../jsp/userInfo.jsp?user_id=" + id;
+		                var userUrl = "userInfo.jsp?user_id=" + id;
 		                var contestRating = parseInt(json[index].contestRating);
 		                var style = null;
 		                if(motto==null)

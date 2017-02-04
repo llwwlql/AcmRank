@@ -15,7 +15,7 @@
 <title>Ranklist</title>
 <jsp:include page="Header.jsp"></jsp:include>
 <script language="javascript" type="text/javascript"
-	src="../js/show_contestRank.js"></script>
+	src="js/show_contestRank.js"></script>
 </head>
 
 <body>
@@ -41,7 +41,7 @@
 			</div>
 
 		</div>
-		<jsp:include page="../jsp/foot.jsp"></jsp:include>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</div>
 
 </body>

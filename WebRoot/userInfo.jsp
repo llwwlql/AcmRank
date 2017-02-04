@@ -21,7 +21,7 @@
 <script src="http://echarts.baidu.com/build/dist/echarts.js"
 	charset="UTF-8"></script>
 <script language="javascript" type="text/javascript"
-	src="../js/show_userInfo.js"></script>
+	src="js/show_userInfo.js"></script>
 </head>
 <body>
 	<div class="everything">
@@ -33,7 +33,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="col-md-4">
-							<img src="../img/1.jpeg">
+							<img src="img/1.jpeg">
 						</div>
 						<div class="col-md-4" id="show-userInfo-1">
 							<h4 class="text-warning">
@@ -93,7 +93,7 @@
 				</div>
 			</div>
 		</div>
-		<jsp:include page="../jsp/foot.jsp"></jsp:include>
+		<jsp:include page="foot.jsp"></jsp:include>
 	</div>
 	<script type="text/javascript">
 	$(function() {

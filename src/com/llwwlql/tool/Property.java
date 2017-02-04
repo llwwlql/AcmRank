@@ -25,7 +25,6 @@ public class Property {
 			key = it.next();
 			value[i]=map.get(key);
 		}
-		
 		return value;
 	}
 	
