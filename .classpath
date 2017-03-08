@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mysql-connector-java.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/c3p0-0.8.5.2.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/htmlparser-1.6.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

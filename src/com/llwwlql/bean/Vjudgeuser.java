@@ -11,6 +11,7 @@ public class Vjudgeuser implements java.io.Serializable {
 	private Integer id;
 	private User user;
 	private String vjudgeUserName;
+	private String vjudgeNickName;
 	private Integer vjudgeSolved;
 	private Integer vjudgeSubmission;
 	private short vjudgeType;
@@ -21,6 +22,11 @@ public class Vjudgeuser implements java.io.Serializable {
 	public Vjudgeuser() {
 	}
 
+	/** minimal constructor */
+	public Vjudgeuser(User user) {
+		this.user = user;
+	}
+	
 	/** minimal constructor */
 	public Vjudgeuser(User user, String vjudgeUserName) {
 		this.user = user;
@@ -90,6 +96,31 @@ public class Vjudgeuser implements java.io.Serializable {
 	 */
 	public void setVjudgeType(short vjudgeType) {
 		this.vjudgeType = vjudgeType;
+	}
+
+	/**
+	 * @return the vjudgeNickName
+	 */
+	public String getVjudgeNickName() {
+		return vjudgeNickName;
+	}
+
+	/**
+	 * @param vjudgeNickName the vjudgeNickName to set
+	 */
+	public void setVjudgeNickName(String vjudgeNickName) {
+		this.vjudgeNickName = vjudgeNickName;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Vjudgeuser [id=" + id + ", user=" + user + ", vjudgeUserName="
+				+ vjudgeUserName + ", vjudgeNickName=" + vjudgeNickName
+				+ ", vjudgeSolved=" + vjudgeSolved + ", vjudgeSubmission="
+				+ vjudgeSubmission + ", vjudgeType=" + vjudgeType + "]";
 	}
 	
 

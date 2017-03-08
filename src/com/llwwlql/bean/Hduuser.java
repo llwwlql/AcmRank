@@ -21,6 +21,10 @@ public class Hduuser implements java.io.Serializable {
 	/** default constructor */
 	public Hduuser() {
 	}
+	
+	public Hduuser(User user) {
+		this.user = user;
+	}
 
 	/** minimal constructor */
 	public Hduuser(User user, String hduUserName) {

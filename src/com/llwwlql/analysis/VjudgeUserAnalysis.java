@@ -1,91 +1,108 @@
 package com.llwwlql.analysis;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
+import org.htmlparser.Parser;
+import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.util.NodeList;
+import org.htmlparser.util.ParserException;
 
 public class VjudgeUserAnalysis implements BaseAnalysis {
-	private int solved;
-	private int attempted;
-	private int submissions;
+
+	private String nickName;
+	private Integer Solved;
+	private Integer Submissions;
+	private String userName;
 	
 	
-	/**
-	 * @return the submissions
-	 */
-	public int getSubmissions() {
-		return submissions;
-	}
-
 
 	/**
-	 * @param submissions the submissions to set
+	 * @return the userName
 	 */
-	public void setSubmissions(int submissions) {
-		this.submissions = submissions;
+	public String getUserName() {
+		return userName;
 	}
+
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	/**
+	 * @return the nickName
+	 */
+	public String getNickName() {
+		return nickName;
+	}
+
+	/**
+	 * @param nickName
+	 *            the nickName to set
+	 */
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 
 
 	/**
 	 * @return the solved
 	 */
-	public int getSolved() {
-		return solved;
+	public Integer getSolved() {
+		return Solved;
 	}
-
 
 	/**
 	 * @param solved the solved to set
 	 */
-	public void setSolved(int solved) {
-		this.solved = solved;
+	public void setSolved(Integer solved) {
+		Solved = solved;
 	}
-
 
 	/**
-	 * @return the attempted
+	 * @return the submissions
 	 */
-	public int getAttempted() {
-		return attempted;
+	public Integer getSubmissions() {
+		return Submissions;
 	}
-
 
 	/**
-	 * @param attempted the attempted to set
+	 * @param submissions
+	 *            the submissions to set
 	 */
-	public void setAttempted(int attempted) {
-		this.attempted = attempted;
+	public void setSubmissions(Integer submissions) {
+		Submissions = submissions;
 	}
-
 
 	public void Get_Info(StringBuffer pageContents) {
-		// TODO Auto-generated method stub
 		try {
-			Pattern p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall solved\"(.*?)</a>",
-					Pattern.CASE_INSENSITIVE);
-			Matcher m = p.matcher(pageContents.toString());
-			ArrayList<String> linkList=new ArrayList<String>();
-			if(m.find()) {
-				String link = m.group();
-				linkList.add(link);
+			Parser parser = new Parser(pageContents.toString());
+			//获取nickName
+			NodeFilter nickNameFilter = new TagNameFilter("span");
+			NodeList nickNamenodes = parser.extractAllNodesThatMatch(nickNameFilter);
+			//判断该Vjudge用户是否有nickName
+			String regex = "\\s*|\t|\r|\n";
+			if(nickNamenodes.size()>5)
+				this.nickName = nickNamenodes.elementAt(2).getFirstChild().toHtml().replaceAll(regex, "");
+			else
+			{//没有nickName把userName当做nickName
+				this.nickName = this.userName;
 			}
-			String temp = linkList.get(0).replaceAll("\n", "");
-			temp=temp.replaceAll("<(.*?)>", "");
-			solved=Integer.parseInt(temp);
-			
-			p = Pattern.compile("<a\\s*(.*?)\\s*title=\"Overall attempted\"(.*?)</a>",
-					Pattern.CASE_INSENSITIVE);
-			m = p.matcher(pageContents.toString());
-			if(m.find()) {
-				String link = m.group();
-				linkList.add(link);
-			}
-			temp = linkList.get(1).replaceAll("\n", "");
-			temp=temp.replaceAll("<(.*?)>", "");
-			attempted=Integer.parseInt(temp);
-			this.submissions = this.solved + this.attempted;
-		} catch (Exception e) {
-			System.out.println("POJ User �쳣");
+			//获取problem数量
+			parser = new Parser(pageContents.toString());
+			NodeFilter proFilter = new TagNameFilter("td");
+			NodeList proNodes = parser.extractAllNodesThatMatch(proFilter);
+			Node proNode = proNodes.elementAt(3).getChildren().elementAt(1)
+					.getFirstChild();
+			this.Solved = Integer.parseInt(proNode.toHtml());
+			//获取Submissions数量
+			Node submisNode = proNodes.elementAt(4).getChildren().elementAt(1)
+					.getFirstChild();
+			this.Submissions = this.Solved + Integer.parseInt(submisNode.toHtml());
+		} catch (ParserException e) {
+			e.printStackTrace();
 		}
 	}
 }

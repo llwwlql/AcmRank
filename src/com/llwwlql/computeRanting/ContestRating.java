@@ -1,22 +1,16 @@
 package com.llwwlql.computeRanting;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.ManyToOne;
-
-import com.llwwlql.bean.Contest;
 import com.llwwlql.bean.Contestuser;
 import com.llwwlql.bean.Hduuser;
 import com.llwwlql.bean.Log;
 import com.llwwlql.bean.User;
 import com.llwwlql.bean.Vjudgeuser;
 import com.llwwlql.service.BaseService;
-import com.llwwlql.spider.contest.HduContestInfo;
-import com.llwwlql.spider.contest.HduContestUserInfo;
 import com.llwwlql.tool.Property;
 import com.llwwlql.tool.SaveLog;
 
@@ -45,78 +39,69 @@ public class ContestRating implements BaseCompute, Runnable {
 	}
 
 	/**
-	 * 构造函数，传入User对象
+	 * 鏋勯�犲嚱鏁颁紶鍏ser鍙傛暟
 	 * 
 	 * @param user
 	 */
 	public ContestRating(User user) {
-		this.user = user;		
+		this.user = user;
 		this.hduUser = this.user.getHduuser();
-		this.vjudgeUser = this.user.getVjudgeuser();	
+		this.vjudgeUser = this.user.getVjudgeuser();
 	}
 
 	public void ComputeContestRank() throws IOException {
-		//计算Contest排名积分，并存入Log
-		if(this.hduUser!=null)
-		{
+
+		if (this.hduUser.getHduNickName() != null) {
 			this.hduContest();
 		}
-		if(this.vjudgeUser!=null)
-		{
+		if (this.vjudgeUser.getVjudgeNickName() != null) {
 			this.vjudgeContest();
 		}
 	}
-	
-	/**
-	 * 计算Rating
-	 */
+
 	public void Compute() {
-		// TODO Auto-generated method stub
 		BaseService<Log> logService = new BaseService<Log>();
 		BaseService<User> userService = new BaseService<User>();
 
-		Map <String,Object> propertyVlaue = new HashMap<String, Object>();
-		//propertyVlaue.put("origin", "Contest Rank");
+		Map<String, Object> propertyVlaue = new HashMap<String, Object>();
 		propertyVlaue.put("user", this.user);
 		String[] key = Property.getProperty(propertyVlaue);
 		Object[] value = Property.getValue(propertyVlaue);
-		
+
 		List<Log> log = logService.getByParameters("Log", key, value, true);
 		for (Log log2 : log) {
-			if(log2.getOrigin()==5 || log2.getOrigin()==6)
+			if (log2.getOrigin() == 5 || log2.getOrigin() == 6)
 				this.rating += log2.getScore();
 		}
-		
-		//更新数据库中User信息
+
 		this.user.setContestRating(this.rating);
 		userService.update(this.user);
 	}
-	
-	public int rankScore(int rank){
-		switch(rank)
-		{
-			case 1:
-				return 6;
-			case 2:
-				return 4;
-			case 3:
-				return 3;
-			default:
-				return 1;
+
+	public int rankScore(int rank) {
+		switch (rank) {
+		case 1:
+			return 6;
+		case 2:
+			return 4;
+		case 3:
+			return 3;
+		default:
+			return 1;
 		}
 	}
-	
-	public void hduContest()
-	{
-		//获取ContestUser 需要 hduUser 的 nickName，Contest 的  orgin
+
+	public void hduContest() {
 		BaseService<Contestuser> CUService = new BaseService<Contestuser>();
 		BaseService<Log> logService = new BaseService<Log>();
-		
-		List<Contestuser> contestUser = CUService.getByParameter("Contestuser", "userName", hduUser.getHduNickName());
+
+		List<Contestuser> contestUser = CUService.getByParameter("Contestuser",
+				"userName", hduUser.getHduNickName());
 		for (Contestuser contestuser2 : contestUser) {
-			if(contestuser2.getContest().getOrigin()==1);
+			if (contestuser2.getContest().getOrigin() == 1)
+				;
 			{
-				Map <String,Object> propertyVlaue = new HashMap<String, Object>();
+				Map<String, Object> propertyVlaue = new HashMap<String, Object>();
 				this.origin = 5;
 				this.time = contestuser2.getContest().getEndTime();
 				propertyVlaue.put("user", this.user);
@@ -124,26 +109,27 @@ public class ContestRating implements BaseCompute, Runnable {
 				propertyVlaue.put("time", this.time);
 				String[] key = Property.getProperty(propertyVlaue);
 				Object[] value = Property.getValue(propertyVlaue);
-				
-				List<Log> log = logService.getByParameters("Log", key, value, true);
-				if(log.size()==0)
-				{
-					SaveLog slog = new SaveLog(user, this.rankScore(contestuser2.getRank()), this.origin,this.time);
+
+				List<Log> log = logService.getByParameters("Log", key, value,
+						true);
+				if (log.size() == 0) {
+					SaveLog slog = new SaveLog(user,
+							this.rankScore(contestuser2.getRank()),
+							this.origin, this.time);
 					slog.Save();
 				}
 			}
 		}
 	}
-	
-	public void vjudgeContest()
-	{
+
+	public void vjudgeContest() {
 		BaseService<Contestuser> CUService = new BaseService<Contestuser>();
 		BaseService<Log> logService = new BaseService<Log>();
-		List<Contestuser> contestUser = CUService.getByParameter("Contestuser", "userName", vjudgeUser.getVjudgeUserName());
+		List<Contestuser> contestUser = CUService.getByParameter("Contestuser",
+				"userName", vjudgeUser.getVjudgeNickName());
 		for (Contestuser contestuser2 : contestUser) {
-			if(contestuser2.getContest().getOrigin()==2)
-			{
-				Map <String,Object> propertyVlaue = new HashMap<String, Object>();
+			if (contestuser2.getContest().getOrigin() == 2) {
+				Map<String, Object> propertyVlaue = new HashMap<String, Object>();
 				this.origin = 6;
 				this.time = contestuser2.getContest().getEndTime();
 				propertyVlaue.put("user", this.user);
@@ -151,11 +137,12 @@ public class ContestRating implements BaseCompute, Runnable {
 				propertyVlaue.put("time", this.time);
 				String[] key = Property.getProperty(propertyVlaue);
 				Object[] value = Property.getValue(propertyVlaue);
-				
-				List<Log> log = logService.getByParameters("Log", key, value, true);
-				if(log.size()==0)
-				{
-					SaveLog slog = new SaveLog(user, this.rankScore(contestuser2.getRank()), this.origin);
+
+				List<Log> log = logService.getByParameters("Log", key, value,
+						true);
+				if (log.size() == 0) {
+					SaveLog slog = new SaveLog(user,
+							this.rankScore(contestuser2.getRank()), this.origin,time);
 					slog.Save();
 				}
 			}
@@ -163,12 +150,10 @@ public class ContestRating implements BaseCompute, Runnable {
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			this.ComputeContestRank();
 			this.Compute();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

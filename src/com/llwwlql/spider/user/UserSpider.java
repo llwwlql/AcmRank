@@ -1,19 +1,11 @@
 package com.llwwlql.spider.user;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import com.llwwlql.bean.Hduuser;
-import com.llwwlql.bean.User;
-import com.llwwlql.service.BaseService;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 public interface UserSpider {
-	public HttpClient httpClient = new DefaultHttpClient();
-	
-	/**
-	 * doGet()
-	 * 根据用户名获取相应的用户信息
-	 */
+	public HttpClient httpClient = HttpClientBuilder.create().build();
+
 	public void doGet();
 	
 	public void savaUserInfo();

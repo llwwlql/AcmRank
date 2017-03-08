@@ -1,9 +1,7 @@
 package com.llwwlql.analysis;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,8 +28,6 @@ public class VjudgeContestAnalysis implements BaseAnalysis{
 	}
 
 	public void Get_Info(StringBuffer pageContents) {
-		// TODO Auto-generated method stub
-		// 正则表达式校验
 		Integer Contest_ID;
 		String Contest_Name;
 		String Start_Time = null;
@@ -55,15 +51,15 @@ public class VjudgeContestAnalysis implements BaseAnalysis{
 			String[] a = temp1.split(",");
 			Contest_ID = Integer.parseInt(a[0]);
 			Contest_Name = a[1];
+			Integer peopleCnt = Integer.parseInt(a[13]);
 			unixStime = Long.parseLong(a[2]);
 			unixEtime = Long.parseLong(a[3]);
 			Start_Time = df.format(unixStime);
 			End_Time = df.format(unixEtime);
 			
 			Contest vjContest = new Contest(Contest_Name, Contest_ID,
-					Start_Time, End_Time, (short) 2, (short) 1 , 0);
+					Start_Time, End_Time, (short) 2, (short) 1 , peopleCnt);
 			contest.add(vjContest);
 		}
 	}
-
 }

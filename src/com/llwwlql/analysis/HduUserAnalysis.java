@@ -95,7 +95,7 @@ public class HduUserAnalysis implements BaseAnalysis {
 
 	public void Get_Info(StringBuffer pageContents) {
 		// TODO Auto-generated method stub
-		// 正则表达式校验
+		// 锟斤拷锟斤拷锟斤拷式校锟斤拷
 		// <tr><td>Problems Solved</td><td align=center>115</td></tr>
 		Pattern p = Pattern.compile("<tr><td>(.*?)</tr>",
 				Pattern.CASE_INSENSITIVE);
@@ -120,7 +120,7 @@ public class HduUserAnalysis implements BaseAnalysis {
 			this.nickName = elements.text();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("HDU User 连接超时");
+			System.out.println("HDU User 寮傚父");
 		}
 	}
 }

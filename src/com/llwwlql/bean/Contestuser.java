@@ -28,6 +28,11 @@ public class Contestuser implements java.io.Serializable {
 	/** default constructor */
 	public Contestuser() {
 	}
+	
+	public Contestuser(Contest contest,User user){
+		this.contest = contest;
+		this.user = user;
+	}
 
 	/** minimal constructor */
 	public Contestuser(Contest contest, User user, String userName,

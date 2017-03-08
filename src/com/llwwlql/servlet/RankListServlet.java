@@ -68,7 +68,7 @@ public class RankListServlet extends HttpServlet {
 		userGson.userGson();
 		Gson gson = userGson.getGson();
 		String str = gson.toJson(users);
-		out.write(str.toString());
+		out.write(str);
 		out.flush();
 		out.close();
 	}

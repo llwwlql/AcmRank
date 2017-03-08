@@ -19,50 +19,14 @@ import com.llwwlql.bean.Pojuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.bean.Vjudgeuser;
 import com.llwwlql.computeRanting.AllUserInfo;
+import com.llwwlql.computeRanting.CPRating;
+import com.llwwlql.computeRanting.ContestRating;
+import com.llwwlql.computeRanting.ProblemRating;
 import com.llwwlql.service.BaseService;
 
 @SuppressWarnings("serial")
 public class RegisterServlet extends HttpServlet {
-
-	/**
-	 * The doGet method of the servlet. <br>
-	 * 
-	 * This method is called when a form has its tag value method equals to get.
-	 * 
-	 * @param request
-	 *            the request send by the client to the server
-	 * @param response
-	 *            the response send by the server to the client
-	 * @throws ServletException
-	 *             if an error occurred
-	 * @throws IOException
-	 *             if an error occurred
-	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-
-		out.flush();
-		out.close();
-	}
-
-	/**
-	 * The doPost method of the servlet. <br>
-	 * 
-	 * This method is called when a form has its tag value method equals to
-	 * post.
-	 * 
-	 * @param request
-	 *            the request send by the client to the server
-	 * @param response
-	 *            the response send by the server to the client
-	 * @throws ServletException
-	 *             if an error occurred
-	 * @throws IOException
-	 *             if an error occurred
-	 */
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -90,7 +54,7 @@ public class RegisterServlet extends HttpServlet {
 		JsonObject jsonObject = new JsonObject();
 		
 		try {
-			//����HduUser��PojUser��VjudgeUser
+			//更新HduUser、PojUser、VjudgeUser
 			//===========================
 			BaseService<User> userSerivce = new BaseService<User>();
 			BaseService<Hduuser> HUSerivce = new BaseService<Hduuser>();
@@ -98,26 +62,28 @@ public class RegisterServlet extends HttpServlet {
 			BaseService<Vjudgeuser> VJUSerivce = new BaseService<Vjudgeuser>();
 			
 			User user = userSerivce.getById(User.class, id);
-			
-			Hduuser hduUser = new Hduuser(user, hduUsername);
-			Pojuser pojUser = new Pojuser(user, pojUsername);
-			Vjudgeuser vjudgeUser = new Vjudgeuser(user, VjudgeUsername);
-			
-			user.setHduuser(hduUser);
-			user.setPojuser(pojUser);
-			user.setVjudgeuser(vjudgeUser);
 			user.setUserBlog(blog);
 			user.setMotto(motto);
+			Hduuser hduUser = user.getHduuser();
+			Pojuser pojUser = user.getPojuser();
+			Vjudgeuser vjudgeUser = user.getVjudgeuser();
 			
 			userSerivce.update(user);
-			HUSerivce.save(hduUser);
-			PUSerivce.save(pojUser);
-			VJUSerivce.save(vjudgeUser);
+			HUSerivce.update(hduUser);
+			PUSerivce.update(pojUser);
+			VJUSerivce.update(vjudgeUser);
 			//============================
 			request.getSession().setAttribute("user_id", user.getId());
 			request.getSession().setAttribute("nickName", user.getNickName());
-			AllUserInfo allUserInfo = new AllUserInfo();
-			new Thread(allUserInfo).start();
+			
+			//获取User信息
+			ContestRating contestRating = new ContestRating(user);
+			ProblemRating problemRating = new ProblemRating(user);
+			CPRating cpRating = new CPRating(user);
+			contestRating.run();
+			cpRating.run();
+			problemRating.run();
+			
 			jsonObject.addProperty("result", 1);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -187,6 +153,10 @@ public class RegisterServlet extends HttpServlet {
 			BASE64Encoder base64en = new BASE64Encoder();
 			String enPassword = base64en.encode(md5.digest(password));
 
+			BaseService<Hduuser> hduService = new BaseService<Hduuser>();
+			BaseService<Pojuser> pojService = new BaseService<Pojuser>();
+			BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
+			
 			BaseService<User> userSerivce = new BaseService<User>();
 			long count = userSerivce.findAllCount("User");
 			
@@ -196,10 +166,23 @@ public class RegisterServlet extends HttpServlet {
 			user.setSubmissions(0);
 			user.setSolved(0);
 			user.setContestRating(0);
-			user.setRating(0);
+			user.setRating(0);			
+			Hduuser hduUser = new Hduuser(user,"");
+			Pojuser pojUser = new Pojuser(user,"");
+			Vjudgeuser vjudgeUser = new Vjudgeuser(user,"");
+			user.setHduuser(hduUser);
+			user.setPojuser(pojUser);
+			user.setVjudgeuser(vjudgeUser);
 			userSerivce.save(user);
+			hduService.save(hduUser);
+			pojService.save(pojUser);
+			vjudgeService.save(vjudgeUser);
+			
+			System.out.println("保存用户HDU/POJ/VJUDGE信息成功");
 			List<User> user2 = userSerivce.getByParameter("User", "userName",
 					user.getUserName());
+			user = user2.get(0);
+			
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("result", 1);
 			request.getSession().setAttribute("user_id", user2.get(0).getId());

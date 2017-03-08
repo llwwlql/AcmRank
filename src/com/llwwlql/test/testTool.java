@@ -2,11 +2,13 @@ package com.llwwlql.test;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -40,8 +42,10 @@ import com.llwwlql.tool.*;
 
 public class testTool {
 
-	public static void main(String[] args) {
-		// 清空用户题量信息。
-		System.out.println("Hello World!");
+	public static void main(String[] args) throws IOException {
+		CrawlerIp craw = new CrawlerIp();
+		craw.crawler();
+		HttpHost proxy = HttpUtils.setProxyIp();
+		System.out.println(proxy.toHostString());
 	}
 }

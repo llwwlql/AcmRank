@@ -14,7 +14,7 @@
             <column name="userID" not-null="true" />
         </many-to-one>
         <property name="pojUserName" type="string">
-            <column name="pojUserName" length="30" not-null="true" />
+            <column name="pojUserName" length="30" />
         </property>
         <property name="pojSolved" type="integer">
             <column name="pojSolved" />

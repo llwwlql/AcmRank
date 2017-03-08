@@ -237,7 +237,7 @@ function alterInfo(){
 	$showUser1.find('#vjudgeuser').html("<input class=form-control type=text value="+vjudgeuser+">");
 	//update-info
 	$('#update-btn').html("<a id='updateInfo' class='btn btn-default' onclick='updateInfo()'>确认修改</a>");
-	
+	$('#updateInfo').show();
 }
 function updateInfo(){
 	var $showUser1 = $('#show-userInfo-1');
@@ -256,6 +256,7 @@ function updateInfo(){
 	$showUser1.find('#pojuser').text(pojuser);
 	$showUser1.find('#vjudgeuser').text(vjudgeuser);
 	$('#update-btn').html("<a id='updateInfo' class='btn btn-default' onclick='alterInfo()'>修改个人信息</a>");
+	$('#updateInfo').show();
 	var user_id = $.getUrlParam('user_id');
 	$.ajax({
 		data : {

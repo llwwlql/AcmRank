@@ -5,12 +5,13 @@ import java.net.SocketTimeoutException;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
 import com.llwwlql.analysis.HduUserAnalysis;
@@ -19,9 +20,8 @@ import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.tool.SaveLog;
 
-@SuppressWarnings("deprecation")
 @Entity
-public class HduUserInfo implements UserSpider,Runnable{
+public class HduUserInfo implements UserSpider, Runnable {
 	@ManyToOne
 	private Hduuser hduUser;
 	private User user;
@@ -35,74 +35,66 @@ public class HduUserInfo implements UserSpider,Runnable{
 	 * @return the hduUser
 	 */
 	public HduUserInfo(User user) {
-		// TODO Auto-generated constructor stub
 		this.user = user;
 		this.hduUser = user.getHduuser();
 	}
 
 	public void doGet() {
-		// TODO Auto-generated method stub
-		httpClient.getParams().setParameter(
-				CoreConnectionPNames.CONNECTION_TIMEOUT, 6 * 1000);
 		String userName = hduUser.getHduUserName();
 		StringBuffer strResult = new StringBuffer();
 		try {
 			url = url + userName;
 			HttpGet httpget = new HttpGet(url);
-			httpget.getParams().setParameter("http.socket.timeout", 5000);
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setSocketTimeout(2000).setConnectTimeout(2000)
+					.setConnectionRequestTimeout(2000).build();
+			httpget.setConfig(requestConfig);
 			HttpResponse response = httpClient.execute(httpget);
 			if (response != null) {
 
 				HttpEntity entity = response.getEntity();
-				// »ñÈ¡ÍøÒ³Ô´ÂëĞÅÏ¢
+
 				strResult.append(EntityUtils.toString(entity, "UTF-8"));
-				if(strResult.length()>8000)
-				{
+				EntityUtils.consume(entity);
+				if (strResult.length() > 8000) {
 					pageAnalysis = new HduUserAnalysis(url);
-					// »ñÈ¡µ½½âÎöÖ®ºóµÄ½á¹ûĞÅÏ¢
+
 					pageAnalysis.Get_Info(strResult);
 					this.savaUserInfo();
-				}
-				else
-				{
-					System.out.println("HDU ÓÃ»§Ãû´íÎó");
+				} else {
+					System.out.println("HDUç”¨æˆ·åé”™è¯¯");
 					this.savaWarningInfo();
 				}
-				
+
 			} else {
-				System.out.println("»ñÈ¡Ê§°Ü!");
+				System.out.println("è¯·æ±‚å¤±è´¥!");
 			}
 			httpget.abort();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConnectTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("ÇëÇóHDU³¬Ê±£¡");
+			System.out.println("è¯·æ±‚HDUè¶…æ—¶");
 		} catch (SocketTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("HDUÏìÓ¦³¬Ê±£¡");
+			System.out.println("HDUå“åº”è¶…æ—¶");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * ±£´æHduUser¸üĞÂºóĞÅÏ¢
+	 * æ›´æ–°HduUserä¿¡æ¯
 	 */
 	public void savaUserInfo() {
-		// TODO Auto-generated method stub
 		BaseService<Hduuser> hduUserService = new BaseService<Hduuser>();
 		int score = 0;
 		if (this.hduUser.getHduSolve() == null) {
 			score = pageAnalysis.getProblemsSolved();
-			SaveLog log = new SaveLog(user, score, (short) 3);
-			log.Save();
+			if (score != 0) {
+				SaveLog log = new SaveLog(user, score, (short) 3);
+				log.Save();
+			}
 		} else if (pageAnalysis.getProblemsSolved() > this.hduUser
 				.getHduSolve()) {
-			// ±£´ælogĞÅÏ¢
-			//System.out.println("HDU log ĞÅÏ¢");
 			score = pageAnalysis.getProblemsSolved()
 					- this.hduUser.getHduSolve();
 			SaveLog log = new SaveLog(user, score, (short) 3);
@@ -111,19 +103,18 @@ public class HduUserInfo implements UserSpider,Runnable{
 		this.hduUser.setHduSolve(pageAnalysis.getProblemsSolved());
 		this.hduUser.setHduSubmission(pageAnalysis.getSubmissions());
 		this.hduUser.setHduNickName(pageAnalysis.getNickName());
-		this.hduUser.setHduType((short)1);
+		this.hduUser.setHduType((short) 1);
 		hduUserService.update(this.hduUser);
 	}
-	
-	public void savaWarningInfo(){
+
+	public void savaWarningInfo() {
 		BaseService<Hduuser> hduUserService = new BaseService<Hduuser>();
-		this.hduUser.setHduType((short)0);
+		this.hduUser.setHduType((short) 0);
 		hduUserService.update(this.hduUser);
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
 		this.doGet();
 	}
-	
+
 }

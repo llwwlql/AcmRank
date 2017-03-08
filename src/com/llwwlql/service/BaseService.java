@@ -1,15 +1,12 @@
 package com.llwwlql.service;
 
 import java.util.List;
-
 import javax.persistence.Entity;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-
 
 @Entity
 public class BaseService<T> implements IBaseService<T> {
@@ -18,17 +15,16 @@ public class BaseService<T> implements IBaseService<T> {
 			.configure().buildSessionFactory();
 
 	/**
-	 * ±£´æÊı¾İ²Ù×÷
+	 * ä¿å­˜æ•°æ®æ“ä½œ
 	 * 
 	 * @param user
 	 */
 	public void save(T user) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(user); // ±£´æ
+			session.save(user); // ä¿å­˜
 			tx.commit();
 		} catch (RuntimeException e) {
 			// tx.rollback();
@@ -40,18 +36,17 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * É¾³ıÖ¸¶¨¶ÔÏó
+	 * åˆ é™¤æŒ‡å®šå¯¹è±¡
 	 * 
 	 * @param user
 	 */
 	public void delete(T user) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			// -------------------------------------
-			session.delete(user); // É¾³ıµÄÊÇÊµÌå¶ÔÏó
+			session.delete(user); // åˆ é™¤çš„æ˜¯å®ä½“å¯¹è±¡
 			// -------------------------------------
 			tx.commit();
 		} catch (RuntimeException e) {
@@ -63,17 +58,16 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * ¸ü¸ÄÊı¾İ²Ù×÷
+	 * æ›´æ”¹æ•°æ®æ“ä½œ
 	 * 
 	 * @param user
 	 */
 	public void update(T user) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.update(user); // ¸üĞÂ
+			session.update(user); // æ›´æ–°
 			tx.commit();
 		} catch (RuntimeException e) {
 			tx.rollback();
@@ -84,20 +78,19 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * Í¨¹ıid»ñÈ¡¶ÔÏó
+	 * é€šè¿‡idè·å–å¯¹è±¡
 	 * 
 	 * @param userClass
 	 * @param id
 	 * @return
 	 */
 	public <T> T getById(Class userClass, int id) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		
 		try {
 			tx = session.beginTransaction();
-			T user = (T) session.get(userClass, id); // »ñÈ¡
+			T user = (T) session.get(userClass, id); // è·å–
 			tx.commit();
 			return user;
 		} catch (RuntimeException e) {
@@ -109,7 +102,7 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * Í¨¹ıÖ¸¶¨ÊôĞÔ»ñÈ¡¶ÔÏó ´«ÈëStringÀàĞÍvalue
+	 * é€šè¿‡æŒ‡å®šå±æ€§è·å–å¯¹è±¡ ä¼ å…¥Stringç±»å‹value
 	 * 
 	 * @param userClass
 	 * @param userName
@@ -117,7 +110,6 @@ public class BaseService<T> implements IBaseService<T> {
 	 */
 	public List<T> getByParameter(String tableName, String Parameter,
 			Object value) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
@@ -125,8 +117,8 @@ public class BaseService<T> implements IBaseService<T> {
 			String hql = "from " + tableName + " where " + Parameter + " =:value";
 			Query query = session.createQuery(hql);
 			query.setParameter("value", value);
-			// ÅĞ¶Ï²ÎÊıÊôĞÔ
-			List<T> user = query.list(); // »ñÈ¡
+			// åˆ¤æ–­å‚æ•°å±æ€§
+			List<T> user = query.list(); // è·å–
 			tx.commit();
 			return user;
 		} catch (RuntimeException e) {
@@ -138,7 +130,7 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * Ä£ºı²éÑ¯
+	 * æ¨¡ç³ŠæŸ¥è¯¢
 	 * 
 	 * @param tableName
 	 * @param Parameter
@@ -154,7 +146,7 @@ public class BaseService<T> implements IBaseService<T> {
 					+ " like ?";
 			Query query = session.createQuery(hql);
 			query.setString(0, "%" + value + "%");
-			List<T> user = query.list(); // »ñÈ¡
+			List<T> user = query.list(); // è·å–
 			tx.commit();
 			return user;
 		} catch (RuntimeException e) {
@@ -166,11 +158,11 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * ¶à¸ö²ÎÊı²éÑ¯
-	 * @param tableName ±íÃû
-	 * @param Parameter ´«²ÎÊıÃûµÄÊı×é
-	 * @param value ´«ÖµµÄÊı×é
-	 * @param rigor ÅĞ¶Ï¾«È·²é»¹ÊÇÄ£ºı²étrue´ú±í¾«È·²é
+	 * å¤šä¸ªå‚æ•°æŸ¥è¯¢
+	 * @param tableName è¡¨å
+	 * @param Parameter ä¼ å‚æ•°åçš„æ•°ç»„
+	 * @param value ä¼ å€¼çš„æ•°ç»„
+	 * @param rigor åˆ¤æ–­ç²¾ç¡®æŸ¥è¿˜æ˜¯æ¨¡ç³ŠæŸ¥trueä»£è¡¨ç²¾ç¡®æŸ¥
 	 * @return
 	 */
 	public List<T> getByParameters(String tableName, String[] Parameters,
@@ -180,7 +172,7 @@ public class BaseService<T> implements IBaseService<T> {
 		try {
 			tx = session.beginTransaction();
 			StringBuffer hql = new StringBuffer();
-			//ÅĞ¶ÏÄ£ºı²é»¹ÊÇ¾«È·²é
+			//åˆ¤æ–­æ¨¡ç³ŠæŸ¥è¿˜æ˜¯ç²¾ç¡®æŸ¥
 			String relation = "like";
 			if (rigor)
 				relation = "=";
@@ -209,7 +201,7 @@ public class BaseService<T> implements IBaseService<T> {
 	              query.setParameter(i, "%"+value[i]+"%");
 	             }
 			}
-			List<T> user = query.list(); // »ñÈ¡
+			List<T> user = query.list(); // è·å–
 			tx.commit();
 			return user;
 		} catch (RuntimeException e) {
@@ -221,7 +213,7 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * ¸ù¾İHQLÓï¾ä²éÑ¯£¬¾¡Á¿ÉÙÓÃ
+	 * æ ¹æ®HQLè¯­å¥æŸ¥è¯¢ï¼Œå°½é‡å°‘ç”¨
 	 * 
 	 * @param HQL
 	 * @return
@@ -232,8 +224,8 @@ public class BaseService<T> implements IBaseService<T> {
 		try {
 			tx = session.beginTransaction();
 			Query query = session.createQuery(HQL);
-			// ÅĞ¶Ï²ÎÊıÊôĞÔ
-			List<T> user = query.list(); // »ñÈ¡
+			// åˆ¤æ–­å‚æ•°å±æ€§
+			List<T> user = query.list(); // è·å–
 			tx.commit();
 			return user;
 		} catch (RuntimeException e) {
@@ -245,17 +237,16 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * ²éÑ¯ËùÓĞ
+	 * æŸ¥è¯¢æ‰€æœ‰
 	 * 
 	 * @return
 	 */
 	public List<T> findAll(String tableName) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			List<T> list = session.createQuery("FROM " + tableName).list(); // Ê¹ÓÃHQL²éÑ¯
+			List<T> list = session.createQuery("FROM " + tableName).list(); // ä½¿ç”¨HQLæŸ¥è¯¢
 			tx.commit();
 			return list;
 		} catch (RuntimeException e) {
@@ -267,18 +258,17 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 	
 	/**
-	 * ¸ù¾İparmeterÅÅĞò²éÑ¯ËùÓĞ
+	 * æ ¹æ®parmeteræ’åºæŸ¥è¯¢æ‰€æœ‰
 	 * 
 	 * @return
 	 */
 	public List<T> findAllSort(String tableName,String parmeter,String sortType) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			String hql = "FROM " + tableName + " order by "+ parmeter + " " +sortType;
-			List<T> list = session.createQuery(hql).list(); // Ê¹ÓÃHQL²éÑ¯
+			List<T> list = session.createQuery(hql).list(); // ä½¿ç”¨HQLæŸ¥è¯¢
 			tx.commit();
 			return list;
 		} catch (RuntimeException e) {
@@ -290,18 +280,17 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 	
 	/**
-	 * ¸ù¾İparmaterÅÅĞò²éÑ¯key = valueµÄÔªËØ
+	 * æ ¹æ®parmateræ’åºæŸ¥è¯¢key = valueçš„å…ƒç´ 
 	 * 
 	 * @return
 	 */
 	public List<T> findAllSort(String tableName,String key,Object value,String parmeter,String sortType) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			String hql = "FROM " + tableName +" where "+key+"=?"+ " order by "+ parmeter + " " +sortType;
-			Query query = session.createQuery(hql); // Ê¹ÓÃHQL²éÑ¯
+			Query query = session.createQuery(hql); // ä½¿ç”¨HQLæŸ¥è¯¢
 			query.setParameter(0, value);
 			List<T> list = query.list();
 			tx.commit();
@@ -315,31 +304,30 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 
 	/**
-	 * ·ÖÒ³²éÑ¯
+	 * åˆ†é¡µæŸ¥è¯¢
 	 * 
 	 * @param firstResult
-	 *            ¿ªÊ¼»ñÈ¡µÄ¼ÇÂ¼Ë÷Òı
+	 *            å¼€å§‹è·å–çš„è®°å½•ç´¢å¼•
 	 * @param maxResults
-	 *            ×î¶à»ñÈ¡¶àÉÙÌõÊı¾İ
-	 * @return ×Ü¼ÇÂ¼Êı +¡¡Ò»¶ÎÊı¾İ
+	 *            æœ€å¤šè·å–å¤šå°‘æ¡æ•°æ®
+	 * @return æ€»è®°å½•æ•° +ã€€ä¸€æ®µæ•°æ®
 	 */
 	public QueryResult<T> findAll(String tableName, int firstResult,
 			int maxResults) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			// -------------------------------------
-			// 1£¬²éÑ¯×Ü¼ÇÂ¼Êı
+			// 1ï¼ŒæŸ¥è¯¢æ€»è®°å½•æ•°
 			Long count = (Long) session.createQuery(
-					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // Ö´ĞĞ²éÑ¯
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // æ‰§è¡ŒæŸ¥è¯¢
 
-			// 2£¬²éÑ¯Ò»¶ÎÊı¾İ
+			// 2ï¼ŒæŸ¥è¯¢ä¸€æ®µæ•°æ®
 			Query query = session.createQuery("FROM " + tableName);
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResults);
-			List<T> list = query.list(); // Ö´ĞĞ²éÑ¯
+			List<T> list = query.list(); // æ‰§è¡ŒæŸ¥è¯¢
 			// -------------------------------------
 			tx.commit();
 			return new QueryResult<T>(list, count);
@@ -353,21 +341,21 @@ public class BaseService<T> implements IBaseService<T> {
 	
 	public QueryResult<T> rankfindAll(String tableName, int firstResult,
 			int maxResults) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			// -------------------------------------
-			// 1£¬²éÑ¯×Ü¼ÇÂ¼Êı
+			// 1ï¼ŒæŸ¥è¯¢æ€»è®°å½•æ•°
 			Long count = (Long) session.createQuery(
-					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // Ö´ĞĞ²éÑ¯
-			// 2£¬²éÑ¯Ò»¶ÎÊı¾İ
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // æ‰§è¡ŒæŸ¥è¯¢
+
+			// 2ï¼ŒæŸ¥è¯¢ä¸€æ®µæ•°æ®
 			Query query = session.createQuery("FROM " + tableName + " where userType = ? order by rank asc");
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResults);
 			query.setParameter(0,(short)1);
-			List<T> list = query.list(); // Ö´ĞĞ²éÑ¯
+			List<T> list = query.list(); // æ‰§è¡ŒæŸ¥è¯¢
 			// -------------------------------------
 			tx.commit();
 			return new QueryResult<T>(list, count);
@@ -380,22 +368,21 @@ public class BaseService<T> implements IBaseService<T> {
 	}
 	public QueryResult<T> contestfindAll(String tableName, int firstResult,
 			int maxResults) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 			// -------------------------------------
-			// 1£¬²éÑ¯×Ü¼ÇÂ¼Êı
+			// 1ï¼ŒæŸ¥è¯¢æ€»è®°å½•æ•°
 			Long count = (Long) session.createQuery(
-					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // Ö´ĞĞ²éÑ¯
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // æ‰§è¡ŒæŸ¥è¯¢
 
-			// 2£¬²éÑ¯Ò»¶ÎÊı¾İ
+			// 2ï¼ŒæŸ¥è¯¢ä¸€æ®µæ•°æ®
 			Query query = session.createQuery("FROM " + tableName + " where contestType = ? order by id desc");
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResults);
 			query.setParameter(0,(short)1);
-			List<T> list = query.list(); // Ö´ĞĞ²éÑ¯
+			List<T> list = query.list(); // æ‰§è¡ŒæŸ¥è¯¢
 			// -------------------------------------
 			tx.commit();
 			return new QueryResult<T>(list, count);
@@ -414,9 +401,9 @@ public class BaseService<T> implements IBaseService<T> {
 		try {
 			tx = session.beginTransaction();
 			// -------------------------------------
-			// 1£¬²éÑ¯×Ü¼ÇÂ¼Êı
+			// 1ï¼ŒæŸ¥è¯¢æ€»è®°å½•æ•°
 			Long count = (Long) session.createQuery(
-					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // Ö´ĞĞ²éÑ¯
+					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // æ‰§è¡ŒæŸ¥è¯¢
 			// -------------------------------------
 			tx.commit();
 			return count;

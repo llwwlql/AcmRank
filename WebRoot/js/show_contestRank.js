@@ -21,7 +21,7 @@ $(function(){
     		};
     		
     		$.each(json, function (index, element) {    			
-                //循环获取数据    
+    			
                 var rank = json[index].rank;
                 var solved = json[index].solved;  
                 var penalty = json[index].penalty;  

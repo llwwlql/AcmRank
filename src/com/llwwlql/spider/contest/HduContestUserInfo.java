@@ -9,21 +9,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
 import com.llwwlql.analysis.HduContestUPAnalysis;
@@ -34,122 +32,119 @@ import com.llwwlql.bean.Hduuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
 import com.llwwlql.tool.Property;
-import com.llwwlql.tool.SaveLog;
 
-public class HduContestUserInfo implements Runnable{
+public class HduContestUserInfo implements Runnable {
 
-	private HttpClient httpClient = new DefaultHttpClient();
+	private HttpClient httpClient = HttpClientBuilder.create().build();
 	private String loginUrl = "http://acm.hdu.edu.cn/diy/contest_login.php?action=login&cid=";
 	private Contest contest = null;
 	private HttpHost host = new HttpHost("acm.hdu.edu.cn");
-	private String baseUrl = "http://acm.hdu.edu.cn/diy/";
 	private String location;
 	private int submissions = 0;
-	
+
 	public HduContestUserInfo(Contest contest) {
-		// TODO Auto-generated constructor stub
 		this.contest = contest;
 	}
-	
+
 	public void doGet() throws IOException {
-		// TODO Auto-generated method stub
 		StringBuffer strResult = new StringBuffer();
-		location = "http://acm.hdu.edu.cn/diy/contest_ranklist.php?page=1&cid=" + this.contest.getOrginId();
+		location = "http://acm.hdu.edu.cn/diy/contest_ranklist.php?page=1&cid="
+				+ this.contest.getOrginId();
 		try {
 			HttpGet httpget = new HttpGet(location);
-			httpget.getParams().setParameter("http.socket.timeout", 5000);
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setSocketTimeout(2000).setConnectTimeout(2000)
+					.setConnectionRequestTimeout(2000).build();
+			httpget.setConfig(requestConfig);
 			HttpResponse response = httpClient.execute(host, httpget);
 			if (response.getStatusLine().getStatusCode() == 200) {
 				HttpEntity entity = response.getEntity();
-				// »ñÈ¡ÍøÒ³Ô´ÂëĞÅÏ¢
+				// è·å–ç½‘é¡µæºç ä¿¡æ¯
 				strResult.append(EntityUtils.toString(entity, "GB2312"));
-				HduContestUPAnalysis pageAnalysis = new HduContestUPAnalysis(contest);
+				HduContestUPAnalysis pageAnalysis = new HduContestUPAnalysis(
+						contest);
 				pageAnalysis.Get_Info(strResult);
-				//ÅĞ¶ÏÊÇ·ñ±£´æ¸ÃÊı¾İ
+				// åˆ¤æ–­æ˜¯å¦ä¿å­˜è¯¥æ•°æ®
 				this.saveContestUser(pageAnalysis.getContestUser());
 			} else {
-				System.out.println(response.getStatusLine().getStatusCode()+"µÇÂ¼Ê§°Ü£¡");
+				System.out.println(response.getStatusLine().getStatusCode()
+						+ "ç™»å½•å¤±è´¥ï¼");
 			}
 			httpget.abort();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConnectTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("ÇëÇóHDUContestÏêÏ¸ĞÅÏ¢³¬Ê±£¡");
+			System.out.println("è¯·æ±‚HDUContestè¯¦ç»†ä¿¡æ¯è¶…æ—¶ï¼");
 		} catch (SocketTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("HDUContestÏêÏ¸ĞÅÏ¢ÏìÓ¦³¬Ê±£¡");
+			System.out.println("HDUContestè¯¦ç»†ä¿¡æ¯å“åº”è¶…æ—¶ï¼");
 		}
 	}
-	
+
 	public void doPost() throws IOException {
-		// TODO Auto-generated method stub
 		// int contestId = contest.getId();
-		httpClient.getParams().setParameter(
-				CoreConnectionPNames.CONNECTION_TIMEOUT, 6 * 1000);
 		loginUrl = loginUrl + contest.getOrginId();
 		try {
 			HttpPost httpost = new HttpPost(loginUrl);
-			httpost.getParams().setParameter("http.socket.timeout", 5000);
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setSocketTimeout(2000).setConnectTimeout(2000).build();
+			httpost.setConfig(requestConfig);
 			List<NameValuePair> nvp = new ArrayList<NameValuePair>();
 			nvp.add(new BasicNameValuePair("password", "lduacm"));
 			httpost.setEntity(new UrlEncodedFormEntity(nvp, Charset
-					.forName("UTF-8")));
+					.forName("gb2312")));
 			HttpResponse response = httpClient.execute(host, httpost);
 			if (response.getStatusLine().getStatusCode() == 302) {
 				httpost.abort();
 				this.doGet();
 			} else {
-				System.out.println("µÇÂ¼HDUContestÊ§°Ü£¡");
+				System.out.println("ç™»å½•HDUContestå¤±è´¥ï¼");
 			}
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}catch (ConnectTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("ÇëÇóHDUContestµÇÂ¼³¬Ê±£¡");
+		} catch (ConnectTimeoutException e) {
+			System.out.println("è¯·æ±‚HDUContestç™»å½•è¶…æ—¶ï¼");
 		} catch (SocketTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("HDUContestµÇÂ¼ÏìÓ¦³¬Ê±£¡");
-		} 
+			System.out.println("HDUContestç™»å½•å“åº”è¶…æ—¶ï¼");
+		}
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	public void saveContestUser(List<Contestuser> contestUser) {
 		BaseService<Contestuser> cuService = new BaseService<Contestuser>();
-		BaseService<Contest> contestService =new BaseService<Contest>();
+		BaseService<Contest> contestService = new BaseService<Contest>();
 		BaseService<Hduuser> hduService = new BaseService<Hduuser>();
 		BaseService<User> userService = new BaseService<User>();
 		for (Contestuser contestUser2 : contestUser) {
-			Map <String,Object> propertyVlaue = new HashMap<String, Object>();
+			Map<String, Object> propertyVlaue = new HashMap<String, Object>();
 			propertyVlaue.put("contest", contestUser2.getContest());
 			propertyVlaue.put("userName", contestUser2.getUserName());
 			String[] key = Property.getProperty(propertyVlaue);
 			Object[] value = Property.getValue(propertyVlaue);
-			List<Contestuser> contestUser3 = cuService.getByParameters("Contestuser", key, value, true);
-			//ÕÒµ½¹ØÁªµÄUser
-			List<Hduuser> hduUser = hduService.getByParameter("Hduuser", "hduNickName", contestUser2.getUserName());
-			User user = null;;
-			if(hduUser.size()>0)
+			List<Contestuser> contestUser3 = cuService.getByParameters(
+					"Contestuser", key, value, true);
+			// æ‰¾åˆ°å…³è”çš„User
+			List<Hduuser> hduUser = hduService.getByParameter("Hduuser",
+					"hduNickName", contestUser2.getUserName());
+			User user = null;
+			;
+			if (hduUser.size() > 0)
 				user = hduUser.get(0).getUser();
-			if(contestUser3.size()==0)
-			{
-				if(user !=null)
-				{//Éú³ÉUser Óë contestUser µÄ¹ØÁª
+			if (contestUser3.size() == 0) {
+				if (user != null) {// ç”ŸæˆUser ä¸ contestUser çš„å…³è”
 					contestUser2.setUser(user);
 					user.getContestusers().add(contestUser2);
 					userService.update(user);
 				}
 				cuService.save(contestUser2);
-				this.saveContestProblem(contestUser2,contestUser2.getContestproblems());
+				this.saveContestProblem(contestUser2,
+						contestUser2.getContestproblems());
 				contestUser2.setSubmissions(submissions);
 				cuService.update(contestUser2);
-			}
-			else
-			{
+			} else {
 				Contestuser CUser = contestUser3.get(0);
-				//¸üĞÂ±ØÒªµÄĞÅÏ¢
-				this.updateContestProblem(CUser,contestUser2.getContestproblems());
+				// æ›´æ–°å¿…è¦çš„ä¿¡æ¯
+				this.updateContestProblem(CUser,
+						contestUser2.getContestproblems());
 				CUser.setRank(contestUser2.getRank());
 				CUser.setSolved(contestUser2.getSolved());
 				CUser.setContestproblems(contestUser2.getContestproblems());
@@ -161,19 +156,19 @@ public class HduContestUserInfo implements Runnable{
 		contest.setPeopleNum(contestUser.size());
 		contestService.update(contest);
 	}
-	
-	public void saveContestProblem(Contestuser contestuser,Set<Contestproblem> contestProblems)
-	{
+
+	public void saveContestProblem(Contestuser contestuser,
+			Set<Contestproblem> contestProblems) {
 		BaseService<Contestproblem> cPService = new BaseService<Contestproblem>();
 		submissions = 0;
 		for (Contestproblem contestproblem : contestProblems) {
 			cPService.save(contestproblem);
-			submissions +=contestproblem.getSubmissions();
+			submissions += contestproblem.getSubmissions();
 		}
 	}
-	
-	public void updateContestProblem(Contestuser contestuser , Set<Contestproblem> contestProblems)
-	{//ÏÈÉ¾³ı£¬ºóÖØĞÂÖ¸¶¨
+
+	public void updateContestProblem(Contestuser contestuser,
+			Set<Contestproblem> contestProblems) {// å…ˆåˆ é™¤ï¼Œåé‡æ–°æŒ‡å®š
 		BaseService<Contestproblem> cPService = new BaseService<Contestproblem>();
 		Set<Contestproblem> contestproblems2 = contestuser.getContestproblems();
 		for (Contestproblem contestproblem : contestproblems2) {
@@ -181,20 +176,18 @@ public class HduContestUserInfo implements Runnable{
 		}
 		submissions = 0;
 		contestuser.setContestproblems(contestProblems);
-		
+
 		for (Contestproblem contestproblem : contestProblems) {
 			contestproblem.setContestuser(contestuser);
 			cPService.save(contestproblem);
-			submissions +=contestproblem.getSubmissions(); 
+			submissions += contestproblem.getSubmissions();
 		}
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			this.doPost();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

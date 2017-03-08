@@ -14,7 +14,10 @@
             <column name="userID" not-null="true" />
         </many-to-one>
         <property name="vjudgeUserName" type="string">
-            <column name="vjudgeUserName" length="30" not-null="true" />
+            <column name="vjudgeUserName" length="30" />
+        </property>
+        <property name="vjudgeNickName" type="string">
+            <column name="vjudgeNickName" length="30" />
         </property>
         <property name="vjudgeSolved" type="integer">
             <column name="vjudgeSolved" />

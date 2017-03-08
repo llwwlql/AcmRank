@@ -1,141 +1,142 @@
 package com.llwwlql.spider.user;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
 import com.llwwlql.analysis.PojUserAnalysis;
-import com.llwwlql.bean.Hduuser;
 import com.llwwlql.bean.Pojuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
+import com.llwwlql.tool.HttpUtils;
 import com.llwwlql.tool.SaveLog;
 
 /**
  * 
- * @author Â÷∆‰¬≥
- * ªÒ»°Pojµƒ∂‘”¶”√ªß–≈œ¢
+ * @author llwwlql
  * 
  */
 @Entity
-public class PojUserInfo implements UserSpider,Runnable{
+public class PojUserInfo implements UserSpider, Runnable {
 
 	@ManyToOne
 	private User user;
-	private Pojuser pojUser =null;
-	private String url="http://poj.org/userstatus?user_id=";
+	private Pojuser pojUser = null;
+	private String url = "http://poj.org/userstatus?user_id=";
 	private PojUserAnalysis pageAnalysis;
-	private static int count=0;
+	private HttpHost proxy;
+	private static int judge = 0;
+
 	protected PojUserInfo() {
 	}
+
 	public PojUserInfo(User user) {
-		// TODO Auto-generated constructor stub
 		this.user = user;
 		this.pojUser = this.user.getPojuser();
 	}
+
 	public void doGet() {
-		// TODO Auto-generated method stub
-		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6*1000);
 		String userName = this.pojUser.getPojUserName();
 		try {
 			url = url + userName;
 			HttpGet httpget = new HttpGet(url);
-			httpget.getParams().setParameter("http.socket.timeout", 5000);
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setSocketTimeout(3000).setConnectTimeout(3000)
+					.setProxy(proxy).setConnectionRequestTimeout(3000).build();
+			httpget.setConfig(requestConfig);
 			HttpResponse response = httpClient.execute(httpget);
 			StringBuffer strResult = new StringBuffer();
-			if(response!=null){
+			int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
 				HttpEntity entity = response.getEntity();
-				strResult.append(EntityUtils.toString(entity,"UTF-8"));
-				if(strResult.length()>4000)
-				{
-					count=0;
+				strResult.append(EntityUtils.toString(entity, "UTF-8"));
+				EntityUtils.consume(entity);
+				if (strResult.length() > 4000) {
+					//ÈáçÁΩÆËØ∑Ê±ÇÂ§±Ë¥•Ê¨°Êï∞‰∏∫0
+					this.judge=0;
 					pageAnalysis = new PojUserAnalysis();
 					pageAnalysis.Get_Info(strResult);
 					this.savaUserInfo();
-				}
-				else if(strResult.length()==1702)
-				{//¥¶¿Ì∑√Œ ∆µ∑±Œ Ã‚
-					System.out.println("Poj∑√Œ π˝”⁄∆µ∑±£¨10s÷Æ∫Û‘Ÿ∑√Œ ");
-					try {
-						Thread.sleep(10000);
-						if(count<3)
-						{
-							count++;
-							System.out.println(count);
-							PojUserInfo pojUserInfo = new PojUserInfo(user);
-							pojUserInfo.run();
-						}
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				else
-				{
-					System.out.println("Poj ”√ªß√˚¥ÌŒÛ ");
+				} else if(strResult.length() == 1702){
+					System.out.println("PojËØ∑Ê±ÇÈ¢ëÁπÅÔºåÁ≠âÂæÖ10sÂêéÂÜçÊ¨°ËØ∑Ê±Ç");
+					this.resetProxy();
+				} else {
+					System.out.println("PojÁî®Êà∑ÂêçÈîôËØØ");
 					this.savaWarningInfo();
 				}
-			}
-			else
-			{
-				System.out.println("ªÒ»° ß∞‹!");
+			} else {
+				System.out.println("PojËØ∑Ê±ÇÂ§±Ë¥•");
 			}
 			httpget.abort();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConnectTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("«Î«ÛPOJ≥¨ ±£°");
+			System.out.println("ËØ∑Ê±ÇPojË∂ÖÊó∂");
+			this.resetProxy();
 		} catch (SocketTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("POJœÏ”¶≥¨ ±£°");
+			System.out.println("PojÂìçÂ∫îË∂ÖÊó∂");
+			this.resetProxy();
+		} catch (ConnectException e) {
+			this.resetProxy();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public void savaUserInfo() {
-		// TODO Auto-generated method stub
-		BaseService<User> userService = new BaseService<User>();
-		BaseService<Pojuser> pojUserService = new BaseService<Pojuser>();
-		int score =0;
-		if(this.pojUser.getPojSolved()==null)
-		{
-			score = pageAnalysis.getSolved();
-			SaveLog log = new SaveLog(user, score, (short)4);
-			log.Save();
+	private void resetProxy(){
+		try {
+			proxy = HttpUtils.setProxyIp();
+			if (this.judge < 2) {
+				this.judge++;
+				this.doGet();
+			}
+		} catch (Exception e) {
+			System.out.println("PojUserInfoËØ∑Ê±ÇÂ§±Ë¥•");
 		}
-		else if(pageAnalysis.getSolved() > this.pojUser.getPojSolved())
-		{
-			//±£¥Êlog–≈œ¢
+	}
+
+	public void savaUserInfo() {
+		BaseService<Pojuser> pojUserService = new BaseService<Pojuser>();
+		int score = 0;
+		if (this.pojUser.getPojSolved() == null) {
+			score = pageAnalysis.getSolved();
+			if (score != 0) {
+				SaveLog log = new SaveLog(user, score, (short) 4);
+				log.Save();
+			}
+
+		} else if (pageAnalysis.getSolved() > this.pojUser.getPojSolved()) {
+			// Êõ¥Êñ∞PojÂÅöÈ¢òÈáè
 			score = pageAnalysis.getSolved() - this.pojUser.getPojSolved();
-			SaveLog log = new SaveLog(user, score, (short)4);
+			SaveLog log = new SaveLog(user, score, (short) 4);
 			log.Save();
 		}
 		this.pojUser.setPojSolved(pageAnalysis.getSolved());
 		this.pojUser.setPojSubmission(pageAnalysis.getSubmissions());
-		this.pojUser.setPojType((short)1);
+		this.pojUser.setPojType((short) 1);
 		pojUserService.update(this.pojUser);
-	}
-	public void savaWarningInfo() {
-		// TODO Auto-generated method stub
-		BaseService<Pojuser> pojUserService = new BaseService<Pojuser>();
-		this.pojUser.setPojType((short)0);
-		pojUserService.update(this.pojUser);
-	}
-	public void run() {
-		// TODO Auto-generated method stub
-		this.doGet();
 	}
 
+	public void savaWarningInfo() {
+		BaseService<Pojuser> pojUserService = new BaseService<Pojuser>();
+		this.pojUser.setPojType((short) 0);
+		pojUserService.update(this.pojUser);
+	}
+
+	public void run() {
+		this.judge=0;
+		proxy = HttpUtils.setProxyIp();
+		this.doGet();
+	}
 }

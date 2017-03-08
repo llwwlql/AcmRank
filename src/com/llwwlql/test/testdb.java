@@ -8,7 +8,6 @@ import com.llwwlql.computeRanting.AllUserInfo;
 public class testdb {
 
 	public static void main(String[] args) {
-		//不定属性查询
 		AllUserInfo allUserInfo = new AllUserInfo();
 		System.out.println("Hello World!");
 		new Thread(allUserInfo).start();

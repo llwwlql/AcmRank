@@ -1,6 +1,8 @@
 package com.llwwlql.computeRanting;
 
+import java.io.IOException;
 import java.util.List;
+
 import com.llwwlql.bean.Contest;
 import com.llwwlql.bean.Contestuser;
 import com.llwwlql.bean.User;
@@ -8,6 +10,8 @@ import com.llwwlql.service.BaseService;
 import com.llwwlql.spider.contest.HduContestInfo;
 import com.llwwlql.spider.contest.HduContestUserInfo;
 import com.llwwlql.spider.contest.VjudegeContestInfo;
+import com.llwwlql.spider.contest.VjudgeCUInfo;
+import com.llwwlql.tool.CrawlerIp;
 
 public class AllUserInfo implements Runnable{
 
@@ -48,25 +52,39 @@ public class AllUserInfo implements Runnable{
 
 	public void updateCUInfo() {
 		List<Contest> contests = contestService.findAll("Contest");
-		HduContestUserInfo hduContestLogin = null;
+		HduContestUserInfo hduCUInfo = null;
+		VjudgeCUInfo vjudgeCUInfo = null;
 		for (Contest contest : contests) {
 			if(contest.getOrigin()==1)
 			{
-				hduContestLogin = new HduContestUserInfo(contest);
-				hduContestLogin.run();
+				hduCUInfo = new HduContestUserInfo(contest);
+				hduCUInfo.run();
+			}
+			if(contest.getOrigin()==2)
+			{
+				vjudgeCUInfo = new VjudgeCUInfo(contest);
+				vjudgeCUInfo.run();				
 			}
 		}
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("¸üĞÂContestĞÅÏ¢");
+		System.out.println("è·å–ä»£ç†IP");
+		CrawlerIp crawler = new CrawlerIp();
+		//è·å–ä»£ç†IP
+		try {
+			crawler.crawler();
+			crawler.analysis();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("æ›´æ–°Contestä¿¡æ¯");
 		this.updateContestInfo();
-		System.out.println("¸üĞÂContestUserĞÅÏ¢ºÍContestProblemĞÅÏ¢");
+		System.out.println("æ›´æ–°ContestUserã€ContestProblemä¿¡æ¯");
 		this.updateCUInfo();
-		System.out.println("¸üĞÂUserĞÅÏ¢");
+		System.out.println("æ›´æ–°Userä¿¡æ¯");
 		this.updateUserInfo();
-		System.out.println("ËùÓĞĞÅÏ¢¸üĞÂÍê³É");
+		System.out.println("æ‰€æœ‰ä¿¡æ¯æ›´æ–°å®Œæˆ");
 	}
 
 }

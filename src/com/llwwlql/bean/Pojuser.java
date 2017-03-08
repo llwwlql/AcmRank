@@ -24,6 +24,10 @@ public class Pojuser implements java.io.Serializable {
 	/** default constructor */
 	public Pojuser() {
 	}
+	
+	public Pojuser(User user) {
+		this.user = user;
+	}
 
 	/** minimal constructor */
 	public Pojuser(User user, String pojUserName) {

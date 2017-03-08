@@ -76,8 +76,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-md-12 text-right"
-						style="padding-top: 10px;padding-bottom: 10px;" id="update-btn">
+					<div class="col-md-12 text-right" style="padding-top: 10px;padding-bottom: 10px;" id="update-btn">
 						<a class="btn btn-default" id="updateInfo" onclick="alterInfo()">修改个人信息</a>
 					</div>
 				</div>

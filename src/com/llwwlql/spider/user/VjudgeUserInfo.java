@@ -4,31 +4,26 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
-import com.llwwlql.analysis.HduUserAnalysis;
 import com.llwwlql.analysis.VjudgeUserAnalysis;
-import com.llwwlql.bean.Hduuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.bean.Vjudgeuser;
 import com.llwwlql.service.BaseService;
@@ -36,73 +31,65 @@ import com.llwwlql.tool.SSLSkip;
 import com.llwwlql.tool.SaveLog;
 
 @Entity
-public class VjudegeUserInfo implements UserSpider,Runnable{
+public class VjudgeUserInfo implements Runnable {
 
 	@ManyToOne
 	private Vjudgeuser vjudgeUser = null;
 	private String url = "https://vjudge.net/user/";
 	private VjudgeUserAnalysis pageAnalysis;
 	private User user;
-	
-	protected VjudegeUserInfo() {
+
+	protected VjudgeUserInfo() {
 	}
-	public VjudegeUserInfo(User user) {
-		// TODO Auto-generated constructor stub
+
+	public VjudgeUserInfo(User user) {
 		this.user = user;
 		this.vjudgeUser = this.user.getVjudgeuser();
 	}
-	
+
 	public void doGet() {
-		// TODO Auto-generated method stub
-		//Ìø¹ıÖ¤Êé¼ì²é
-		SSLSkip.enableSSL(httpClient);
-		this.url = this.url + vjudgeUser.getVjudgeUserName();
-		httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 6*1000);
-		StringBuffer strResult = new StringBuffer();
 		try {
+			HttpClient httpClient = SSLSkip.enableSSL();
+			this.url = this.url + vjudgeUser.getVjudgeUserName();
+			StringBuffer strResult = new StringBuffer();
+
 			HttpGet httpget = new HttpGet(url);
-			httpget.getParams().setParameter("http.socket.timeout", 5000);
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setSocketTimeout(2000).setConnectTimeout(2000)
+					.setConnectionRequestTimeout(2000).build();
+			httpget.setConfig(requestConfig);
 			HttpResponse response = httpClient.execute(httpget);
-			if (response != null) {
+			int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
 
 				HttpEntity entity = response.getEntity();
-				// »ñÈ¡ÍøÒ³Ô´ÂëĞÅÏ¢
 				strResult.append(EntityUtils.toString(entity, "UTF-8"));
-				if(strResult.length()>12000)
-				{
-					// »ñÈ¡µ½½âÎöÖ®ºóµÄ½á¹ûĞÅÏ¢
-					pageAnalysis = new VjudgeUserAnalysis();
-					pageAnalysis.Get_Info(strResult);
-					this.savaUserInfo();
-				}
-				else
-				{
-					System.out.println("HDU ÓÃ»§Ãû´íÎó");
-				}
+				EntityUtils.consume(entity);
+				pageAnalysis = new VjudgeUserAnalysis();
+				pageAnalysis.setUserName(this.vjudgeUser.getVjudgeUserName());
+				pageAnalysis.Get_Info(strResult);
 			} else {
-				System.out.println("»ñÈ¡Ê§°Ü!");
+				System.out.println(this.vjudgeUser.getVjudgeUserName()
+						+ "-Vjudgeç”¨æˆ·åé”™è¯¯");
+				this.savaWarningInfo();
 			}
 			httpget.abort();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ConnectTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("ÇëÇóHDU³¬Ê±£¡");
+			System.out.println("è¯·æ±‚Vjudgeè¶…æ—¶");
 		} catch (SocketTimeoutException e) {
-			// TODO: handle exception
-			System.out.println("HDUÏìÓ¦³¬Ê±£¡");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Vjudgeå“åº”è¶…æ—¶");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void doPost() throws IOException {
 	}
 
 	/**
-	 * »ñÈ¡Post²ÎÊıµÄkey--value
+	 * è·å–é…ç½®æ–‡ä»¶çš„key--value
 	 * 
 	 * @throws IOException
 	 */
@@ -119,17 +106,18 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 		}
 		in.close();
 	}
-	
+
 	public void savaUserInfo() {
-		// TODO Auto-generated method stub
 		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
 		int score = 0;
 		if (this.vjudgeUser.getVjudgeSolved() == null) {
 			score = pageAnalysis.getSolved();
-			SaveLog log = new SaveLog(user, score, (short) 7);
-			log.Save();
+			if (score != 0) {
+				SaveLog log = new SaveLog(user, score, (short) 7);
+				log.Save();
+			}
 		} else if (pageAnalysis.getSolved() > this.vjudgeUser.getVjudgeSolved()) {
-			// ±£´ælogĞÅÏ¢
+			// æ›´æ–°Vjudgeåšé¢˜é‡
 			score = pageAnalysis.getSolved()
 					- this.vjudgeUser.getVjudgeSolved();
 			SaveLog log = new SaveLog(user, score, (short) 7);
@@ -137,18 +125,26 @@ public class VjudegeUserInfo implements UserSpider,Runnable{
 		}
 		this.vjudgeUser.setVjudgeSolved(pageAnalysis.getSolved());
 		this.vjudgeUser.setVjudgeSubmission(pageAnalysis.getSubmissions());
-		this.vjudgeUser.setVjudgeType((short)1);
+		this.vjudgeUser.setVjudgeType((short) 1);
+		this.vjudgeUser.setVjudgeNickName(this.pageAnalysis.getNickName());
 		vjudgeService.update(this.vjudgeUser);
 	}
+
 	public void savaWarningInfo() {
-		// TODO Auto-generated method stub
 		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
-		this.vjudgeUser.setVjudgeType((short)0);
+		this.vjudgeUser.setVjudgeType((short) 0);
 		vjudgeService.update(this.vjudgeUser);
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
 		this.doGet();
+		this.savaUserInfo();
+	}
+
+	public static void main(String[] args) {
+		BaseService<User> userService = new BaseService<User>();
+		User user = userService.getById(User.class, 26);
+		VjudgeUserInfo userInfo = new VjudgeUserInfo(user);
+		userInfo.doGet();
 	}
 }

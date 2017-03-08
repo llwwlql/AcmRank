@@ -18,16 +18,14 @@ import com.llwwlql.bean.Pojuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.bean.UserInfo;
 import com.llwwlql.bean.Vjudgeuser;
-import com.llwwlql.computeRanting.AllUserInfo;
 import com.llwwlql.computeRanting.CPRating;
 import com.llwwlql.computeRanting.ContestRating;
 import com.llwwlql.computeRanting.ProblemRating;
 import com.llwwlql.computeRanting.UserRank;
 import com.llwwlql.service.BaseService;
-import com.llwwlql.service.QueryResult;
 import com.llwwlql.spider.user.HduUserInfo;
 import com.llwwlql.spider.user.PojUserInfo;
-import com.llwwlql.spider.user.VjudegeUserInfo;
+import com.llwwlql.spider.user.VjudgeUserInfo;
 import com.llwwlql.tool.BaseGson;
 import com.llwwlql.tool.Property;
 
@@ -90,7 +88,7 @@ public class UserInfoServlet extends HttpServlet {
 		BaseService<User> userService = new BaseService<User>();
 		User user = userService.getById(User.class, id);
 		
-		//转成json字符串的信息
+		//杞垚json瀛楃涓茬殑淇℃伅
 		UserInfo userInfo = new UserInfo(user.getId(), user.getVjudgeuser()
 				.getVjudgeUserName(), user.getPojuser().getPojUserName(), user
 				.getHduuser().getHduUserName(), user.getRank(),
@@ -145,23 +143,23 @@ public class UserInfoServlet extends HttpServlet {
 		int peace = 0;
 		if (!user.getHduuser().getHduUserName().equals(hduName)) {
 			peace = 1;
-			System.out.println("更新HduName");
+			System.out.println("鏇存柊HduName");
 			this.updateHdu(hduName);
 			HduUserInfo userInfo = new HduUserInfo(user);
 			userInfo.run();
 		}
 		if (!user.getPojuser().getPojUserName().equals(pojName)) {
 			peace = 1;
-			System.out.println("更新PojName");
+			System.out.println("鏇存柊PojName");
 			this.updatePoj(pojName);
 			PojUserInfo pojInfo = new PojUserInfo(user);
 			pojInfo.run();
 		}
 		if (!user.getVjudgeuser().getVjudgeUserName().equals(vjudgeName)) {
 			peace = 1;
-			System.out.println("更新VjudgeName");
+			System.out.println("鏇存柊VjudgeName");
 			this.updateVjudge(vjudgeName);
-			VjudegeUserInfo vjudgeInfo = new VjudegeUserInfo(user);
+			VjudgeUserInfo vjudgeInfo = new VjudgeUserInfo(user);
 			vjudgeInfo.run();
 		}
 		user.setNickName(nickName);
@@ -172,13 +170,13 @@ public class UserInfoServlet extends HttpServlet {
 			new Thread() {
 				public void run() {
 					ContestRating contestRating = new ContestRating(user);
-					System.out.println("更新contestRating");
+					System.out.println("鏇存柊contestRating");
 					contestRating.run();
 					CPRating cpRating = new CPRating(user);
-					System.out.println("更新cpRating");
+					System.out.println("鏇存柊cpRating");
 					cpRating.run();
 					ProblemRating problemRating = new ProblemRating(user);
-					System.out.println("更新problemRating");
+					System.out.println("鏇存柊problemRating");
 					problemRating.run();
 					UserRank userRank = new UserRank();
 					userRank.Compute();
@@ -190,7 +188,7 @@ public class UserInfoServlet extends HttpServlet {
 	private void updateHdu(String hduName) {
 		Hduuser hduUser = user.getHduuser();
 		BaseService<Hduuser> hduService = new BaseService<Hduuser>();
-		//删除之前Hdu的Log信息
+		//鍒犻櫎涔嬪墠Hdu鐨凩og淇℃伅
 		this.updateLog((short)3);
 		this.updateLog((short)5);
 		
@@ -204,7 +202,7 @@ public class UserInfoServlet extends HttpServlet {
 	private void updatePoj(String pojName) {
 		BaseService<Pojuser> pojService = new BaseService<Pojuser>();
 		Pojuser pojUser = user.getPojuser();
-		//删除之前Poj的Log信息
+		//鍒犻櫎涔嬪墠Poj鐨凩og淇℃伅
 		this.updateLog((short)4);
 		pojService.delete(pojUser);
 		Pojuser pojNewUser = new Pojuser(user, pojName);
@@ -215,7 +213,7 @@ public class UserInfoServlet extends HttpServlet {
 	private void updateVjudge(String vjudgeName) {
 		Vjudgeuser vjudgeUser = user.getVjudgeuser();
 		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
-		//删除之前Vjudge的Log信息
+		//鍒犻櫎涔嬪墠Vjudge鐨凩og淇℃伅
 		this.updateLog((short)4);
 		vjudgeService.delete(vjudgeUser);
 		Vjudgeuser vjudgeNewUser = new Vjudgeuser(user, vjudgeName);

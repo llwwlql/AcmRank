@@ -63,7 +63,7 @@ public class HduContestUPAnalysis implements BaseAnalysis {
 			String link = m.group();
 			linkList.add(link);
 		}
-		// 循环获取
+
 		for (int i = 0; i < linkList.size(); i++) {
 			ArrayList<String> linklist = new ArrayList<String>();
 			p = Pattern.compile("<td\\s*(.*?)</td>", Pattern.CASE_INSENSITIVE);
@@ -79,18 +79,15 @@ public class HduContestUPAnalysis implements BaseAnalysis {
 					""));
 			userPenalty = linklist.get(3).replaceAll("<\\s*.*?>", "");
 
-			// 找到对应的User
 			this.findUser(nickName);
-			// contestUser赋对象
 			CUser = new Contestuser(this.contest, this.user, nickName, Rank,
 					Solved, userPenalty);
-			//System.out.println("nickName:" + nickName + "\tRank" + Rank + "\tSolved:" + Solved + "Penalty:" +userPenalty);
-			// contestProblem开辟空间
+
 			contestProblem = new HashSet<Contestproblem>();
 			for (int j = 4; j < linklist.size(); j++) {
 				String temp = linklist.get(j);
 
-				proNumber = j-3;
+				proNumber = j - 3;
 				// 00:24:02<br>(-1)
 				proPenalty = temp.replaceAll("<\\s*.*?>", "");
 				if (linklist.get(j).indexOf("#43CD80") != -1) {

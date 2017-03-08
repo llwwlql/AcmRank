@@ -18,7 +18,7 @@ function load() {
     		var showNum = 50;
     		pageDiv(page,count,showNum,"Ranklist.jsp");
             $.each(list, function (index, element) {
-                //Ñ­»·»ñÈ¡Êý¾Ý
+                //Ñ­ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½
             	var id = list[index].id;
                 var rank = list[index].rank;
                 var nickName = list[index].nickName;  
@@ -70,7 +70,7 @@ $(function(){
 		    		var json = eval(data);
 		    		$("#tbody").html("");
 		            $.each(json, function (index, element) {
-		                //Ñ­»·»ñÈ¡Êý¾Ý
+		                //Ñ­ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½
 		            	var id = json[index].id;
 		                var rank = json[index].rank;
 		                var nickName = json[index].nickName;  
@@ -95,7 +95,7 @@ $(function(){
 		                	style="rating-5";
 		                else
 		                	style="rating-6";
-		                $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + " target=_blank><strong>"+ nickName + "</strong></a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
+		                $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + "<strong>"+ nickName + "</strong></a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
 		            });
 		            console.log("ajax success");
 		    	},

@@ -11,12 +11,19 @@
 		<property name="connection.url">
 		<![CDATA[jdbc:mysql://localhost:3306/ranklist?useUnicode=true&characterEncoding=utf-8&useSSL=false]]>
 		</property>
-		<property name="c3p0.min_size">5</property>
-		<property name="c3p0.max_size">30</property>
-		<property name="c3p0.time_out">1800</property>
-		<property name="c3p0.max_statement">50</property>
+		<property name="c3p0.acquire_increment">1</property>
+		<property name="c3p0.idle_test_period">100</property>
+		<property name="c3p0.max_size">5</property>
+		<property name="c3p0.max_statements">0</property>
+		<property name="c3p0.min_size">2</property>
+		<property name="c3p0.timeout">90</property>
+		<property name="c3p0.preferredTestQuery ">select 1 from user where id=1</property>
+		<property name="c3p0.idleConnectionTestPeriod ">18000</property>
+		<property name="c3p0.maxIdleTime">25000</property>
+		<property name="c3p0.testConnectionOnCheckout">true</property>
+
 		<property name="connection.username">root</property>
-		<property name="connection.password">JWM4jZVK5mIc</property><!-- JWM4jZVK5mIc -->
+		<property name="connection.password">root</property><!-- JWM4jZVK5mIc -->
 		<property name="connection.driver_class">
 			com.mysql.jdbc.Driver
 		</property>
