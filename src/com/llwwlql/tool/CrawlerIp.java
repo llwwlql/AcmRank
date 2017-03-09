@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -20,6 +21,7 @@ import org.htmlparser.util.ParserException;
 
 public class CrawlerIp {
 	private String fileName = "/proxyip.txt";
+	HttpHost host = new HttpHost("www.xicidaili.com");
 	String pageContent = null;
 
 	public void crawler() throws IOException {
@@ -44,7 +46,7 @@ public class CrawlerIp {
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36");
 		HttpResponse response;
 		try {
-			response = httpClient.execute(httpGet);
+			response = httpClient.execute(host,httpGet);
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == HttpStatus.SC_OK) {
 				HttpEntity resEntity = response.getEntity();

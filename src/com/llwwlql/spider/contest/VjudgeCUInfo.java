@@ -73,7 +73,6 @@ public class VjudgeCUInfo implements Runnable {
 	public void login() throws KeyManagementException,
 			NoSuchAlgorithmException, KeyStoreException,
 			UnsupportedEncodingException {
-		httpClient = SSLSkip.enableSSL();
 		HttpPost httPost = new HttpPost(loginUrl);
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setSocketTimeout(2000).setConnectTimeout(2000)
@@ -90,11 +89,17 @@ public class VjudgeCUInfo implements Runnable {
 			int statusCode = response.getStatusLine().getStatusCode();
 			if (statusCode == 200) {
 				httPost.abort();
+				this.loginContest();
 			} else
 				System.out.println("Vjudge User登录失败");
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			System.out.println("网络连接异常！");
+		} catch (ConnectTimeoutException e) {
+			System.out.println("请求Vjudge用户登录超时！");
+		} catch (SocketTimeoutException e) {
+			System.out.println("Vjudge用户登录响应超时！");
 		} catch (IOException e) {
+			System.out.println("网络连接异常！");
 			e.printStackTrace();
 		}
 	}
@@ -115,14 +120,23 @@ public class VjudgeCUInfo implements Runnable {
 				.forName("UTF-8")));
 		try {
 			HttpResponse response = httpClient.execute(httPost);
-			int statusCode = response.getStatusLine().getStatusCode();
-			if (statusCode == 200) {
-				httPost.abort();
-			} else
-				System.out.println("Vjudge Contest登录失败");
+			if (response != null) {
+				int statusCode = response.getStatusLine().getStatusCode();
+				if (statusCode == 200) {
+					httPost.abort();
+					this.getProCount();
+					this.doGet();
+				} else
+					System.out.println("Vjudge Contest登录失败");
+			}
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			System.out.println("网络连接异常！");
+		} catch (ConnectTimeoutException e) {
+			System.out.println("请求Vjudge Contest登录超时！");
+		} catch (SocketTimeoutException e) {
+			System.out.println("Vjudge Contest登录响应超时！");
 		} catch (IOException e) {
+			System.out.println("网络连接异常！");
 			e.printStackTrace();
 		}
 	}
@@ -146,7 +160,9 @@ public class VjudgeCUInfo implements Runnable {
 				HttpEntity entity = response.getEntity();
 				pageContent.append(EntityUtils.toString(entity, "UTF-8"));
 				VjudgeCUAnalysis analysis = new VjudgeCUAnalysis(this.contest);
+				// 关闭链接，为了让其他链接访问，且防止内存泄漏
 				httpGet.abort();
+				EntityUtils.consume(entity);
 				analysis.setProCount(proCount);
 				analysis.Get_Info(pageContent);
 				this.saveContestUser(analysis.getContestUsers());
@@ -178,9 +194,10 @@ public class VjudgeCUInfo implements Runnable {
 				pageContent.append(EntityUtils.toString(entity, "UTF-8"));
 				EntityUtils.consume(entity);
 				this.proCount = VjudgeCUproCntAnalysis.getProCount(pageContent);
+				httpGet.abort();
 			}
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			System.out.println("获取Vjudge Contest Problem Count超时");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -280,10 +297,8 @@ public class VjudgeCUInfo implements Runnable {
 
 	public void run() {
 		try {
+			httpClient = SSLSkip.enableSSL();
 			this.login();
-			this.loginContest();
-			this.getProCount();
-			this.doGet();
 		} catch (KeyManagementException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {

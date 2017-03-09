@@ -137,8 +137,11 @@ public class VjudgeUserInfo implements Runnable {
 	}
 
 	public void run() {
+		System.out.println("获取Vjudge User Info");
 		this.doGet();
+		System.out.println("准备保存Vjudge User Info");
 		this.savaUserInfo();
+		System.out.println("保存完成Vjudge User Info");
 	}
 
 	public static void main(String[] args) {
