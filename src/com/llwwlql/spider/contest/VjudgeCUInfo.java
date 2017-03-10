@@ -51,7 +51,7 @@ public class VjudgeCUInfo implements Runnable {
 	private String contestUrl = "https://vjudge.net/contest/";
 	private String loginConUrl = "https://vjudge.net/contest/login/";
 	private int contestId;
-	private int proCount = 0;
+	private int proCount = -1;
 	private int submissions = 0;
 	private Contest contest = null;
 
@@ -163,9 +163,12 @@ public class VjudgeCUInfo implements Runnable {
 				// 关闭链接，为了让其他链接访问，且防止内存泄漏
 				httpGet.abort();
 				EntityUtils.consume(entity);
-				analysis.setProCount(proCount);
-				analysis.Get_Info(pageContent);
-				this.saveContestUser(analysis.getContestUsers());
+				if(proCount!=-1)
+				{
+					analysis.setProCount(proCount);
+					analysis.Get_Info(pageContent);
+					this.saveContestUser(analysis.getContestUsers());
+				}
 			}
 		} catch (ClientProtocolException e) {
 			System.out.println("网络连接异常！");
@@ -185,7 +188,8 @@ public class VjudgeCUInfo implements Runnable {
 		StringBuffer pageContent = new StringBuffer();
 		try {
 			RequestConfig requestConfig = RequestConfig.custom()
-					.setSocketTimeout(2000).setConnectTimeout(2000).build();
+					.setSocketTimeout(2000).setConnectTimeout(2000)
+					.setConnectionRequestTimeout(2000).build();
 			httpGet.setConfig(requestConfig);
 			HttpResponse response = httpClient.execute(httpGet);
 			int statusCode = response.getStatusLine().getStatusCode();
@@ -197,9 +201,13 @@ public class VjudgeCUInfo implements Runnable {
 				httpGet.abort();
 			}
 		} catch (ClientProtocolException e) {
-			System.out.println("获取Vjudge Contest Problem Count超时");
+			System.out.println("网络连接异常！");
+		} catch (ConnectTimeoutException e) {
+			System.out.println("请求Vjudge Contest 题目数量超时！");
+		} catch (SocketTimeoutException e) {
+			System.out.println("获取Vjudge Contest数量响应超时！");
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("网络连接异常！");
 		}
 	}
 

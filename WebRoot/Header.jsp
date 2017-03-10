@@ -10,6 +10,7 @@
 <!-- saved from url=(0070)http://www.sdutacm.org/onlinejudge2/index.php/Home/Contest/contestlist -->
 <html>
 <head>
+<link rel="icon" href="img/favicon.ico" type="image/x-icon" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">

@@ -54,6 +54,7 @@ public class ContestServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		int page = Integer.parseInt(request.getParameter("page"));
 		BaseService<Contest> contestService =new BaseService<Contest>();
+		
 		QueryResult<Contest> qResult = contestService.contestfindAll("Contest", 50*(page-1), 50);
 		BaseGson conGson = new BaseGson();
 		conGson.contestGson();

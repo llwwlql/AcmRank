@@ -17,6 +17,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.util.EntityUtils;
 
 import com.llwwlql.analysis.PojUserAnalysis;
+import com.llwwlql.bean.Log;
 import com.llwwlql.bean.Pojuser;
 import com.llwwlql.bean.User;
 import com.llwwlql.service.BaseService;
@@ -109,6 +110,11 @@ public class PojUserInfo implements UserSpider, Runnable {
 	public void savaUserInfo() {
 		BaseService<Pojuser> pojUserService = new BaseService<Pojuser>();
 		int score = 0;
+		//查看log上的积分状态，做积分匹配，若积分多，则不更新
+		BaseService<Log> logService = new BaseService<Log>();
+		String hql = "SELECT COUNT(*) FROM Log Where uid='" + user.getId() + "'and origin='4' " ;
+		int count = logService.getByHQL(hql).size();
+		
 		if (this.pojUser.getPojSolved() == null) {
 			score = pageAnalysis.getSolved();
 			if (score != 0) {
@@ -116,7 +122,7 @@ public class PojUserInfo implements UserSpider, Runnable {
 				log.Save();
 			}
 
-		} else if (pageAnalysis.getSolved() > this.pojUser.getPojSolved()) {
+		} else if (pageAnalysis.getSolved() >= count && pageAnalysis.getSolved() > this.pojUser.getPojSolved()) {
 			// 更新Poj做题量
 			score = pageAnalysis.getSolved() - this.pojUser.getPojSolved();
 			SaveLog log = new SaveLog(user, score, (short) 4);

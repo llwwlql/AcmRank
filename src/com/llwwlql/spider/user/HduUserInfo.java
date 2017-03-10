@@ -50,7 +50,8 @@ public class HduUserInfo implements UserSpider, Runnable {
 					.setConnectionRequestTimeout(2000).build();
 			httpget.setConfig(requestConfig);
 			HttpResponse response = httpClient.execute(httpget);
-			if (response != null) {
+			int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 200) {
 
 				HttpEntity entity = response.getEntity();
 
@@ -65,7 +66,6 @@ public class HduUserInfo implements UserSpider, Runnable {
 					System.out.println("HDU用户名错误");
 					this.savaWarningInfo();
 				}
-
 			} else {
 				System.out.println("请求失败!");
 			}

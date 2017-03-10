@@ -16,8 +16,10 @@ function load() {
     		count = json.count;
     		var showNum = 50;
     		pageDiv(page,count,showNum,"Contests.jsp");
+    		var vartialId = count - (page-1) * 50 +1;
             $.each(list, function (index, element) {  
                 var id = list[index].id;
+                vartialId--;
                 var contestName = list[index].contestName;  
                 var startTime = list[index].startTime;  
                 var endTime = list[index].endTime;
@@ -37,7 +39,7 @@ function load() {
                     originUrl = "https://vjudge.net/contest/" + list[index].orginId;
                 }
                 
-                $("#tbody").html($("#tbody").html() + "<tr><td>" + id +"</td><td><a href="+originUrl + " target=_blank>"+contestName + "</a></td><td><img src='img/people1.png' style='weight:80%'/>&nbsp&nbspx "+peopleNum +"</td><td>" + startTime+"</td><td>" + endTime +"</td><td>" + strOrigin +"</td>" + "<td><a href="+contestRank+">show</a></td></tr>");
+                $("#tbody").html($("#tbody").html() + "<tr><td>" + vartialId +"</td><td><a href="+originUrl + " target=_blank>"+contestName + "</a></td><td><img src='img/people1.png' style='weight:80%'/>&nbsp&nbspx "+peopleNum +"</td><td>" + startTime+"</td><td>" + endTime +"</td><td>" + strOrigin +"</td>" + "<td><a href="+contestRank+">show</a></td></tr>");
             });
     	},
     	error: function(err) {

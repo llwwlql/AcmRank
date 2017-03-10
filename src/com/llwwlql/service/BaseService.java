@@ -378,7 +378,7 @@ public class BaseService<T> implements IBaseService<T> {
 					"SELECT COUNT(*) FROM " + tableName).uniqueResult(); // 执行查询
 
 			// 2，查询一段数据
-			Query query = session.createQuery("FROM " + tableName + " where contestType = ? order by id desc");
+			Query query = session.createQuery("FROM " + tableName + " where contestType = ? order by StartTime desc");
 			query.setFirstResult(firstResult);
 			query.setMaxResults(maxResults);
 			query.setParameter(0,(short)1);
