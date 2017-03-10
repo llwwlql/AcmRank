@@ -1,6 +1,8 @@
 package com.llwwlql.computeRanting;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.llwwlql.bean.Contest;
@@ -54,16 +56,21 @@ public class AllUserInfo implements Runnable{
 		List<Contest> contests = contestService.findAll("Contest");
 		HduContestUserInfo hduCUInfo = null;
 		VjudgeCUInfo vjudgeCUInfo = null;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = df.format(new Date());
 		for (Contest contest : contests) {
-			if(contest.getOrigin()==1)
+			if(contest.getEndTime().compareTo(time) < 0)
 			{
-				hduCUInfo = new HduContestUserInfo(contest);
-				hduCUInfo.run();
-			}
-			if(contest.getOrigin()==2)
-			{
-				vjudgeCUInfo = new VjudgeCUInfo(contest);
-				vjudgeCUInfo.run();				
+				if(contest.getOrigin()==1)
+				{
+					hduCUInfo = new HduContestUserInfo(contest);
+					hduCUInfo.run();
+				}
+				if(contest.getOrigin()==2)
+				{
+					vjudgeCUInfo = new VjudgeCUInfo(contest);
+					vjudgeCUInfo.run();				
+				}
 			}
 		}
 	}

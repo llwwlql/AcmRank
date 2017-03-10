@@ -18,7 +18,7 @@ function load() {
     		var showNum = 50;
     		pageDiv(page,count,showNum,"Ranklist.jsp");
             $.each(list, function (index, element) {
-                //ѭ����ȡ���
+                //页面加载时显示各个用户的信息
             	var id = list[index].id;
                 var rank = list[index].rank;
                 var nickName = list[index].nickName;  
@@ -43,7 +43,7 @@ function load() {
                 	style="rating-5";
                 else
                 	style="rating-6";
-                $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + " target=_blank>"+ nickName + "</a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
+                $("#tbody").html($("#tbody").html() + "<tr><td>" + rank +"</td><td><a class="+style+" href="+userUrl + " >"+ nickName + "</a></td><td>" + motto+"</td><td>" + solved +"</td><td>" + submissions +"</td><td>" + contestRating +"</td><td>" + rating +"</td></tr>");
             });
             console.log("ajax ok");
     	},
@@ -54,6 +54,7 @@ function load() {
 }
 
 $(function(){
+	//查找用户
 	$('#ser-user').click(function() {
 		var nickName = $('#nickName').val();
 		if(nickName!="")
@@ -70,7 +71,6 @@ $(function(){
 		    		var json = eval(data);
 		    		$("#tbody").html("");
 		            $.each(json, function (index, element) {
-		                //ѭ����ȡ���
 		            	var id = json[index].id;
 		                var rank = json[index].rank;
 		                var nickName = json[index].nickName;  

@@ -5,6 +5,7 @@ import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -39,13 +40,12 @@ import com.llwwlql.service.BaseService;
 import com.llwwlql.service.QueryResult;
 import com.llwwlql.spider.user.HduUserInfo;
 import com.llwwlql.tool.*;
+import com.mysql.fabric.xmlrpc.base.Data;
 
 public class testTool {
 
 	public static void main(String[] args) throws IOException {
-		CrawlerIp craw = new CrawlerIp();
-		craw.crawler();
-		HttpHost proxy = HttpUtils.setProxyIp();
-		System.out.println(proxy.toHostString());
+		
+		
 	}
 }

@@ -253,7 +253,6 @@ public class VjudgeCUAnalysis implements BaseAnalysis {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("VjugeCUAnalysis 解析异常");
-			System.out.println(pageContents);
 		}
 	}
 

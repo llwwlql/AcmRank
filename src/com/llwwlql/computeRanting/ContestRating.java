@@ -99,7 +99,6 @@ public class ContestRating implements BaseCompute, Runnable {
 				"userName", hduUser.getHduNickName());
 		for (Contestuser contestuser2 : contestUser) {
 			if (contestuser2.getContest().getOrigin() == 1)
-				;
 			{
 				Map<String, Object> propertyVlaue = new HashMap<String, Object>();
 				this.origin = 5;

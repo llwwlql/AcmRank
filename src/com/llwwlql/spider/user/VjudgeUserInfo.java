@@ -24,6 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import com.llwwlql.analysis.VjudgeUserAnalysis;
+import com.llwwlql.bean.Log;
 import com.llwwlql.bean.User;
 import com.llwwlql.bean.Vjudgeuser;
 import com.llwwlql.service.BaseService;
@@ -68,6 +69,7 @@ public class VjudgeUserInfo implements Runnable {
 				pageAnalysis = new VjudgeUserAnalysis();
 				pageAnalysis.setUserName(this.vjudgeUser.getVjudgeUserName());
 				pageAnalysis.Get_Info(strResult);
+				this.savaUserInfo();
 			} else {
 				System.out.println(this.vjudgeUser.getVjudgeUserName()
 						+ "-Vjudge用户名错误");
@@ -110,13 +112,18 @@ public class VjudgeUserInfo implements Runnable {
 	public void savaUserInfo() {
 		BaseService<Vjudgeuser> vjudgeService = new BaseService<Vjudgeuser>();
 		int score = 0;
+		BaseService<Log> logService = new BaseService<Log>();
+		
+		String hql = "SELECT COUNT(*) FROM Log Where uid='" + user.getId() + "'and origin='7' " ;
+		int count = logService.getByHQL(hql).size();
+		
 		if (this.vjudgeUser.getVjudgeSolved() == null) {
 			score = pageAnalysis.getSolved();
 			if (score != 0) {
 				SaveLog log = new SaveLog(user, score, (short) 7);
 				log.Save();
 			}
-		} else if (pageAnalysis.getSolved() > this.vjudgeUser.getVjudgeSolved()) {
+		} else if (pageAnalysis.getSolved() >= count && pageAnalysis.getSolved() > this.vjudgeUser.getVjudgeSolved()) {
 			// 更新Vjudge做题量
 			score = pageAnalysis.getSolved()
 					- this.vjudgeUser.getVjudgeSolved();
@@ -137,11 +144,7 @@ public class VjudgeUserInfo implements Runnable {
 	}
 
 	public void run() {
-		System.out.println("获取Vjudge User Info");
 		this.doGet();
-		System.out.println("准备保存Vjudge User Info");
-		this.savaUserInfo();
-		System.out.println("保存完成Vjudge User Info");
 	}
 
 	public static void main(String[] args) {
