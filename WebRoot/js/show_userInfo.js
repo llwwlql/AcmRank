@@ -163,7 +163,7 @@ require(
 			    },
 			    dataZoom: {
 			        show: true,
-			        start : 0
+			        start : 90
 			    },
 			    legend : {
 			        data : ['Rating']
@@ -174,7 +174,7 @@ require(
 			    xAxis : [
 			        {
 			            type : 'time',
-			            splitNumber:10
+			            splitNumber: 10
 			        }
 			    ],
 			    yAxis : [

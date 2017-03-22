@@ -14,7 +14,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
 <meta http-equiv="X-UA-Compatible" content="IE=9">
 
-<title>moreInfo</title>
+<title>MoreInfo Welcome to Ludong University ACM Training System!</title>
 <jsp:include page="Header.jsp"></jsp:include>
 <script language="javascript" type="text/javascript" src="js/register.js"></script>
 </head>

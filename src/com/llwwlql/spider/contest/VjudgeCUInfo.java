@@ -80,8 +80,8 @@ public class VjudgeCUInfo implements Runnable {
 		httPost.setConfig(requestConfig);
 
 		List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-		nvp.add(new BasicNameValuePair("username", "llwwlql"));
-		nvp.add(new BasicNameValuePair("password", "love4628"));
+		nvp.add(new BasicNameValuePair("username", "HTTPSpider"));
+		nvp.add(new BasicNameValuePair("password", "12345678"));
 		httPost.setEntity(new UrlEncodedFormEntity(nvp, Charset
 				.forName("UTF-8")));
 		try {

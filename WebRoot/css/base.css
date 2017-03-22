@@ -226,15 +226,18 @@ h3.problem-header {
 }
 
 .wrong{
+	font-size:13px;
 	background-color: #fdd;	
 	color: grey;
 	text-align: center;
 }
 .ac{
+	font-size:13px;
 	background-color: #a9f5af;
 	text-align: center;
 }
 .first-ac{
+	font-size:13px;
 	background-color: #080;
 	color: #fff;
     font-weight: 700;
@@ -269,4 +272,7 @@ h3.problem-header {
 {
 	color:gray;
 	font-weight:600;
+}
+#tbody tr td{
+	height: 15px;	
 }
