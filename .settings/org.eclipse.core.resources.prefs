@@ -1,4 +1,3 @@
-#Mon Feb 27 16:47:41 CST 2017
 eclipse.preferences.version=1
 encoding//WebRoot/css/base.css=UTF-8
 encoding//WebRoot/js/login.js=UTF-8
@@ -8,3 +7,4 @@ encoding//WebRoot/js/show_contest.js=UTF-8
 encoding//WebRoot/js/show_userInfo.js=UTF-8
 encoding//src/com/llwwlql/analysis/HduContestAnalysis.java=UTF-8
 encoding//src/com/llwwlql/computeRanting/ContestRating.java=UTF-8
+encoding/<project>=UTF-8
