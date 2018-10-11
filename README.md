@@ -1,9 +1,7 @@
 ## 1.1.4
  - 更新时间：
  - 更新内容：
- 		1.设置持久化的Cookies：
- 			JSESSIONID=34E1F492C88F52B1790560E88DD316B2
-			Jax.Q=llwwlql|0YUOLPNRAQ171MRKZGJI4NFE8DYUAA
+ 		1.设置持久化的Cookies
  		主要获取以上的Cookies信息，根据登录是否成功判断Cookies是否失效，失效后重新获取。
  		
  		2.poj信息获取失败率较高，需要修改
